@@ -46,6 +46,10 @@ export default defineConfig({
   env: { browser: true },
   ignorePatterns,
   overrides,
+  options: {
+    typeAware: true,
+    typeCheck: true,
+  },
   jsPlugins: ['oxlint-plugin-complexity', '@tanstack/eslint-plugin-query'],
   plugins: [
     'eslint',

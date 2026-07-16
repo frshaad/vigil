@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { createPostSchema } from '@/lib/validations/post';
 
-export function CreatePostForm() {
+export default function CreatePostForm() {
   const { form, resetFormAndAction, handleSubmitWithAction, action } = useHookFormAction(
     createPost,
     zodResolver(createPostSchema),

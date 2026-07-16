@@ -4,7 +4,6 @@ import { cache } from 'react';
 import { auth } from '@/lib/auth';
 import { ForbiddenError, UnauthorizedError } from '@/lib/errors';
 
-/** Gets authentication session */
 export const getSession = cache(
   async () =>
     await auth.api.getSession({
@@ -12,7 +11,6 @@ export const getSession = cache(
     })
 );
 
-/** Requires authenticated user, throws AuthError if not logged in */
 export async function requireAuth() {
   const session = await getSession();
   if (!session?.user) {
@@ -21,7 +19,10 @@ export async function requireAuth() {
   return session;
 }
 
-/** Requires authenticated user + ownership check */
+export async function getCurrentUser() {
+  return (await requireAuth()).user;
+}
+
 export async function requireOwner(resourceOwnerId: string) {
   const session = await requireAuth();
 

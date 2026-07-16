@@ -18,7 +18,6 @@ model User {
   updatedAt       DateTime
   sessions        Session[]
   accounts        Account[]
-  posts           Post[]
 
   @@unique([email])
   @@map("user")
@@ -70,14 +69,4 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
-}
-
-// --- Test --------------------------------
-model Post {
-  id        String   @id @default(uuid())
-  title     String
-  body      String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
 }

@@ -14,7 +14,6 @@
     "check": "pnpm fmt && pnpm lint:fix && pnpm typecheck",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:reset": "prisma db push --force-reset",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
     "prepare": "husky"

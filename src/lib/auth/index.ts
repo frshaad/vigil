@@ -16,18 +16,23 @@ export const auth = betterAuth({
     enabled: true,
     password: { hash, verify },
   },
-  experimental: { joins: true },
-  plugins: [
-    lastLoginMethod(),
-    haveIBeenPwned({
-      customPasswordCompromisedMessage: 'Please choose a more secure password.',
-    }),
-    nextCookies(),
-  ],
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
+    github: {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
   },
+  experimental: { joins: true },
+  plugins: [
+    lastLoginMethod(),
+    haveIBeenPwned({
+      enabled: env.NODE_ENV === 'production',
+      customPasswordCompromisedMessage: 'Please choose a more secure password.',
+    }),
+    nextCookies(),
+  ],
 });

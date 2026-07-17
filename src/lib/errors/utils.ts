@@ -14,6 +14,8 @@ export function handleError(error: unknown) {
   }
 
   // unknown errors
+  console.error(error);
+
   return Response.json(
     {
       error: {

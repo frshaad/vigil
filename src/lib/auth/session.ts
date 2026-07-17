@@ -13,7 +13,7 @@ export const getSession = cache(
 
 export async function requireAuth() {
   const session = await getSession();
-  if (!session?.user) {
+  if (!session) {
     throw new UnauthorizedError();
   }
   return session;
@@ -31,4 +31,10 @@ export async function requireOwner(resourceOwnerId: string) {
   }
 
   return session;
+}
+
+export function assertOwner(currentUserId: string, ownerId: string) {
+  if (currentUserId !== ownerId) {
+    throw new ForbiddenError();
+  }
 }

@@ -4,7 +4,7 @@ import { auth } from '@/lib/auth';
 import type { AuthenticatedRouteHandler, RouteHandler } from '@/types/route';
 
 import { UnauthorizedError } from './errors';
-import { handleError } from './errors/utils';
+import { handleRouteError } from './errors/utils';
 
 export function withCurrentUser<C>(handler: AuthenticatedRouteHandler<C>) {
   return async (req: NextRequest, context: C) => {
@@ -26,7 +26,7 @@ export function withErrorHandling<C>(handler: RouteHandler<C>): RouteHandler<C> 
     try {
       return await handler(req, context);
     } catch (error) {
-      return handleError(error);
+      return handleRouteError(error);
     }
   };
 }

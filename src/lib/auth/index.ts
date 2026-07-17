@@ -6,16 +6,11 @@ import { haveIBeenPwned, lastLoginMethod } from 'better-auth/plugins';
 import { env } from '@/env';
 import prisma from '@/lib/prisma';
 
-import { hashPassword as hash, verifyPassword as verify } from './argon2';
-
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-  emailAndPassword: {
-    enabled: true,
-    password: { hash, verify },
-  },
+  emailAndPassword: { enabled: true },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,

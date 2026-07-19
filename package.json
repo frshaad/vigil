@@ -11,12 +11,18 @@
     "lint:fix": "oxlint --fix",
     "fmt": "oxfmt",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm fmt && pnpm lint:fix && pnpm typecheck",
+    "check": "pnpm lint && pnpm typecheck",
+    "fix": "pnpm fmt && pnpm lint:fix",
+    "check:ci": "pnpm typecheck && pnpm lint && pnpm build",
+    "test": "echo \"No tests yet\"",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "prepare": "husky"
+    "db:format": "prisma format",
+    "prepare": "husky",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -71,6 +77,7 @@
     "*": "oxfmt --no-error-on-unmatched-pattern"
   },
   "engines": {
-    "node": "24.x"
-  }
+    "node": ">=24.18.0 <25"
+  },
+  "packageManager": "pnpm@11.15.0"
 }

@@ -33,3 +33,4 @@ export const auth = betterAuth({
 });
 
 export type Session = typeof auth.$Infer.Session;
+export type Provider = keyof typeof auth.options.socialProviders;

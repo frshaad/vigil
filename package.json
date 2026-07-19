@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "check": "pnpm lint && pnpm typecheck",
     "fix": "pnpm fmt && pnpm lint:fix",
-    "check:ci": "pnpm typecheck && pnpm lint && pnpm build",
+    "check:ci": "pnpm check && pnpm test && pnpm build",
     "test": "echo \"No tests yet\"",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",

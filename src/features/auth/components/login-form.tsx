@@ -35,8 +35,7 @@ export default function LoginForm() {
   return (
     <div className="flex flex-col gap-7">
       <AuthError message={error} />
-
-      <form onSubmit={() => void handleSubmit()}>
+      <form onSubmit={handleSubmit}>
         <FieldGroup className="gap-4">
           <Controller
             name="email"
@@ -101,8 +100,8 @@ export default function LoginForm() {
             )}
           />
 
-          <Field className="mt-3">
-            <Button type="submit" disabled={isPending} className="relative">
+          <Field className="relative mt-3">
+            <Button type="submit" disabled={isPending}>
               {isPending ? (
                 <div className="flex items-center gap-2">
                   <IconLoader2 className="animate-spin" /> <span>Signing in...</span>
@@ -110,18 +109,15 @@ export default function LoginForm() {
               ) : (
                 <span>Sign In with Email </span>
               )}
-              {lastMethod === 'email' && <LastUsedMethodBadge />}
             </Button>
+            {lastMethod !== 'email' && <LastUsedMethodBadge />}
           </Field>
         </FieldGroup>
       </form>
-
       <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
         Or continue with
       </FieldSeparator>
-
       <SocialLoginButtonGroup />
-
       <FieldDescription className="text-center">
         Don&apos;t have an account? <Link href="/signup">Sign up</Link>
       </FieldDescription>

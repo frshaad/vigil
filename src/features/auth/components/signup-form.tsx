@@ -27,7 +27,7 @@ export default function SignupForm() {
     <div className="flex flex-col gap-7">
       <AuthError message={error} />
 
-      <form onSubmit={() => void handleSubmit()}>
+      <form onSubmit={handleSubmit}>
         <FieldGroup className="gap-4">
           <Controller
             name="name"
@@ -154,7 +154,7 @@ export default function SignupForm() {
       <SocialLoginButtonGroup />
 
       <FieldDescription className="px-6 text-center">
-        Already have an account? <Link href="/login">Sign in</Link>
+        Already have an account? <Link href="/login">Log in</Link>
       </FieldDescription>
     </div>
   );

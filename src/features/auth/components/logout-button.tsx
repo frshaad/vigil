@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useLogOut } from '../hooks/use-log-out';
 
 export default function LogOutButton() {
-  const { signOut, isPending } = useLogOut();
+  const { logOut, isPending } = useLogOut();
   const queryClient = useQueryClient();
 
   return (
@@ -15,7 +15,7 @@ export default function LogOutButton() {
       variant="destructive"
       onClick={() => {
         queryClient.clear();
-        signOut();
+        logOut();
       }}
       disabled={isPending}
     >

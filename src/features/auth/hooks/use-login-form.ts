@@ -8,20 +8,23 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { authClient } from '@/lib/auth/client';
+import { getCallbackURL } from '@/lib/helpers/url';
 
+import { DEFAULT_ERROR_MESSAGE } from '../constants';
+import type { LoginInput } from '../types';
 import { loginInputSchema } from '../validations';
 
 export function useLoginForm() {
   const router = useRouter();
+
   const [isPending, startTransition] = useTransition();
+
   const [error, setError] = useState<string | null>(null);
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get('redirect');
-  const callbackURL = (redirectUrl !== '' && redirectUrl !== null ? redirectUrl : '/') as Route;
+  const redirectUrl = getCallbackURL(useSearchParams());
 
-  const form = useForm({
+  const form = useForm<LoginInput>({
     resolver: zodResolver(loginInputSchema),
     defaultValues: { email: '', password: '', rememberMe: false },
   });
@@ -30,22 +33,23 @@ export function useLoginForm() {
     setError(null);
     startTransition(async () => {
       try {
-        const result = await authClient.signIn.email(data);
-
-        if (result.error) {
-          setError(result.error.message ?? 'Something went wrong');
-        } else {
-          toast.success('Welcome back!');
-          router.push(callbackURL);
-        }
+        await authClient.signIn.email(data, {
+          onError(ctx) {
+            setError(ctx.error.message);
+          },
+          onSuccess() {
+            toast.success('Welcome back!');
+            router.push(redirectUrl as Route);
+          },
+        });
       } catch {
-        setError('An unexpected error occurred');
+        setError(DEFAULT_ERROR_MESSAGE);
       }
     });
   });
 
   const lastMethod = authClient.getLastUsedLoginMethod();
-  const togglePasswordVisibility = () => setPasswordVisible((c) => !c);
+  const togglePasswordVisibility = () => setShowPassword((c) => !c);
 
   return {
     control: form.control,
@@ -53,7 +57,7 @@ export function useLoginForm() {
     isPending,
     error,
     lastMethod,
-    passwordVisible,
+    passwordVisible: showPassword,
     togglePasswordVisibility,
   };
 }

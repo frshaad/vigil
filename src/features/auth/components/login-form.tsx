@@ -110,7 +110,7 @@ export default function LoginForm() {
                 <span>Sign In with Email </span>
               )}
             </Button>
-            {lastMethod !== 'email' && <LastUsedMethodBadge />}
+            {lastMethod === 'email' && <LastUsedMethodBadge />}
           </Field>
         </FieldGroup>
       </form>

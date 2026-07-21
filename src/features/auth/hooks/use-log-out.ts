@@ -6,11 +6,13 @@ import { toast } from 'sonner';
 
 import { authClient } from '@/lib/auth/client';
 
+import { DEFAULT_ERROR_MESSAGE } from '../constants';
+
 export function useLogOut() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  function clientSignOut() {
+  function logOut() {
     startTransition(async () => {
       try {
         await authClient.signOut({
@@ -24,10 +26,10 @@ export function useLogOut() {
           },
         });
       } catch {
-        toast.error('An error occurred');
+        toast.error(DEFAULT_ERROR_MESSAGE);
       }
     });
   }
 
-  return { signOut: clientSignOut, isPending };
+  return { logOut, isPending };
 }

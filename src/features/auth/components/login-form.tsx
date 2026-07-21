@@ -15,6 +15,7 @@ import {
   FieldSeparator,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { useIsClient } from '@/hooks/use-is-client';
 
 import { useLoginForm } from '../hooks/use-login-form';
 import AuthError from './auth-error';
@@ -22,13 +23,15 @@ import LastUsedMethodBadge from './last-method-badge';
 import SocialLoginButtonGroup from './social-login-button-group';
 
 export default function LoginForm() {
+  const isClient = useIsClient();
+
   const {
     control,
     handleSubmit,
     isPending,
     error,
     lastMethod,
-    passwordVisible,
+    showPassword,
     togglePasswordVisibility,
   } = useLoginForm();
 
@@ -59,7 +62,7 @@ export default function LoginForm() {
                   <Input
                     {...field}
                     id="login-form-password"
-                    type={passwordVisible ? 'text' : 'password'}
+                    type={showPassword ? 'text' : 'password'}
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                     className="pr-9"
@@ -71,7 +74,7 @@ export default function LoginForm() {
                     className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
                     onClick={togglePasswordVisibility}
                   >
-                    {passwordVisible ? (
+                    {showPassword ? (
                       <IconEyeOff className="size-4" />
                     ) : (
                       <IconEye className="size-4" />
@@ -110,7 +113,7 @@ export default function LoginForm() {
                 <span>Sign In with Email </span>
               )}
             </Button>
-            {lastMethod === 'email' && <LastUsedMethodBadge />}
+            {isClient && lastMethod === 'email' && <LastUsedMethodBadge />}
           </Field>
         </FieldGroup>
       </form>

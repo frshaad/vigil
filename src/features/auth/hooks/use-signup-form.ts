@@ -60,7 +60,7 @@ export function useSignupForm() {
     handleSubmit,
     isPending,
     error,
-    passwordVisible: showPassword,
+    showPassword,
     togglePasswordVisibility,
   };
 }

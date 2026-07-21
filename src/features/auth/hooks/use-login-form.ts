@@ -57,7 +57,7 @@ export function useLoginForm() {
     isPending,
     error,
     lastMethod,
-    passwordVisible: showPassword,
+    showPassword,
     togglePasswordVisibility,
   };
 }

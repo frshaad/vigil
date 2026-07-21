@@ -20,7 +20,7 @@ import AuthError from './auth-error';
 import SocialLoginButtonGroup from './social-login-button-group';
 
 export default function SignupForm() {
-  const { control, handleSubmit, isPending, error, passwordVisible, togglePasswordVisibility } =
+  const { control, handleSubmit, isPending, error, showPassword, togglePasswordVisibility } =
     useSignupForm();
 
   return (
@@ -75,7 +75,7 @@ export default function SignupForm() {
                   <Input
                     {...field}
                     id="signup-form-password"
-                    type={passwordVisible ? 'text' : 'password'}
+                    type={showPassword ? 'text' : 'password'}
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                     className="pr-9"
@@ -87,7 +87,7 @@ export default function SignupForm() {
                     className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
                     onClick={togglePasswordVisibility}
                   >
-                    {passwordVisible ? (
+                    {showPassword ? (
                       <IconEyeOff className="size-4" />
                     ) : (
                       <IconEye className="size-4" />
@@ -109,7 +109,7 @@ export default function SignupForm() {
                   <Input
                     {...field}
                     id="signup-form-confirm-password"
-                    type={passwordVisible ? 'text' : 'password'}
+                    type={showPassword ? 'text' : 'password'}
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                     className="pr-9"
@@ -121,7 +121,7 @@ export default function SignupForm() {
                     className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
                     onClick={togglePasswordVisibility}
                   >
-                    {passwordVisible ? (
+                    {showPassword ? (
                       <IconEyeOff className="size-4" />
                     ) : (
                       <IconEye className="size-4" />

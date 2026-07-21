@@ -25,7 +25,7 @@ export const auth = betterAuth({
   plugins: [
     lastLoginMethod(),
     haveIBeenPwned({
-      enabled: env.NODE_ENV === 'production',
+      enabled: process.env.NODE_ENV === 'production',
       customPasswordCompromisedMessage: 'Please choose a more secure password.',
     }),
     nextCookies(),

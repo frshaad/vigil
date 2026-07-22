@@ -4,13 +4,30 @@ import { nextCookies } from 'better-auth/next-js';
 import { haveIBeenPwned, lastLoginMethod } from 'better-auth/plugins';
 
 import { env } from '@/env';
+import { sendEmail } from '@/features/email/send-email';
+import ResetPasswordEmail from '@/features/email/templates/reset-password-email';
+import VerificationEmail from '@/features/email/templates/verification-email';
 import prisma from '@/lib/prisma';
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-  emailAndPassword: { enabled: true },
+  emailAndPassword: {
+    enabled: true,
+    revokeSessionsOnPasswordReset: true,
+    resetPasswordTokenExpiresIn: 60 * 60, // 1 hour
+    async sendResetPassword({ user, url }) {
+      void sendEmail({
+        to: user.email,
+        subject: 'Reset your password',
+        react: ResetPasswordEmail({ resetUrl: url }),
+      });
+    },
+    async onPasswordReset({ user }) {
+      console.log(`${user.email} reset password.`);
+    },
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
@@ -30,6 +47,17 @@ export const auth = betterAuth({
     }),
     nextCookies(),
   ],
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    async sendVerificationEmail({ user, url }) {
+      void sendEmail({
+        to: [user.email],
+        subject: 'Verify your email address',
+        react: VerificationEmail({ verificationUrl: url }),
+      });
+    },
+  },
 });
 
 export type Session = typeof auth.$Infer.Session;

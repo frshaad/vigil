@@ -35,6 +35,9 @@ export function useLoginForm() {
       try {
         await authClient.signIn.email(data, {
           onError(ctx) {
+            if (ctx.error.status === 403) {
+              setError('Please verify your email address');
+            }
             setError(ctx.error.message);
           },
           onSuccess() {

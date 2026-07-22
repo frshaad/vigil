@@ -17,6 +17,7 @@
     "check": "pnpm lint && pnpm typecheck",
     "check:ci": "pnpm check && pnpm test && pnpm build",
     "test": "echo \"No tests yet\"",
+    "email:dev": "email dev --dir ./src/features/email/templates",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
@@ -48,7 +49,9 @@
     "pg": "^8.22.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-email": "6.9.0",
     "react-hook-form": "^7.81.0",
+    "resend": "^6.17.2",
     "shadcn": "^4.13.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
@@ -56,6 +59,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@react-email/ui": "6.9.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@tanstack/eslint-plugin-query": "^5.101.2",
     "@types/node": "^24.13.2",

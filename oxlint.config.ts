@@ -46,10 +46,6 @@ export default defineConfig({
   env: { browser: true },
   ignorePatterns,
   overrides,
-  // options: {
-  //   typeAware: true,
-  //   typeCheck: true,
-  // },
   jsPlugins: ['oxlint-plugin-complexity', '@tanstack/eslint-plugin-query'],
   plugins: [
     'eslint',
@@ -138,7 +134,7 @@ export default defineConfig({
     'typescript/consistent-type-exports': 'error',
     'typescript/no-explicit-any': 'error',
     'typescript/no-floating-promises': 'error',
-    // 'typescript/no-misused-promises': 'error',
+    'typescript/no-misused-promises': 'error',
     'typescript/no-unnecessary-type-assertion': 'error',
     'typescript/no-unnecessary-type-constraint': 'error',
     'typescript/no-unnecessary-type-conversion': 'error',

@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
+    "lint:types": "oxlint --fix --type-aware",
     "fmt": "oxfmt",
     "fix": "pnpm fmt && pnpm lint:fix",
     "typegen": "next typegen",
@@ -74,7 +75,7 @@
     "typescript": "^5.9.3"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs}": "pnpm run lint",
+    "*.{js,jsx,ts,tsx,mjs,cjs}": "pnpm run lint --type-aware",
     "*": "oxfmt --no-error-on-unmatched-pattern"
   },
   "engines": {

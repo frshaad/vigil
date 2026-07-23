@@ -17,7 +17,7 @@ export function useResendVerification(options?: { callbackURL?: Route }) {
   function resend() {
     const email = session?.user.email;
 
-    if (email === undefined) {
+    if (email === undefined || email === '') {
       return;
     }
 

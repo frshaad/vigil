@@ -12,6 +12,8 @@ export function useResendVerification(options?: { callbackURL?: Route }) {
   const { data: session } = authClient.useSession();
   const [isPending, startTransition] = useTransition();
 
+  const callbackURL = options?.callbackURL ?? ('/settings/profile' as Route);
+
   function resend() {
     const email = session?.user.email;
 
@@ -22,7 +24,7 @@ export function useResendVerification(options?: { callbackURL?: Route }) {
     startTransition(async () => {
       try {
         await authClient.sendVerificationEmail(
-          { email, callbackURL: options?.callbackURL ?? '/settings/profile' },
+          { email, callbackURL },
           {
             onSuccess() {
               toast.success('Verification email sent.');

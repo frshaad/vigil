@@ -34,19 +34,22 @@ export const emailSchema = z
 export const passwordSchema = z
   .string()
   .min(baseSchemaConfig.MIN_PASSWORD_LENGTH, {
-    message: `Password must be at least ${baseSchemaConfig.MIN_PASSWORD_LENGTH} characters long.`,
+    error: `Password must be at least ${baseSchemaConfig.MIN_PASSWORD_LENGTH} characters long.`,
   })
   .regex(/[A-Z]/u, {
-    message: 'Password must contain at least one uppercase letter.',
+    error: 'Password must contain at least one uppercase letter.',
   })
   .regex(/[a-z]/u, {
-    message: 'Password must contain at least one lowercase letter.',
+    error: 'Password must contain at least one lowercase letter.',
   })
   .regex(/[0-9]/u, {
-    message: 'Password must contain at least one number.',
+    error: 'Password must contain at least one number.',
+  })
+  .regex(/^\S(?:.*\S)?$/u, {
+    error: 'Password cannot start or end with whitespace.',
   });
 // .regex(/[^A-Za-z0-9]/u, {
-//   message: 'Password must contain at least one symbol.',
+//   error: 'Password must contain at least one symbol.',
 // });
 
 export const signupInputSchema = z
@@ -74,3 +77,18 @@ export const forgetPasswordInputSchema = z.object({
 export const resetPasswordInputSchema = z.object({
   newPassword: passwordSchema,
 });
+
+export const changePasswordInputSchema = z
+  .object({
+    currentPassword: z.string().min(1, { error: 'Enter your current password.' }),
+    newPassword: passwordSchema,
+    confirmNewPassword: z.string().min(1, { error: 'Confirm your new password.' }),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    error: 'Passwords do not match.',
+    path: ['confirmNewPassword'],
+  })
+  .refine((data) => data.currentPassword !== data.newPassword, {
+    error: 'The new password must be different from the current password.',
+    path: ['newPassword'],
+  });

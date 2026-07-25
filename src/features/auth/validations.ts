@@ -67,6 +67,10 @@ export const loginInputSchema = z.object({
   rememberMe: z.boolean(),
 });
 
-export const passwordResetInputSchema = z.object({
+export const forgetPasswordInputSchema = z.object({
   email: emailSchema,
+});
+
+export const resetPasswordInputSchema = z.object({
+  newPassword: passwordSchema,
 });

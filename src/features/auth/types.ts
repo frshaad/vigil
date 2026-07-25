@@ -1,7 +1,13 @@
 import type z from 'zod';
 
-import type { loginInputSchema, passwordResetInputSchema, signupInputSchema } from './validations';
+import type {
+  loginInputSchema,
+  forgetPasswordInputSchema,
+  signupInputSchema,
+  resetPasswordInputSchema,
+} from './validations';
 
 export type SignupInput = z.infer<typeof signupInputSchema>;
 export type LoginInput = z.infer<typeof loginInputSchema>;
-export type PasswordResetInput = z.infer<typeof passwordResetInputSchema>;
+export type ForgetPasswordInput = z.infer<typeof forgetPasswordInputSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordInputSchema>;

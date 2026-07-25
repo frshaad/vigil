@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { authClient } from '@/lib/auth/client';
 
 import { DEFAULT_ERROR_MESSAGE } from '../constants';
-import type { PasswordResetInput } from '../types';
-import { passwordResetInputSchema } from '../validations';
+import type { ForgetPasswordInput } from '../types';
+import { forgetPasswordInputSchema } from '../validations';
 
 export function useForgetPassword() {
   const router = useRouter();
@@ -15,8 +15,8 @@ export function useForgetPassword() {
 
   const [error, setError] = useState<string | null>(null);
 
-  const form = useForm<PasswordResetInput>({
-    resolver: zodResolver(passwordResetInputSchema),
+  const form = useForm<ForgetPasswordInput>({
+    resolver: zodResolver(forgetPasswordInputSchema),
     defaultValues: { email: '' },
   });
 

@@ -24,9 +24,6 @@ export const auth = betterAuth({
         react: ResetPasswordEmail({ resetUrl: url }),
       });
     },
-    async onPasswordReset({ user }) {
-      console.log(`${user.email} reset password.`);
-    },
   },
   socialProviders: {
     google: {

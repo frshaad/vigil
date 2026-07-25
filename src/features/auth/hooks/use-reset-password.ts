@@ -51,7 +51,7 @@ export function useResetPassword() {
             },
             onSuccess() {
               form.reset();
-              router.replace('/login');
+              router.replace('/reset-password/success');
             },
           }
         );

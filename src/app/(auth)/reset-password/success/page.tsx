@@ -1,18 +1,17 @@
-import { IconMailSpark } from '@tabler/icons-react';
+import { IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
 
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import BackToLoginButton from '@/features/auth/components/back-to-login-button';
 
-export default function ForgetPasswordRequestSentPage() {
+export default function ResetPasswordSuccessPage() {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <IconMailSpark className="text-primary" size={24} /> Check your inbox
+          <IconRosetteDiscountCheckFilled className="text-primary" size={24} /> Password changed
+          successfully.
         </CardTitle>
-        <CardDescription>
-          If an account exists for this email, we've sent a password reset link.
-        </CardDescription>
+        <CardDescription>Please log in again with your new password.</CardDescription>
       </CardHeader>
       <CardFooter>
         <BackToLoginButton />

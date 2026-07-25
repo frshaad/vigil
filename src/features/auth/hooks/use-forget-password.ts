@@ -36,7 +36,7 @@ export function useForgetPassword() {
             },
             onSuccess() {
               form.reset();
-              router.replace('/password-reset/sent');
+              router.replace('/forget-password/sent');
             },
           }
         );

@@ -44,10 +44,10 @@ export const passwordSchema = z
   })
   .regex(/[0-9]/u, {
     message: 'Password must contain at least one number.',
-  })
-  .regex(/[^A-Za-z0-9]/u, {
-    message: 'Password must contain at least one symbol.',
   });
+// .regex(/[^A-Za-z0-9]/u, {
+//   message: 'Password must contain at least one symbol.',
+// });
 
 export const signupInputSchema = z
   .object({

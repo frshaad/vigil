@@ -12,7 +12,10 @@ export default function AuthError({ message }: AuthErrorProps) {
   }
 
   return (
-    <Alert className="border-destructive/50 bg-destructive/10 text-destructive flex">
+    <Alert
+      className="border-destructive/50 bg-destructive/10 text-destructive flex"
+      aria-live="polite"
+    >
       <IconAlertCircle className="size-4" />
       <div className="text-sm font-medium">{message}</div>
     </Alert>

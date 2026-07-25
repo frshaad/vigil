@@ -46,7 +46,12 @@ export default function LoginForm() {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="login-form-identifier">Email</FieldLabel>
-                <Input {...field} id="login-form-identifier" aria-invalid={fieldState.invalid} />
+                <Input
+                  {...field}
+                  id="login-form-identifier"
+                  autoComplete="email"
+                  aria-invalid={fieldState.invalid}
+                />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
@@ -57,7 +62,12 @@ export default function LoginForm() {
             control={control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="login-form-password">Password</FieldLabel>
+                <FieldLabel htmlFor="login-form-password" className="justify-between">
+                  <span>Password</span>
+                  <Link href="/password-reset" className="text-primary">
+                    Forgot password?
+                  </Link>
+                </FieldLabel>
                 <div className="relative">
                   <Input
                     {...field}

@@ -66,3 +66,7 @@ export const loginInputSchema = z.object({
   password: z.string().min(1, 'Password is required'),
   rememberMe: z.boolean(),
 });
+
+export const passwordResetInputSchema = z.object({
+  email: emailSchema,
+});

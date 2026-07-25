@@ -86,6 +86,7 @@ export default function SignupForm() {
                     type="button"
                     className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
                     onClick={togglePasswordVisibility}
+                    aria-label={showPassword ? 'Hide current password' : 'Show current password'}
                   >
                     {showPassword ? (
                       <IconEyeOff className="size-4" />
@@ -120,6 +121,7 @@ export default function SignupForm() {
                     type="button"
                     className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
                     onClick={togglePasswordVisibility}
+                    aria-label={showPassword ? 'Hide current password' : 'Show current password'}
                   >
                     {showPassword ? (
                       <IconEyeOff className="size-4" />

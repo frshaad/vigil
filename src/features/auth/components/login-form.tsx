@@ -64,7 +64,7 @@ export default function LoginForm() {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="login-form-password" className="justify-between">
                   <span>Password</span>
-                  <Link href="/password-reset" className="text-primary">
+                  <Link href="/forget-password" className="text-primary">
                     Forgot password?
                   </Link>
                 </FieldLabel>
@@ -83,6 +83,7 @@ export default function LoginForm() {
                     type="button"
                     className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
                     onClick={togglePasswordVisibility}
+                    aria-label={showPassword ? 'Hide current password' : 'Show current password'}
                   >
                     {showPassword ? (
                       <IconEyeOff className="size-4" />

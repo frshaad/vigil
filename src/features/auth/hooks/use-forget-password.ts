@@ -32,7 +32,7 @@ export function useForgetPassword() {
           { email },
           {
             onError(ctx) {
-              setError(ctx.error.message);
+              setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
             },
             onSuccess() {
               form.reset();

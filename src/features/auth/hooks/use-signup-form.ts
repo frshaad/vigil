@@ -40,7 +40,7 @@ export function useSignupForm() {
       try {
         await authClient.signUp.email(inputs, {
           onError(ctx) {
-            setError(ctx.error.message);
+            setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
           },
           onSuccess() {
             toast.success('Account created successfully!');

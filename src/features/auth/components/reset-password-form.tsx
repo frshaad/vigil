@@ -65,7 +65,7 @@ export default function ResetPasswordForm() {
                       id="reset-password-new-password"
                       type={showPassword ? 'text' : 'password'}
                       aria-invalid={fieldState.invalid}
-                      autoComplete="off"
+                      autoComplete="new-password"
                       className="pr-9"
                     />
                     <Button
@@ -74,6 +74,7 @@ export default function ResetPasswordForm() {
                       type="button"
                       className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
                       onClick={togglePasswordVisibility}
+                      aria-label={showPassword ? 'Hide current password' : 'Show current password'}
                     >
                       {showPassword ? (
                         <IconEyeOff className="size-4" />

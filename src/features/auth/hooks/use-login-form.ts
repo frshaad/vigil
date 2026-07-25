@@ -38,7 +38,7 @@ export function useLoginForm() {
             if (ctx.error.status === 403) {
               setError('Please verify your email address');
             }
-            setError(ctx.error.message);
+            setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
           },
           onSuccess() {
             toast.success('Welcome back!');

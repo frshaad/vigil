@@ -1,6 +1,6 @@
 'use client';
 
-import { IconEye, IconEyeOff, IconLoader2 } from '@tabler/icons-react';
+import { IconLoader2 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Controller } from 'react-hook-form';
 
@@ -20,6 +20,7 @@ import { useIsClient } from '@/hooks/use-is-client';
 import { useLoginForm } from '../hooks/use-login-form';
 import AuthError from './auth-error';
 import LastUsedMethodBadge from './last-method-badge';
+import PasswordField from './password-field';
 import SocialLoginButtonGroup from './social-login-button-group';
 
 export default function LoginForm() {
@@ -57,44 +58,14 @@ export default function LoginForm() {
             )}
           />
 
-          <Controller
+          <PasswordField
             name="password"
             control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="login-form-password" className="justify-between">
-                  <span>Password</span>
-                  <Link href="/forget-password" className="text-primary">
-                    Forgot password?
-                  </Link>
-                </FieldLabel>
-                <div className="relative">
-                  <Input
-                    {...field}
-                    id="login-form-password"
-                    type={showPassword ? 'text' : 'password'}
-                    aria-invalid={fieldState.invalid}
-                    autoComplete="off"
-                    className="pr-9"
-                  />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    type="button"
-                    className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
-                    onClick={togglePasswordVisibility}
-                    aria-label={showPassword ? 'Hide current password' : 'Show current password'}
-                  >
-                    {showPassword ? (
-                      <IconEyeOff className="size-4" />
-                    ) : (
-                      <IconEye className="size-4" />
-                    )}
-                  </Button>
-                </div>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
+            label="Password"
+            visible={showPassword}
+            onToggle={togglePasswordVisibility}
+            autoComplete="current-password"
+            forgotPasswordHref="/forget-password"
           />
 
           <Controller

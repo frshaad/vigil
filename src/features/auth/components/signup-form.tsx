@@ -1,6 +1,6 @@
 'use client';
 
-import { IconEye, IconEyeOff, IconLoader2 } from '@tabler/icons-react';
+import { IconLoader2 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Controller } from 'react-hook-form';
 
@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input';
 
 import { useSignupForm } from '../hooks/use-signup-form';
 import AuthError from './auth-error';
+import PasswordField from './password-field';
 import SocialLoginButtonGroup from './social-login-button-group';
 
 export default function SignupForm() {
@@ -65,74 +66,22 @@ export default function SignupForm() {
             )}
           />
 
-          <Controller
+          <PasswordField
             name="password"
             control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="signup-form-password">Password</FieldLabel>
-                <div className="relative">
-                  <Input
-                    {...field}
-                    id="signup-form-password"
-                    type={showPassword ? 'text' : 'password'}
-                    aria-invalid={fieldState.invalid}
-                    autoComplete="off"
-                    className="pr-9"
-                  />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    type="button"
-                    className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
-                    onClick={togglePasswordVisibility}
-                    aria-label={showPassword ? 'Hide current password' : 'Show current password'}
-                  >
-                    {showPassword ? (
-                      <IconEyeOff className="size-4" />
-                    ) : (
-                      <IconEye className="size-4" />
-                    )}
-                  </Button>
-                </div>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
+            label="Password"
+            visible={showPassword}
+            onToggle={togglePasswordVisibility}
+            autoComplete="current-password"
           />
 
-          <Controller
+          <PasswordField
             name="confirmPassword"
             control={control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="signup-form-confirm-password">Confirm Password</FieldLabel>
-                <div className="relative">
-                  <Input
-                    {...field}
-                    id="signup-form-confirm-password"
-                    type={showPassword ? 'text' : 'password'}
-                    aria-invalid={fieldState.invalid}
-                    autoComplete="off"
-                    className="pr-9"
-                  />
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    type="button"
-                    className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
-                    onClick={togglePasswordVisibility}
-                    aria-label={showPassword ? 'Hide current password' : 'Show current password'}
-                  >
-                    {showPassword ? (
-                      <IconEyeOff className="size-4" />
-                    ) : (
-                      <IconEye className="size-4" />
-                    )}
-                  </Button>
-                </div>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              </Field>
-            )}
+            label="Confirm Password"
+            visible={showPassword}
+            onToggle={togglePasswordVisibility}
+            autoComplete="current-password"
           />
 
           <Field className="mt-3">

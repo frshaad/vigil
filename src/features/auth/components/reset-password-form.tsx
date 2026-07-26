@@ -1,17 +1,16 @@
 'use client';
 
-import { IconEye, IconEyeOff, IconLock } from '@tabler/icons-react';
-import { Controller } from 'react-hook-form';
+import { IconLock } from '@tabler/icons-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+import { Field, FieldGroup } from '@/components/ui/field';
 
 import { useResetPassword } from '../hooks/use-reset-password';
 import AuthCard from './auth-card';
 import AuthError from './auth-error';
 import BackToLoginButton from './back-to-login-button';
+import PasswordField from './password-field';
 
 export default function ResetPasswordForm() {
   const {
@@ -53,39 +52,13 @@ export default function ResetPasswordForm() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-7">
           <FieldGroup className="gap-4">
-            <Controller
+            <PasswordField
               name="newPassword"
               control={control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="reset-password-new-password">New password</FieldLabel>
-                  <div className="relative">
-                    <Input
-                      {...field}
-                      id="reset-password-new-password"
-                      type={showPassword ? 'text' : 'password'}
-                      aria-invalid={fieldState.invalid}
-                      autoComplete="new-password"
-                      className="pr-9"
-                    />
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      type="button"
-                      className="absolute top-0 right-0 hover:bg-transparent dark:hover:bg-transparent"
-                      onClick={togglePasswordVisibility}
-                      aria-label={showPassword ? 'Hide current password' : 'Show current password'}
-                    >
-                      {showPassword ? (
-                        <IconEyeOff className="size-4" />
-                      ) : (
-                        <IconEye className="size-4" />
-                      )}
-                    </Button>
-                  </div>
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
+              label="New Password"
+              visible={showPassword}
+              onToggle={togglePasswordVisibility}
+              autoComplete="new-password"
             />
 
             <Field className="relative mt-3" aria-disabled={isPending}>

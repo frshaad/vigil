@@ -5,23 +5,23 @@ import { authClient } from '@/lib/auth/client';
 
 import { DEFAULT_ERROR_MESSAGE } from '../constants';
 
-type UseRevokeOtherSessionsOptions = {
+type UseRevokeAllSessionsOptions = {
   onRevoked?: () => void | Promise<void>;
 };
 
-export function useRevokeOtherSessions(options: UseRevokeOtherSessionsOptions = {}) {
+export function useRevokeAllSessions(options: UseRevokeAllSessionsOptions = {}) {
   const [isPending, setIsPending] = useState(false);
 
-  async function revokeOtherSessions() {
+  async function revokeAllSessions() {
     try {
-      await authClient.revokeOtherSessions({
+      await authClient.revokeSessions({
         fetchOptions: {
           onRequest() {
             setIsPending(true);
           },
           async onSuccess() {
             await options.onRevoked?.();
-            toast.success('Other sessions revoked.');
+            toast.success('All sessions revoked.');
           },
           onError({ error }) {
             toast.error(error.message ?? DEFAULT_ERROR_MESSAGE);
@@ -37,7 +37,7 @@ export function useRevokeOtherSessions(options: UseRevokeOtherSessionsOptions = 
   }
 
   return {
-    revokeOtherSessions,
+    revokeAllSessions,
     isPending,
   };
 }

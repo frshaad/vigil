@@ -1,4 +1,4 @@
-import { Heading, Link, Text } from 'react-email';
+import { Heading, Text } from 'react-email';
 
 import { EmailButton } from '../components/email-button';
 import { EmailLayout } from '../components/email-layout';
@@ -16,10 +16,6 @@ export default function VerificationEmail({ verificationUrl }: VerificationEmail
       <Text style={styles.text}>Thanks for creating your Vigil account.</Text>
 
       <Text style={styles.text}>Please verify your email address to continue.</Text>
-
-      <Text style={styles.text}>
-        Verification Link: <Link href={verificationUrl}>{verificationUrl}</Link>
-      </Text>
 
       <EmailButton href={verificationUrl}>Verify Email</EmailButton>
 

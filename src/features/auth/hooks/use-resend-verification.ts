@@ -9,6 +9,7 @@ import { DEFAULT_ERROR_MESSAGE } from '../constants';
 export function useResendVerification(options?: { callbackURL?: Route }) {
   const { data: session } = authClient.useSession();
   const [isPending, setIsPending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
   const callbackURL = options?.callbackURL ?? '/settings/profile';
 
@@ -34,6 +35,7 @@ export function useResendVerification(options?: { callbackURL?: Route }) {
           },
           onResponse() {
             setIsPending(false);
+            setIsSent(true);
           },
         }
       );
@@ -42,5 +44,5 @@ export function useResendVerification(options?: { callbackURL?: Route }) {
     }
   }
 
-  return { resend, isPending };
+  return { resend, isPending, isSent };
 }

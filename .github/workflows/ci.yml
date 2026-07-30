@@ -8,12 +8,14 @@ on:
 env:
   NODE_ENV: production
   DATABASE_URL: postgresql://user:pass@localhost:5432/test
-  BETTER_AUTH_SECRET: dummy-secret
+  BETTER_AUTH_SECRET: dummy-secret-123456789-dummy-secret-123456789
   BETTER_AUTH_URL: http://localhost:3000
   GOOGLE_CLIENT_ID: dummy
   GOOGLE_CLIENT_SECRET: dummy
   GITHUB_CLIENT_ID: dummy
   GITHUB_CLIENT_SECRET: dummy
+  RESEND_API_KEY: dummy
+  EMAIL_FROM: dummy
 
 jobs:
   verify:

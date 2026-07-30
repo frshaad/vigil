@@ -1,24 +1,11 @@
-import type { TablerIcon } from '@tabler/icons-react';
-import { IconDeviceDesktop, IconDeviceMobile, IconDeviceTablet } from '@tabler/icons-react';
 import { UAParser } from 'ua-parser-js';
 
-export function getDeviceIcon(device: string): TablerIcon {
-  switch (device) {
-    case 'Mobile':
-      return IconDeviceMobile;
-
-    case 'Tablet':
-      return IconDeviceTablet;
-
-    default:
-      return IconDeviceDesktop;
-  }
-}
+import type { DeviceType } from '../types';
 
 export interface SessionDeviceInfo {
   browser: string;
   os: string;
-  device: 'Desktop' | 'Mobile' | 'Tablet' | 'TV' | 'Wearable' | 'Embedded' | 'Unknown';
+  device: DeviceType;
 }
 
 export function parseSessionDevice(userAgent?: string | null): SessionDeviceInfo {

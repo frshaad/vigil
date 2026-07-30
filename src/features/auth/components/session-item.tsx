@@ -1,4 +1,3 @@
-// oxlint-disable react/react-compiler
 'use client';
 
 import { IconUnlink } from '@tabler/icons-react';
@@ -16,7 +15,8 @@ import {
 import { formatRelativeDate } from '@/lib/helpers/format-relative-date';
 
 import type { SessionInfo } from '../hooks/use-sessions';
-import { getDeviceIcon, parseSessionDevice } from '../utils/session-device';
+import { getDeviceIcon } from '../utils/get-device-icon';
+import { parseSessionDevice } from '../utils/session-device';
 
 interface SessionItemProps {
   session: SessionInfo;
@@ -27,13 +27,10 @@ interface SessionItemProps {
 
 export default function SessionItem({ session, isCurrent, isPending, onRevoke }: SessionItemProps) {
   const deviceInfo = parseSessionDevice(session.userAgent);
-  const Icon = getDeviceIcon(deviceInfo.device);
 
   return (
     <Item variant="outline">
-      <ItemMedia variant="icon">
-        <Icon />
-      </ItemMedia>
+      <ItemMedia variant="icon">{getDeviceIcon(deviceInfo.device)}</ItemMedia>
 
       <ItemContent>
         <ItemTitle className="flex flex-wrap items-center gap-2">

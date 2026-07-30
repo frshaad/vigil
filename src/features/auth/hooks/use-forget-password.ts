@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { authClient } from '@/lib/auth/client';
@@ -11,8 +11,8 @@ import { forgetPasswordInputSchema } from '../validations';
 
 export function useForgetPassword() {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
 
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<ForgetPasswordInput>({
@@ -24,26 +24,30 @@ export function useForgetPassword() {
     form.setFocus('email');
   }, [form]);
 
-  const handleSubmit = form.handleSubmit(({ email }) => {
-    setError(null);
-    startTransition(async () => {
-      try {
-        await authClient.requestPasswordReset(
-          { email },
-          {
-            onError(ctx) {
-              setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
-            },
-            onSuccess() {
-              form.reset();
-              router.replace('/forget-password/sent');
-            },
-          }
-        );
-      } catch {
-        setError(DEFAULT_ERROR_MESSAGE);
-      }
-    });
+  const handleSubmit = form.handleSubmit(async ({ email }) => {
+    try {
+      await authClient.requestPasswordReset(
+        { email },
+        {
+          onRequest() {
+            setError(null);
+            setIsPending(true);
+          },
+          onSuccess() {
+            form.reset();
+            router.replace('/forget-password/sent');
+          },
+          onError(ctx) {
+            setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
+          },
+          onResponse() {
+            setIsPending(false);
+          },
+        }
+      );
+    } catch {
+      setError(DEFAULT_ERROR_MESSAGE);
+    }
   });
 
   return {

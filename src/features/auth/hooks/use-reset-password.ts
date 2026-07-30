@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { authClient } from '@/lib/auth/client';
@@ -14,15 +14,13 @@ export function useResetPassword() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
-  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((c) => !c);
 
-  const isInvalidToken = useMemo(() => {
-    return token === null || token === '';
-  }, [token]);
+  const isInvalidToken = token === null || token === '';
 
   const form = useForm<ResetPasswordInput>({
     resolver: zodResolver(resetPasswordInputSchema),
@@ -33,32 +31,34 @@ export function useResetPassword() {
     form.setFocus('newPassword');
   }, [form]);
 
-  const handleSubmit = form.handleSubmit(({ newPassword }) => {
+  const handleSubmit = form.handleSubmit(async ({ newPassword }) => {
     if (isInvalidToken) {
       setError(INVALID_LINK_MESSAGE);
       return;
     }
 
-    setError(null);
-
-    startTransition(async () => {
-      try {
-        await authClient.resetPassword(
-          { newPassword, token: token as string },
-          {
-            onError(ctx) {
-              setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
-            },
-            onSuccess() {
-              form.reset();
-              router.replace('/reset-password/success');
-            },
-          }
-        );
-      } catch {
-        setError(DEFAULT_ERROR_MESSAGE);
-      }
-    });
+    try {
+      await authClient.resetPassword(
+        { newPassword, token },
+        {
+          onRequest() {
+            setError(null);
+            setIsPending(true);
+          },
+          onError(ctx) {
+            setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
+          },
+          onSuccess() {
+            router.replace('/reset-password/success');
+          },
+          onResponse() {
+            setIsPending(false);
+          },
+        }
+      );
+    } catch {
+      setError(DEFAULT_ERROR_MESSAGE);
+    }
   });
 
   return {

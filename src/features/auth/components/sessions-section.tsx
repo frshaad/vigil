@@ -14,7 +14,7 @@ export default function SessionsSection() {
   const router = useRouter();
 
   const sessions = useSessions();
-  const { state, refetch } = sessions;
+  const { sessionsState, refetch } = sessions;
 
   const { revokeOtherSessions, isPending: isRevokingOthers } = useRevokeOtherSessions({
     onRevoked: refetch,
@@ -28,7 +28,8 @@ export default function SessionsSection() {
   });
 
   const isBulkActionPending = isRevokingOthers || isRevokingAll;
-  const activeSessionsCount = state.status === 'success' ? state.sessions.length : 0;
+  const activeSessionsCount =
+    sessionsState.status === 'success' ? sessionsState.sessions.length : 0;
 
   return (
     <section className="space-y-4">

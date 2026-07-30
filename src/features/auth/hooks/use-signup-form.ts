@@ -1,9 +1,7 @@
-'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Route } from 'next';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -17,8 +15,7 @@ import { signupInputSchema } from '../validations';
 export function useSignupForm() {
   const router = useRouter();
 
-  const [isPending, startTransition] = useTransition();
-
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -34,23 +31,27 @@ export function useSignupForm() {
     },
   });
 
-  const handleSubmit = form.handleSubmit((inputs) => {
-    setError(null);
-    startTransition(async () => {
-      try {
-        await authClient.signUp.email(inputs, {
-          onError(ctx) {
-            setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
-          },
-          onSuccess() {
-            toast.success('Account created successfully!');
-            router.push(redirectUrl as Route);
-          },
-        });
-      } catch {
-        setError(DEFAULT_ERROR_MESSAGE);
-      }
-    });
+  const handleSubmit = form.handleSubmit(async (inputs) => {
+    try {
+      await authClient.signUp.email(inputs, {
+        onRequest() {
+          setError(null);
+          setIsPending(true);
+        },
+        onError(ctx) {
+          setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
+        },
+        onSuccess() {
+          toast.success('Account created successfully!');
+          router.push(redirectUrl as Route);
+        },
+        onResponse() {
+          setIsPending(false);
+        },
+      });
+    } catch {
+      setError(DEFAULT_ERROR_MESSAGE);
+    }
   });
 
   const togglePasswordVisibility = () => setShowPassword((c) => !c);

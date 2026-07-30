@@ -51,7 +51,7 @@ export function useSessions() {
   }, [loadSessions]);
 
   return {
-    state: sessionsState,
+    sessionsState,
     currentSessionToken: currentSession?.session.token ?? null,
     refetch: loadSessions,
   };

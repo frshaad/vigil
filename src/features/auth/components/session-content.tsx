@@ -13,17 +13,17 @@ interface SessionContentProps {
 }
 
 export default function SessionContent({ sessions }: SessionContentProps) {
-  const { state, refetch, currentSessionToken } = sessions;
+  const { sessionsState, refetch, currentSessionToken } = sessions;
 
   const { revokeSession, pendingToken } = useRevokeSession({
     onRevoked: refetch,
   });
 
-  if (state.status === 'loading') {
+  if (sessionsState.status === 'loading') {
     return <SessionItemSkeleton />;
   }
 
-  if (state.status === 'error') {
+  if (sessionsState.status === 'error') {
     return (
       <Item variant="outline">
         <ItemContent>
@@ -38,13 +38,13 @@ export default function SessionContent({ sessions }: SessionContentProps) {
     );
   }
 
-  if (state.sessions.length === 0) {
+  if (sessionsState.sessions.length === 0) {
     <div className="text-muted-foreground rounded-xl border p-6 text-sm">
       You are only signed in on this device.
     </div>;
   }
 
-  const currentSessionInfo = state.sessions.find(
+  const currentSessionInfo = sessionsState.sessions.find(
     (session) => session.token === currentSessionToken
   ) as SessionInfo;
 
@@ -57,7 +57,7 @@ export default function SessionContent({ sessions }: SessionContentProps) {
         isPending={false}
         onRevoke={revokeSession}
       />
-      {state.sessions
+      {sessionsState.sessions
         .filter((session) => session.token !== currentSessionToken)
         .map((session) => {
           const isPending = session.token === pendingToken;

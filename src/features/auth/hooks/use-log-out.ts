@@ -1,7 +1,5 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { authClient } from '@/lib/auth/client';
@@ -10,25 +8,26 @@ import { DEFAULT_ERROR_MESSAGE } from '../constants';
 
 export function useLogOut() {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
-  function logOut() {
-    startTransition(async () => {
-      try {
-        await authClient.signOut({
-          fetchOptions: {
-            onSuccess: () => {
-              router.push('/login');
-            },
-            onError: ({ error }) => {
-              toast.error(error.message);
-            },
+  async function logOut() {
+    try {
+      await authClient.signOut({
+        fetchOptions: {
+          onRequest() {
+            setIsPending(true);
           },
-        });
-      } catch {
-        toast.error(DEFAULT_ERROR_MESSAGE);
-      }
-    });
+          onSuccess() {
+            router.push('/login');
+          },
+          onError({ error }) {
+            toast.error(error.message);
+          },
+        },
+      });
+    } catch {
+      toast.error(DEFAULT_ERROR_MESSAGE);
+    }
   }
 
   return { logOut, isPending };

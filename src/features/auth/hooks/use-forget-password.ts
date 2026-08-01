@@ -27,7 +27,7 @@ export function useForgetPassword() {
   const handleSubmit = form.handleSubmit(async ({ email }) => {
     try {
       await authClient.requestPasswordReset(
-        { email },
+        { email, redirectTo: '/reset-password' },
         {
           onRequest() {
             setError(null);

@@ -6,8 +6,8 @@ import { toast } from 'sonner';
 import { authClient } from '@/lib/auth/client';
 
 import { DEFAULT_ERROR_MESSAGE } from '../constants';
+import { changePasswordInputSchema } from '../schemas/credentials';
 import type { ChangePasswordInput } from '../types';
-import { changePasswordInputSchema } from '../validations';
 
 export function useChangePassword() {
   const [isPending, setIsPending] = useState(false);

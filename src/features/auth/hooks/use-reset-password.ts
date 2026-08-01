@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { authClient } from '@/lib/auth/client';
 
 import { DEFAULT_ERROR_MESSAGE, INVALID_LINK_MESSAGE } from '../constants';
+import { resetPasswordInputSchema } from '../schemas/credentials';
 import type { ResetPasswordInput } from '../types';
-import { resetPasswordInputSchema } from '../validations';
 
 export function useResetPassword() {
   const router = useRouter();

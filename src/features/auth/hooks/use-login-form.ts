@@ -9,8 +9,8 @@ import { authClient } from '@/lib/auth/client';
 import { getCallbackURL } from '@/lib/helpers/url';
 
 import { DEFAULT_ERROR_MESSAGE } from '../constants';
+import { loginInputSchema } from '../schemas/credentials';
 import type { LoginInput } from '../types';
-import { loginInputSchema } from '../validations';
 
 export function useLoginForm() {
   const router = useRouter();

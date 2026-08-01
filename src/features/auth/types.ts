@@ -6,7 +6,7 @@ import type {
   loginInputSchema,
   resetPasswordInputSchema,
   signupInputSchema,
-} from './validations';
+} from './schemas/credentials';
 
 export type SignupInput = z.infer<typeof signupInputSchema>;
 export type LoginInput = z.infer<typeof loginInputSchema>;

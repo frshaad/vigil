@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { authClient } from '@/lib/auth/client';
 
 import { DEFAULT_ERROR_MESSAGE } from '../constants';
+import { forgetPasswordInputSchema } from '../schemas/credentials';
 import type { ForgetPasswordInput } from '../types';
-import { forgetPasswordInputSchema } from '../validations';
 
 export function useForgetPassword() {
   const router = useRouter();

@@ -3,8 +3,10 @@
 import { Button } from '@/components/ui/button';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item';
 
+import { useCurrentSessionToken } from '../hooks/use-current-session-token';
 import { useRevokeSession } from '../hooks/use-revoke-session';
-import type { SessionInfo, useSessions } from '../hooks/use-sessions';
+import type { useSessions } from '../hooks/use-sessions';
+import type { SessionInfo } from '../schemas/session';
 import SessionItem from './session-item';
 import SessionItemSkeleton from './session-item-skeleton';
 
@@ -13,11 +15,13 @@ interface SessionContentProps {
 }
 
 export default function SessionContent({ sessions }: SessionContentProps) {
-  const { sessionsState, refetch, currentSessionToken } = sessions;
+  const { sessionsState, refetch } = sessions;
 
   const { revokeSession, pendingToken } = useRevokeSession({
     onRevoked: refetch,
   });
+
+  const currentSessionToken = useCurrentSessionToken();
 
   if (sessionsState.status === 'loading') {
     return <SessionItemSkeleton />;

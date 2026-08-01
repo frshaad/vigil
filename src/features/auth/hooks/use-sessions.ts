@@ -4,18 +4,8 @@ import z from 'zod';
 import { authClient } from '@/lib/auth/client';
 import { ValidationError } from '@/lib/errors';
 
-const sessionInfoSchema = z.object({
-  id: z.string(),
-  userId: z.string(),
-  token: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  expiresAt: z.date(),
-  ipAddress: z.string().optional().nullable(),
-  userAgent: z.string().optional().nullable(),
-});
-
-export type SessionInfo = z.infer<typeof sessionInfoSchema>;
+import { sessionInfoSchema } from '../schemas/session';
+import type { SessionInfo } from '../schemas/session';
 
 type SessionsState =
   | { status: 'loading' }
@@ -23,24 +13,23 @@ type SessionsState =
   | { status: 'success'; sessions: SessionInfo[] };
 
 export function useSessions() {
-  const { data: currentSession } = authClient.useSession();
-  const [sessionsState, setSessionsState] = useState<SessionsState>({ status: 'loading' });
+  const [state, setState] = useState<SessionsState>({ status: 'loading' });
 
   const loadSessions = useCallback(async () => {
     await authClient.listSessions({
       fetchOptions: {
         onSuccess({ data }) {
           try {
-            const validated = z.array(sessionInfoSchema).parse(data);
-            setSessionsState({ status: 'success', sessions: validated });
+            const sessions = z.array(sessionInfoSchema).parse(data);
+            setState({ status: 'success', sessions });
           } catch (error) {
             if (error instanceof z.ZodError) {
-              setSessionsState({ status: 'error', error: new ValidationError(error) });
+              setState({ status: 'error', error: new ValidationError(error) });
             }
           }
         },
         onError({ error }) {
-          setSessionsState({ status: 'error', error });
+          setState({ status: 'error', error });
         },
       },
     });
@@ -51,8 +40,7 @@ export function useSessions() {
   }, [loadSessions]);
 
   return {
-    sessionsState,
-    currentSessionToken: currentSession?.session.token ?? null,
+    sessionsState: state,
     refetch: loadSessions,
   };
 }

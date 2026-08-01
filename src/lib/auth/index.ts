@@ -15,6 +15,7 @@ export const auth = betterAuth({
   }),
   session: {
     expiresIn: 30 * 24 * 60 * 60, // 30 days
+    freshAge: 0, // Disable freshness check
   },
   emailAndPassword: {
     enabled: true,

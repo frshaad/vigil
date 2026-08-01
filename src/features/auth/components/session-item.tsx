@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/item';
 import { formatRelativeDate } from '@/lib/helpers/format-relative-date';
 
-import type { SessionInfo } from '../hooks/use-sessions';
+import type { SessionInfo } from '../schemas/session';
 import { getDeviceIcon } from '../utils/get-device-icon';
 import { parseSessionDevice } from '../utils/session-device';
 

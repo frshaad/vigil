@@ -1,26 +1,27 @@
-import { IconLock, IconPassword } from '@tabler/icons-react';
+import { IconPassword, IconUserScan } from '@tabler/icons-react';
 import type { Metadata } from 'next';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import ChangePasswordForm from '@/features/auth/components/change-password-form';
 import SessionsSection from '@/features/auth/components/sessions-section';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
-  title: 'Security Settings',
+  title: 'Profile Settings',
   description:
-    'Manage your account security settings, including changing your password and reviewing active sessions.',
+    'Manage your public account information and security settings, including changing your password and reviewing active sessions.',
   noIndex: true,
 });
 
-export default function SecuritySettingsPage() {
+export default function ProfilePage() {
   return (
     <Card className="z-10 w-full max-w-3xl">
       <CardHeader>
         <CardTitle className="text-primary flex items-center gap-2 text-2xl font-semibold">
-          <IconLock />
-          Security
+          <IconUserScan />
+          Profile
         </CardTitle>
+        <CardDescription>Manage your public account information.</CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-20">

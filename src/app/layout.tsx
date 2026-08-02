@@ -11,8 +11,20 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  description: 'A modern website monitoring and alerting platform.',
-  title: 'Vigil',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+  title: {
+    default: 'Vigil',
+    template: '%s | Vigil',
+  },
+  description: 'Monitor your websites, APIs and cron jobs.',
+  applicationName: 'Vigil',
+  openGraph: {
+    siteName: 'Vigil',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {

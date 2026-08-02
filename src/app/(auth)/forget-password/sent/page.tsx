@@ -1,7 +1,15 @@
 import { IconMailSpark } from '@tabler/icons-react';
+import type { Metadata } from 'next';
 
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import BackToLoginButton from '@/features/auth/components/back-to-login-button';
+import { createMetadata } from '@/lib/metadata/create-metadata';
+
+export const metadata: Metadata = createMetadata({
+  title: 'Check your inbox',
+  description: 'If an account exists for this email, we have sent a password reset link.',
+  noIndex: true,
+});
 
 export default function ForgetPasswordRequestSentPage() {
   return (

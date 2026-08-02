@@ -11,7 +11,7 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+  metadataBase: process.env.NEXT_PUBLIC_APP_URL!,
   title: {
     default: 'Vigil',
     template: '%s | Vigil',

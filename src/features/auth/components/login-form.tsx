@@ -65,7 +65,7 @@ export default function LoginForm() {
             visible={showPassword}
             onToggle={togglePasswordVisibility}
             autoComplete="current-password"
-            forgotPasswordHref="/forget-password"
+            forgotPasswordHref="/forgot-password"
           />
 
           <Controller

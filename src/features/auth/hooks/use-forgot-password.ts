@@ -9,7 +9,7 @@ import { DEFAULT_ERROR_MESSAGE } from '../constants';
 import { forgetPasswordInputSchema } from '../schemas/credentials';
 import type { ForgetPasswordInput } from '../types';
 
-export function useForgetPassword() {
+export function useForgotPassword() {
   const router = useRouter();
 
   const [isPending, setIsPending] = useState(false);
@@ -35,7 +35,7 @@ export function useForgetPassword() {
           },
           onSuccess() {
             form.reset();
-            router.replace('/forget-password/sent');
+            router.replace('/forgot-password/sent');
           },
           onError(ctx) {
             setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);

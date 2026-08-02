@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import AuthCard from '@/features/auth/components/auth-card';
-import ForgetPasswordForm from '@/features/auth/components/forget-password-form';
+import ForgotPasswordForm from '@/features/auth/components/forgot-password-form';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -16,7 +16,7 @@ export default function ForgetPasswordRequestPage() {
       title="Reset your password"
       description="Enter your user account's verified email address and we will send you a password reset link."
     >
-      <ForgetPasswordForm />
+      <ForgotPasswordForm />
     </AuthCard>
   );
 }

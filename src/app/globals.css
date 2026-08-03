@@ -39,6 +39,9 @@
   --sidebar-ring: oklch(0.723 0.014 214.4);
   --background: oklch(1 0 0);
   --foreground: oklch(0.148 0.004 228.8);
+
+  --success: oklch(0.55 0.18 142);
+  --success-bg: oklch(0.95 0.04 142);
 }
 
 .dark {
@@ -73,6 +76,9 @@
   --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.56 0.021 213.5);
+
+  --success: oklch(0.75 0.19 142);
+  --success-bg: oklch(0.25 0.06 142);
 }
 
 @theme inline {
@@ -122,9 +128,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }

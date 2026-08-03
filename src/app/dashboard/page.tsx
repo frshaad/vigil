@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import Logo from '@/components/logo';
+import { Logo } from '@/components/logo';
 import ChangePasswordForm from '@/features/auth/components/change-password-form';
 import LogOutButton from '@/features/auth/components/logout-button';
 import VerifyEmailNotice from '@/features/auth/components/verify-email-notice';

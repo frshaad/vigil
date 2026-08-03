@@ -10,7 +10,7 @@ export default function ResendVerificationButton() {
   return (
     <Button
       variant={isSent ? 'outline' : 'default'}
-      onClick={() => resend()}
+      onClick={() => void resend()}
       disabled={isPending || isSent}
     >
       {isSent ? 'Email sent' : 'Send verification email'}

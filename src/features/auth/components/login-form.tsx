@@ -39,7 +39,7 @@ export default function LoginForm() {
   return (
     <div className="flex flex-col gap-7">
       <AuthError message={error} />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => void handleSubmit(e)}>
         <FieldGroup className="gap-4">
           <Controller
             name="email"

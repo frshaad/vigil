@@ -29,7 +29,9 @@ export default function SocialSignIn({ provider, icon, label, ...props }: Props)
       variant="outline"
       type="button"
       className="relative w-full"
-      onClick={signIn}
+      onClick={() => {
+        void signIn();
+      }}
       disabled={isPending}
       {...props}
     >

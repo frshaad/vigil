@@ -15,7 +15,7 @@ export default function LogOutButton() {
       variant="destructive"
       onClick={() => {
         queryClient.clear();
-        logOut();
+        void logOut();
       }}
       disabled={isPending}
     >

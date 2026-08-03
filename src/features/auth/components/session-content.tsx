@@ -17,11 +17,15 @@ interface SessionContentProps {
 export default function SessionContent({ sessions }: SessionContentProps) {
   const { sessionsState, refetch } = sessions;
 
+  const currentSessionToken = useCurrentSessionToken();
+
   const { revokeSession, pendingToken } = useRevokeSession({
     onRevoked: refetch,
   });
 
-  const currentSessionToken = useCurrentSessionToken();
+  function handleRevokeSession(token: string) {
+    void revokeSession(token);
+  }
 
   if (sessionsState.status === 'loading') {
     return <SessionItemSkeleton />;
@@ -36,7 +40,7 @@ export default function SessionContent({ sessions }: SessionContentProps) {
         </ItemContent>
 
         <ItemActions>
-          <Button onClick={refetch}>Retry</Button>
+          <Button onClick={() => void refetch()}>Retry</Button>
         </ItemActions>
       </Item>
     );
@@ -59,7 +63,7 @@ export default function SessionContent({ sessions }: SessionContentProps) {
         session={currentSessionInfo}
         isCurrent={true}
         isPending={false}
-        onRevoke={revokeSession}
+        onRevoke={handleRevokeSession}
       />
       {sessionsState.sessions
         .filter((session) => session.token !== currentSessionToken)
@@ -72,7 +76,7 @@ export default function SessionContent({ sessions }: SessionContentProps) {
               session={session}
               isCurrent={false}
               isPending={isPending}
-              onRevoke={revokeSession}
+              onRevoke={handleRevokeSession}
             />
           );
         })}

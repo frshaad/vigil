@@ -50,7 +50,7 @@ export default function ResetPasswordForm() {
       <div className="flex flex-col gap-4">
         <AuthError message={error} />
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-7">
+        <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-7">
           <FieldGroup className="gap-4">
             <PasswordField
               name="newPassword"

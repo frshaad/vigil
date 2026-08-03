@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+import GetStartedButton from './get-started-button';
+
 type Tier = {
   name: string;
   price: string;
   period: string;
   description: string;
-  cta: string;
+  CTA: React.ReactNode;
   featured: boolean;
   features: { label: string; included: boolean }[];
 };
@@ -20,7 +22,7 @@ const tiers: Tier[] = [
     price: '$0',
     period: '/month',
     description: 'Perfect for personal websites, side projects, and getting started.',
-    cta: 'Get Started',
+    CTA: <GetStartedButton variant="outline" withoutIcon className="mt-6" />,
     featured: false,
     features: [
       { label: 'Up to 5 monitors', included: true },
@@ -40,7 +42,11 @@ const tiers: Tier[] = [
     price: '$19',
     period: '/month',
     description: 'For businesses and teams that need faster monitoring and richer notifications.',
-    cta: 'Start Free Trial',
+    CTA: (
+      <Button className="mt-6 w-full" size="lg" nativeButton={false} render={<Link href="#" />}>
+        Coming Soon
+      </Button>
+    ),
     featured: true,
     features: [
       { label: 'Unlimited monitors', included: true },
@@ -66,7 +72,8 @@ export default function Pricing() {
           Simple pricing that scales with you
         </h2>
         <p className="text-muted-foreground mt-4 text-base leading-relaxed text-pretty">
-          Start free, upgrade when you need faster checks and a bigger team. No hidden fees.
+          Start for free and upgrade when you need more monitors, faster checks, and advanced
+          features.
         </p>
       </div>
 
@@ -100,15 +107,7 @@ export default function Pricing() {
 
             <p className="text-muted-foreground mt-3 text-sm leading-relaxed">{tier.description}</p>
 
-            <Button
-              className="mt-6 w-full"
-              size="lg"
-              variant={tier.featured ? 'default' : 'outline'}
-              nativeButton={false}
-              render={<Link href="#" />}
-            >
-              {tier.cta}
-            </Button>
+            {tier.CTA}
 
             <div className="bg-border my-7 h-px w-full" />
 

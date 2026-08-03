@@ -14,13 +14,14 @@ export default async function GetStartedButton({
   nativeButton = false,
   withoutIcon = false,
   label = 'Get Started',
+  ...rest
 }: GetStartedButtonProps) {
   const session = await getSession();
 
   const href = session ? '/dashboard' : '/signup';
 
   return (
-    <Button size={size} nativeButton={nativeButton} render={<Link href={href} />}>
+    <Button size={size} nativeButton={nativeButton} render={<Link href={href} />} {...rest}>
       {label}
       {!withoutIcon && <IconArrowNarrowRight className="size-4" />}
     </Button>

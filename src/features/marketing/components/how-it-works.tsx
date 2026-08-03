@@ -21,7 +21,7 @@ const steps = [
   },
 ];
 
-export function HowItWorks() {
+export default function HowItWorks() {
   return (
     <section className="border-border border-t">
       <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">

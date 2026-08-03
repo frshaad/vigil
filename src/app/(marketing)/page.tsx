@@ -5,7 +5,8 @@ import Features from '@/features/marketing/components/features';
 import Footer from '@/features/marketing/components/footer';
 import Header from '@/features/marketing/components/header';
 import Hero from '@/features/marketing/components/hero';
-import { HowItWorks } from '@/features/marketing/components/how-it-works';
+import HowItWorks from '@/features/marketing/components/how-it-works';
+import Pricing from '@/features/marketing/components/pricing';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -22,6 +23,9 @@ export default function LandingPage() {
           <Features />
         </div>
         <HowItWorks />
+        <div className="border-border border-t">
+          <Pricing />
+        </div>
         <CallToAction />
       </main>
       <Footer />

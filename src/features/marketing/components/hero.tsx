@@ -1,10 +1,11 @@
-import { IconArrowNarrowRight, IconPointFilled } from '@tabler/icons-react';
+import { IconArrowNarrowRight, IconCheck, IconPointFilled } from '@tabler/icons-react';
 import Link from 'next/link';
 
 import { GithubIcon } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 
 import DashboardPreview from './dashboard-preview';
+import GetStartedButton from './get-started-button';
 
 export default function Hero() {
   return (
@@ -25,15 +26,12 @@ export default function Hero() {
           </h1>
 
           <p className="text-muted-foreground mt-5 max-w-xl text-base leading-relaxed text-pretty sm:text-lg">
-            Vigil continuously checks your websites and APIs, notifying you instantly whenever
-            downtime occurs.
+            Vigil continuously monitors your websites and APIs, helping you detect downtime before
+            your users do.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-            <Button size="lg" nativeButton={false} render={<Link href="/dashboard" />}>
-              Get Started
-              <IconArrowNarrowRight className="size-4" />
-            </Button>
+            <GetStartedButton />
             <Button
               size="lg"
               variant="outline"
@@ -43,6 +41,22 @@ export default function Hero() {
               <GithubIcon className="size-4" />
               View on GitHub
             </Button>
+          </div>
+
+          <div className="text-muted-foreground mt-12 flex max-w-xl items-center gap-3 sm:gap-6">
+            <p className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty sm:text-base">
+              <IconCheck size={20} />
+              Free to start
+            </p>
+
+            <div className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty sm:text-base">
+              <IconCheck />
+              <p>No credit card required</p>
+            </div>
+            <div className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty sm:text-base">
+              <IconCheck />
+              <p>Open source</p>
+            </div>
           </div>
         </div>
 

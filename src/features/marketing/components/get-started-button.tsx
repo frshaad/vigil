@@ -1,0 +1,28 @@
+import { IconArrowNarrowRight } from '@tabler/icons-react';
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+import { getSession } from '@/lib/auth/session';
+
+interface GetStartedButtonProps extends React.ComponentProps<typeof Button> {
+  withoutIcon?: boolean;
+  label?: string;
+}
+
+export default async function GetStartedButton({
+  size = 'lg',
+  nativeButton = false,
+  withoutIcon = false,
+  label = 'Get Started',
+}: GetStartedButtonProps) {
+  const session = await getSession();
+
+  const href = session ? '/dashboard' : '/signup';
+
+  return (
+    <Button size={size} nativeButton={nativeButton} render={<Link href={href} />}>
+      {label}
+      {!withoutIcon && <IconArrowNarrowRight className="size-4" />}
+    </Button>
+  );
+}

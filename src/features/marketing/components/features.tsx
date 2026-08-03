@@ -17,34 +17,36 @@ const features: {
     icon: IconActivity,
     title: 'Real-time Monitoring',
     description:
-      'Continuous checks from multiple regions keep an eye on every endpoint, second by second.',
+      'Continuously monitor your websites and APIs with reliable health checks and fast downtime detection.',
   },
   {
     icon: IconBell,
     title: 'Instant Notifications',
-    description: 'Get alerted through email, Slack, or webhooks the moment something goes down.',
+    description:
+      'Receive instant email and Telegram notifications whenever a monitor goes offline.',
   },
   {
     icon: IconLayoutBoard,
     title: 'Beautiful Dashboard',
     description:
-      'A clean, focused interface that surfaces uptime, latency, and incidents at a glance.',
+      'A clean dashboard for tracking uptime, response times, and incidents in one place.',
   },
   {
     icon: IconShieldCheck,
     title: 'Secure Authentication',
     description:
-      'Protected access with modern session management so only your team sees your data.',
+      'Secure authentication with modern session management to help protect your account.',
   },
   {
     icon: IconBolt,
     title: 'Fast Setup',
-    description: 'Add a monitor in seconds. Paste a URL and Vigil starts watching immediately.',
+    description: 'Add a monitor in seconds by entering a URL. Vigil starts checking it right away.',
   },
   {
     icon: IconHistory,
     title: 'Incident History',
-    description: 'A complete timeline of every incident, with duration, root cause, and recovery.',
+    description:
+      'Browse a complete history of incidents, including downtime duration and recovery times.',
   },
 ];
 

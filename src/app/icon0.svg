@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24" aria-hidden="true">
+  <metadata>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <rdf:Description>
+        <dc:creator>RealFaviconGenerator</dc:creator>
+        <dc:source>https://realfavicongenerator.net</dc:source>
+      </rdf:Description>
+    </rdf:RDF>
+  </metadata>
+  <style>
+    /* Default / Explicit Light Mode */
+    :root {
+      --shield-stroke: #0f172a;               /* High-contrast dark slate */
+      --shield-fill: rgba(15, 23, 42, 0.12);   /* Soft dark fill */
+      --pulse-stroke: #2563eb;                /* Vibrant, distinct blue */
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --shield-stroke: #0f172a;
+        --shield-fill: rgba(15, 23, 42, 0.12);
+        --pulse-stroke: #2563eb;
+      }
+    }
+
+    /* Explicit Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --shield-stroke: #f8fafc;               /* Pure bright slate/white */
+        --shield-fill: rgba(248, 250, 252, 0.18);/* Crisp light fill */
+        --pulse-stroke: #38bdf8;                /* Luminous sky blue */
+      }
+    }
+
+    .shield-path {
+      fill: var(--shield-fill);
+      stroke: var(--shield-stroke);
+    }
+
+    .pulse-path {
+      stroke: var(--pulse-stroke);
+    }
+  </style>
+
+  <!-- Outer Shield -->
+  <path
+    class="shield-path"
+    d="M12 2.5 4 5.2v6.1c0 4.6 3.2 8.4 8 10.2 4.8-1.8 8-5.6 8-10.2V5.2L12 2.5Z"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+  />
+
+  <!-- Heartbeat / Pulse -->
+  <path
+    class="pulse-path"
+    d="M7.5 12.4h2l1.6-3.2 1.8 5 1.4-2.6h2.2"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

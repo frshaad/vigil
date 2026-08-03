@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Suspense } from 'react';
 
 import './globals.css';
+
+import { Suspense } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -24,6 +25,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+  },
+  appleWebApp: {
+    title: 'Vigil',
   },
 };
 

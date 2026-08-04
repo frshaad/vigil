@@ -1,5 +1,6 @@
 import { IconMinus, IconCheck } from '@tabler/icons-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -22,7 +23,11 @@ const tiers: Tier[] = [
     price: '$0',
     period: '/month',
     description: 'Perfect for personal websites, side projects, and getting started.',
-    CTA: <GetStartedButton variant="outline" withoutIcon className="mt-6" />,
+    CTA: (
+      <Suspense>
+        <GetStartedButton variant="outline" withoutIcon className="mt-6" />
+      </Suspense>
+    ),
     featured: false,
     features: [
       { label: 'Up to 5 monitors', included: true },

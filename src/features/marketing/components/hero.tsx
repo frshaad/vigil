@@ -1,5 +1,6 @@
 import { IconArrowNarrowRight, IconCheck, IconPointFilled } from '@tabler/icons-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { GithubIcon } from '@/components/logo';
 import { Button } from '@/components/ui/button';
@@ -31,7 +32,9 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-            <GetStartedButton />
+            <Suspense>
+              <GetStartedButton />
+            </Suspense>
             <Button
               size="lg"
               variant="outline"

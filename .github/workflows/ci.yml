@@ -6,6 +6,7 @@ on:
   pull_request:
 
 env:
+  NEXT_PUBLIC_APP_URL: http://localhost:3000
   NODE_ENV: production
   DATABASE_URL: postgresql://user:pass@localhost:5432/test
   BETTER_AUTH_SECRET: dummy-secret-123456789-dummy-secret-123456789

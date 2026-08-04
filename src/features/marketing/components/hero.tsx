@@ -46,18 +46,18 @@ export default function Hero() {
             </Button>
           </div>
 
-          <div className="text-muted-foreground mt-12 flex max-w-xl items-center gap-3 sm:gap-6">
-            <p className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty sm:text-base">
-              <IconCheck size={20} />
+          <div className="text-muted-foreground mt-10 flex max-w-xl items-center gap-3 sm:gap-6">
+            <p className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty">
+              <IconCheck size={18} />
               Free to start
             </p>
 
-            <div className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty sm:text-base">
-              <IconCheck />
+            <div className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty">
+              <IconCheck size={18} />
               <p>No credit card required</p>
             </div>
-            <div className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty sm:text-base">
-              <IconCheck />
+            <div className="text-muted-foreground flex items-center gap-1 text-sm leading-relaxed text-pretty">
+              <IconCheck size={18} />
               <p>Open source</p>
             </div>
           </div>

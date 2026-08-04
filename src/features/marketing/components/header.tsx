@@ -6,8 +6,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { Wordmark } from '@/components/logo';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+import HeaderActions from './header-actions';
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -63,20 +64,7 @@ export default function Header() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="hidden sm:inline-flex"
-            nativeButton={false}
-            render={<Link href="/login" />}
-          >
-            Sign In
-          </Button>
-          <Button size="sm" nativeButton={false} render={<Link href="/dashboard" />}>
-            Get Started
-          </Button>
-        </div>
+        <HeaderActions />
       </div>
     </header>
   );

@@ -10,7 +10,7 @@ export function useLogOut() {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
 
-  async function logOut() {
+  async function logOut(redirectToLogin = true) {
     try {
       await authClient.signOut({
         fetchOptions: {
@@ -18,10 +18,15 @@ export function useLogOut() {
             setIsPending(true);
           },
           onSuccess() {
-            router.push('/login');
+            if (redirectToLogin) {
+              router.push('/login');
+            }
           },
           onError({ error }) {
             toast.error(error.message);
+          },
+          onResponse() {
+            setIsPending(false);
           },
         },
       });

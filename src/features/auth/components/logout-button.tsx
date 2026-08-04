@@ -6,18 +6,27 @@ import { Button } from '@/components/ui/button';
 
 import { useLogOut } from '../hooks/use-log-out';
 
-export default function LogOutButton() {
+interface LogOutButtonProps extends React.ComponentProps<typeof Button> {
+  doNotRedirectToLogin?: boolean;
+}
+
+export default function LogOutButton({
+  variant = 'destructive',
+  doNotRedirectToLogin = false,
+  ...rest
+}: LogOutButtonProps) {
   const { logOut, isPending } = useLogOut();
   const queryClient = useQueryClient();
 
   return (
     <Button
-      variant="destructive"
+      variant={variant}
       onClick={() => {
         queryClient.clear();
-        void logOut();
+        void logOut(!doNotRedirectToLogin);
       }}
       disabled={isPending}
+      {...rest}
     >
       Sign Out
     </Button>

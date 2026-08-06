@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item';
+import { authClient } from '@/lib/auth/client';
 
-import { useCurrentSessionToken } from '../hooks/use-current-session-token';
 import { useRevokeSession } from '../hooks/use-revoke-session';
 import type { useSessions } from '../hooks/use-sessions';
 import type { SessionInfo } from '../schemas/session';
@@ -17,7 +17,9 @@ interface SessionContentProps {
 export default function SessionContent({ sessions }: SessionContentProps) {
   const { sessionsState, refetch } = sessions;
 
-  const currentSessionToken = useCurrentSessionToken();
+  const { data } = authClient.useSession();
+
+  const currentSessionToken = data?.session.token;
 
   const { revokeSession, pendingToken } = useRevokeSession({
     onRevoked: refetch,

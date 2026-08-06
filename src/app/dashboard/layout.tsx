@@ -1,3 +1,4 @@
+import DashboardSidebar from '@/features/dashboard/components/sidebar';
 import { requireAuthOrRedirect } from '@/lib/auth/session';
 
 export default async function DashboardLayout({
@@ -8,6 +9,9 @@ export default async function DashboardLayout({
   await requireAuthOrRedirect({ callbackURL: '/dashboard' });
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">{children}</div>
+    <div className="flex min-h-svh w-full flex-col lg:flex-row">
+      <DashboardSidebar />
+      <main className="w-full p-3 lg:p-6">{children}</main>
+    </div>
   );
 }

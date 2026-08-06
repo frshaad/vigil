@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import z from 'zod';
 
 import { authClient } from '@/lib/auth/client';
@@ -7,29 +7,53 @@ import { ValidationError } from '@/lib/errors';
 import { sessionInfoSchema } from '../schemas/session';
 import type { SessionInfo } from '../schemas/session';
 
-type SessionsState =
-  | { status: 'loading' }
-  | { status: 'error'; error: Error }
-  | { status: 'success'; sessions: SessionInfo[] };
+const sessionsSchema = z.array(sessionInfoSchema);
 
 export function useSessions() {
-  const [state, setState] = useState<SessionsState>({ status: 'loading' });
+  const isFirstLoad = useRef(true);
+
+  const [sessions, setSessions] = useState<SessionInfo[]>([]);
+  const [error, setError] = useState<Error | null>(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const loadSessions = useCallback(async () => {
     await authClient.listSessions({
       fetchOptions: {
+        onRequest() {
+          setError(null);
+
+          if (isFirstLoad.current) {
+            setIsLoading(true);
+          } else {
+            setIsRefreshing(true);
+          }
+        },
         onSuccess({ data }) {
           try {
-            const sessions = z.array(sessionInfoSchema).parse(data);
-            setState({ status: 'success', sessions });
-          } catch (error) {
-            if (error instanceof z.ZodError) {
-              setState({ status: 'error', error: new ValidationError(error) });
+            const sessionsList = sessionsSchema.parse(data);
+            setSessions(sessionsList);
+          } catch (err) {
+            setSessions([]);
+
+            if (err instanceof z.ZodError) {
+              setError(new ValidationError(err));
+            } else if (err instanceof Error) {
+              setError(err);
+            } else {
+              setError(new Error('Failed to validate session data.'));
             }
           }
         },
-        onError({ error }) {
-          setState({ status: 'error', error });
+        onError({ error: err }) {
+          setSessions([]);
+          setError(err);
+        },
+        onResponse() {
+          isFirstLoad.current = false;
+          setIsLoading(false);
+          setIsRefreshing(false);
         },
       },
     });
@@ -40,7 +64,10 @@ export function useSessions() {
   }, [loadSessions]);
 
   return {
-    sessionsState: state,
-    refetch: loadSessions,
+    sessions,
+    error,
+    isLoading,
+    isRefreshing,
+    refresh: loadSessions,
   };
 }

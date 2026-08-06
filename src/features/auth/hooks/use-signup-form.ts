@@ -3,7 +3,6 @@ import type { Route } from 'next';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
 import { authClient } from '@/lib/auth/client';
 import { getCallbackURL } from '@/lib/helpers/url';
@@ -42,7 +41,6 @@ export function useSignupForm() {
           setError(ctx.error.message ?? DEFAULT_ERROR_MESSAGE);
         },
         onSuccess() {
-          toast.success('Account created successfully!');
           router.push(redirectUrl as Route);
         },
         onResponse() {

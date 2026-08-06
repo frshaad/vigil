@@ -1,6 +1,6 @@
 'use client';
 
-import { IconDevices2, IconPointFilled } from '@tabler/icons-react';
+import { IconPointFilled, IconRefresh } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -13,8 +13,8 @@ import SessionContent from './session-content';
 export default function SessionsSection() {
   const router = useRouter();
 
-  const sessions = useSessions();
-  const { sessionsState, refetch } = sessions;
+  const sessionData = useSessions();
+  const { sessions, isRefreshing, refresh: refetch } = sessionData;
 
   const { revokeOtherSessions, isPending: isRevokingOthers } = useRevokeOtherSessions({
     onRevoked: refetch,
@@ -22,21 +22,17 @@ export default function SessionsSection() {
 
   const { revokeAllSessions, isPending: isRevokingAll } = useRevokeAllSessions({
     onRevoked: async () => {
-      await refetch();
       router.replace('/login');
     },
   });
 
   const isBulkActionPending = isRevokingOthers || isRevokingAll;
-  const activeSessionsCount =
-    sessionsState.status === 'success' ? sessionsState.sessions.length : 0;
 
   return (
     <section className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-lg font-medium">
-            <IconDevices2 />
             <h2>Active sessions</h2>
           </div>
           <p className="text-muted-foreground text-sm">
@@ -45,32 +41,36 @@ export default function SessionsSection() {
         </div>
 
         <Button variant="outline" className="cursor-auto" type="button" disabled>
-          <IconPointFilled className="animate-pulse text-green-500" />
-          {activeSessionsCount} active session{activeSessionsCount === 1 ? '' : 's'}
+          {isRefreshing ? (
+            <IconRefresh className="text-muted-foreground animate-spin" />
+          ) : (
+            <IconPointFilled className="animate-pulse text-green-500" />
+          )}
+          {sessions.length} active session{sessions.length === 1 ? '' : 's'}
         </Button>
       </div>
 
       <div className="space-y-2">
-        <SessionContent sessions={sessions} />
+        <SessionContent sessionsData={sessionData} />
       </div>
 
       <div className="flex flex-col gap-2 sm:flex-row">
         <Button
           variant="destructive"
-          className="flex-1"
+          className="sm:flex-1"
           type="button"
           onClick={() => void revokeOtherSessions()}
-          disabled={isBulkActionPending || activeSessionsCount <= 1}
+          disabled={isBulkActionPending || sessions.length <= 1}
         >
           Sign out other devices
         </Button>
 
         <Button
           variant="destructive"
-          className="flex-1"
+          className="sm:flex-1"
           type="button"
           onClick={() => void revokeAllSessions()}
-          disabled={isBulkActionPending || activeSessionsCount === 0}
+          disabled={isBulkActionPending || sessions.length === 0}
         >
           Sign out all sessions
         </Button>

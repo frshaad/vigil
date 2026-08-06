@@ -13,7 +13,7 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default function ProfilePage() {
+export default function ProfileSettingsPage() {
   return (
     <Card className="z-10 w-full max-w-3xl">
       <CardHeader>

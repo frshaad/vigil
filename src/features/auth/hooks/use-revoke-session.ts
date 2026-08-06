@@ -22,7 +22,6 @@ export function useRevokeSession(options: UseRevokeSessionOptions = {}) {
           },
           async onSuccess() {
             await options.onRevoked?.();
-            toast.success('Session revoked.');
           },
           onError({ error }) {
             toast.error(error.message ?? DEFAULT_ERROR_MESSAGE);

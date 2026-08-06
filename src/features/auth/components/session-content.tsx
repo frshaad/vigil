@@ -2,72 +2,64 @@
 
 import { Button } from '@/components/ui/button';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item';
-import { authClient } from '@/lib/auth/client';
 
+import { useCurrentSessionToken } from '../hooks/use-current-session-token';
 import { useRevokeSession } from '../hooks/use-revoke-session';
 import type { useSessions } from '../hooks/use-sessions';
-import type { SessionInfo } from '../schemas/session';
 import SessionItem from './session-item';
 import SessionItemSkeleton from './session-item-skeleton';
 
 interface SessionContentProps {
-  sessions: ReturnType<typeof useSessions>;
+  sessionsData: ReturnType<typeof useSessions>;
 }
 
-export default function SessionContent({ sessions }: SessionContentProps) {
-  const { sessionsState, refetch } = sessions;
+export default function SessionContent({ sessionsData }: SessionContentProps) {
+  const { sessions, error, isLoading, refresh } = sessionsData;
 
-  const { data } = authClient.useSession();
-
-  const currentSessionToken = data?.session.token;
+  const currentSessionToken = useCurrentSessionToken();
 
   const { revokeSession, pendingToken } = useRevokeSession({
-    onRevoked: refetch,
+    onRevoked: refresh,
   });
 
   function handleRevokeSession(token: string) {
     void revokeSession(token);
   }
 
-  if (sessionsState.status === 'loading') {
+  if (isLoading) {
     return <SessionItemSkeleton />;
   }
 
-  if (sessionsState.status === 'error') {
+  if (error !== null) {
     return (
       <Item variant="outline">
         <ItemContent>
-          <ItemTitle>Couldn't load your sessions</ItemTitle>
-          <ItemDescription>Please try again.</ItemDescription>
+          <ItemTitle>We couldn't load your active sessions.</ItemTitle>
+          <ItemDescription>This doesn't affect your current login.</ItemDescription>
         </ItemContent>
 
         <ItemActions>
-          <Button onClick={() => void refetch()}>Retry</Button>
+          <Button onClick={() => void refresh()}>Retry</Button>
         </ItemActions>
       </Item>
     );
   }
 
-  if (sessionsState.sessions.length === 0) {
-    <div className="text-muted-foreground rounded-xl border p-6 text-sm">
-      You are only signed in on this device.
-    </div>;
-  }
-
-  const currentSessionInfo = sessionsState.sessions.find(
-    (session) => session.token === currentSessionToken
-  ) as SessionInfo;
+  const currentSessionInfo = sessions.find((s) => s.token === currentSessionToken);
 
   return (
     <div className="space-y-2">
-      <SessionItem
-        key={currentSessionInfo.id}
-        session={currentSessionInfo}
-        isCurrent={true}
-        isPending={false}
-        onRevoke={handleRevokeSession}
-      />
-      {sessionsState.sessions
+      {currentSessionInfo !== undefined && (
+        <SessionItem
+          key={currentSessionInfo.id}
+          session={currentSessionInfo}
+          isCurrent={true}
+          isPending={false}
+          onRevoke={handleRevokeSession}
+        />
+      )}
+
+      {sessions
         .filter((session) => session.token !== currentSessionToken)
         .map((session) => {
           const isPending = session.token === pendingToken;

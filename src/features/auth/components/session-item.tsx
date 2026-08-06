@@ -35,14 +35,14 @@ export default function SessionItem({ session, isCurrent, isPending, onRevoke }:
       <ItemContent>
         <ItemTitle className="flex flex-wrap items-center gap-2">
           {deviceInfo.browser} <span>•</span> {deviceInfo.os}
-          {isCurrent && <Badge>This device</Badge>}
+          {isCurrent && <Badge>Current session</Badge>}
         </ItemTitle>
 
         <ItemDescription>IP: {session.ipAddress ?? 'Unknown'}</ItemDescription>
         <ItemDescription>
           {isCurrent ? 'Active now' : `Last active ${formatRelativeDate(session.updatedAt)}`}
         </ItemDescription>
-        <ItemDescription>Expires {formatRelativeDate(session.expiresAt)}</ItemDescription>
+        <ItemDescription>Expires at {formatRelativeDate(session.expiresAt)}</ItemDescription>
       </ItemContent>
 
       {!isCurrent && (

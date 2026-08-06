@@ -21,7 +21,6 @@ export function useRevokeAllSessions(options: UseRevokeAllSessionsOptions = {}) 
           },
           async onSuccess() {
             await options.onRevoked?.();
-            toast.success('All sessions revoked.');
           },
           onError({ error }) {
             toast.error(error.message ?? DEFAULT_ERROR_MESSAGE);

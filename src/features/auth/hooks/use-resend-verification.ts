@@ -27,9 +27,6 @@ export function useResendVerification(options?: { callbackURL?: Route }) {
           onRequest() {
             setIsPending(true);
           },
-          onSuccess() {
-            toast.success('Verification email sent.');
-          },
           onError({ error }) {
             toast.error(error.message ?? DEFAULT_ERROR_MESSAGE);
           },

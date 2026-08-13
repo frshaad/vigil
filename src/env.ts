@@ -16,7 +16,9 @@ export const env = createEnv({
   },
 
   /** Client-side variables (must start with NEXT_PUBLIC_) */
-  client: {},
+  client: {
+    NEXT_PUBLIC_APP_URL: z.url(),
+  },
 
   /** Runtime environment mapping This is where you pull from process.env */
   runtimeEnv: {
@@ -29,6 +31,7 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 
   onValidationError(issues) {

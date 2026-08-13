@@ -5,6 +5,7 @@ import './globals.css';
 
 import { Suspense } from 'react';
 
+import { env } from '@/env';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -12,7 +13,7 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: {
     default: 'Vigil',
     template: '%s',

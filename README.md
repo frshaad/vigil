@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vigil
+
+**Vigil** is a modern website monitoring SaaS that checks your endpoints and notifies you when something goes wrong.
+
+It is built with **Next.js, TypeScript, Prisma, and Better Auth**, with a focus on type safety, maintainable architecture, and a simple developer experience.
+
+> **Status:** In development
+
+## Features
+
+- Monitor websites and HTTP endpoints
+- Configurable monitoring intervals
+- Track uptime and response status
+- Email notifications
+- Telegram notifications
+- User authentication
+- OAuth and email/password authentication
+- Protected dashboards and resources
+- Subscription-based plans
+- Type-safe database access and validation
+
+## Tech Stack
+
+- **Framework:** Next.js
+- **Language:** TypeScript
+- **UI:** React, Tailwind CSS, shadcn/ui
+- **Authentication:** Better Auth
+- **Database:** PostgreSQL
+- **ORM:** Prisma
+- **Validation:** Zod
+- **Package Manager:** pnpm
+
+## Architecture
+
+Vigil is built around Next.js App Router and keeps application concerns separated by responsibility.
+
+The application uses:
+
+- **Server Components** for server-rendered UI and data access
+- **Server Actions** for application mutations
+- **Route Handlers** for HTTP endpoints and external integrations
+- **Service-layer logic** for application use cases
+- **Repository patterns** where database access benefits from isolation
+- **Zod schemas** for validating data at application boundaries
+- **Prisma** for type-safe database access
+
+The goal is to keep business logic independent from UI concerns while taking advantage of Next.js server-side capabilities.
+
+## Project Structure
+
+```text
+src/
+├── app/          # Routes, pages and layouts
+├── components/   # Shared UI components
+├── features/     # Feature-specific functionality
+├── lib/          # Shared infrastructure and utilities
+└── ...
+```
+
+The project follows a feature-oriented structure where appropriate, while keeping framework-specific concerns inside the `app` layer.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js
+- pnpm
+- PostgreSQL
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/frshaad/vigil.git
+cd vigil
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env` file based on `.env.example` and configure the required environment variables.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Then initialize the database:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm prisma migrate dev
+```
 
-## Learn More
+Start the development server:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open `http://localhost:3000` in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+Vigil requires configuration for its database, authentication, application URL, and notification providers.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See `.env.example` for the complete list of required variables.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Development
+
+Run the available checks with:
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm build
+```
+
+## Why I Built Vigil
+
+Vigil is a practical project for exploring how to build a production-style SaaS application with the modern Next.js ecosystem.
+
+The project focuses on areas that are easy to overlook in smaller applications, including:
+
+- Authentication and authorization
+- Data validation and type safety
+- Database design
+- Application architecture
+- Caching
+- Error handling
+- Background monitoring
+- Notifications and external integrations
+- Subscription management
+- SEO and web performance
+
+Rather than being a collection of isolated demos, Vigil is intended to be developed as a complete application.
+
+## License
+
+This project is for educational and portfolio purposes.

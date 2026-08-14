@@ -7,16 +7,34 @@ datasource db {
   provider = "postgresql"
 }
 
+enum MonitorStatus {
+  UNKNOWN
+  UP
+  DOWN
+}
+
+enum IncidentStatus {
+  OPEN
+  RESOLVED
+}
+
+enum NotificationChannelType {
+  EMAIL
+  TELEGRAM
+}
+
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  id                   String                @id
+  name                 String
+  email                String
+  emailVerified        Boolean
+  image                String?
+  createdAt            DateTime
+  updatedAt            DateTime
+  sessions             Session[]
+  accounts             Account[]
+  monitors             Monitor[]
+  notificationChannels NotificationChannel[]
 
   @@unique([email])
   @@map("user")
@@ -68,4 +86,68 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Monitor {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name   String
+  url    String
+  method String @default("GET")
+
+  intervalSeconds    Int           @default(60)
+  isActive           Boolean       @default(true)
+  lastCheckedAt      DateTime?
+  lastStatus         MonitorStatus @default(UNKNOWN)
+  lastStatusCode     Int?
+  lastResponseTimeMs Int?
+
+  incidents            Incident[]
+  notificationChannels NotificationChannel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("monitor")
+}
+
+model Incident {
+  id        String   @id @default(cuid())
+  monitorId String?
+  monitor   Monitor? @relation(fields: [monitorId], references: [id])
+
+  startedAt  DateTime
+  resolvedAt DateTime?
+  status     IncidentStatus @default(OPEN)
+
+  statusCode Int?
+  error      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([monitorId, startedAt])
+  @@map("incident")
+}
+
+model NotificationChannel {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type      NotificationChannelType
+  name      String
+  config    Json
+  isEnabled Boolean                 @default(true)
+
+  monitors Monitor[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("notification_channel")
 }

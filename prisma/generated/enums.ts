@@ -9,7 +9,26 @@
 * 🟢 You can import this file directly.
 */
 
+export const MonitorStatus = {
+  UNKNOWN: 'UNKNOWN',
+  UP: 'UP',
+  DOWN: 'DOWN'
+} as const
+
+export type MonitorStatus = (typeof MonitorStatus)[keyof typeof MonitorStatus]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const IncidentStatus = {
+  OPEN: 'OPEN',
+  RESOLVED: 'RESOLVED'
+} as const
+
+export type IncidentStatus = (typeof IncidentStatus)[keyof typeof IncidentStatus]
+
+
+export const NotificationChannelType = {
+  EMAIL: 'EMAIL',
+  TELEGRAM: 'TELEGRAM'
+} as const
+
+export type NotificationChannelType = (typeof NotificationChannelType)[keyof typeof NotificationChannelType]

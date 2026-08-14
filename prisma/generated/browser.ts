@@ -52,3 +52,8 @@ export type Incident = Prisma.IncidentModel
  * 
  */
 export type NotificationChannel = Prisma.NotificationChannelModel
+/**
+ * Model Subscription
+ * 
+ */
+export type Subscription = Prisma.SubscriptionModel

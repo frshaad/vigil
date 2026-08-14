@@ -32,3 +32,20 @@ export const NotificationChannelType = {
 } as const
 
 export type NotificationChannelType = (typeof NotificationChannelType)[keyof typeof NotificationChannelType]
+
+
+export const Plan = {
+  FREE: 'FREE',
+  PRO: 'PRO'
+} as const
+
+export type Plan = (typeof Plan)[keyof typeof Plan]
+
+
+export const SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  CANCELED: 'CANCELED',
+  PAST_DUE: 'PAST_DUE'
+} as const
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]

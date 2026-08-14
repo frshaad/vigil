@@ -23,6 +23,17 @@ enum NotificationChannelType {
   TELEGRAM
 }
 
+enum Plan {
+  FREE
+  PRO
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+}
+
 model User {
   id                   String                @id
   name                 String
@@ -35,6 +46,7 @@ model User {
   accounts             Account[]
   monitors             Monitor[]
   notificationChannels NotificationChannel[]
+  subscription         Subscription?
 
   @@unique([email])
   @@map("user")
@@ -150,4 +162,21 @@ model NotificationChannel {
 
   @@index([userId])
   @@map("notification_channel")
+}
+
+model Subscription {
+  id     String @id
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  plan   Plan               @default(FREE)
+  status SubscriptionStatus @default(ACTIVE)
+
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("subscription")
 }

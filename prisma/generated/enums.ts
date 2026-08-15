@@ -18,6 +18,17 @@ export const MonitorStatus = {
 export type MonitorStatus = (typeof MonitorStatus)[keyof typeof MonitorStatus]
 
 
+export const MonitorMethod = {
+  GET: 'GET',
+  PATCH: 'PATCH',
+  POST: 'POST',
+  DELETE: 'DELETE',
+  PUT: 'PUT'
+} as const
+
+export type MonitorMethod = (typeof MonitorMethod)[keyof typeof MonitorMethod]
+
+
 export const IncidentStatus = {
   OPEN: 'OPEN',
   RESOLVED: 'RESOLVED'

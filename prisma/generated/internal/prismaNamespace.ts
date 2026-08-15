@@ -1257,6 +1257,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'MonitorMethod'
+ */
+export type EnumMonitorMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonitorMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'MonitorMethod[]'
+ */
+export type ListEnumMonitorMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MonitorMethod[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>

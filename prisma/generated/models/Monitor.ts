@@ -43,7 +43,7 @@ export type MonitorMinAggregateOutputType = {
   userId: string | null
   name: string | null
   url: string | null
-  method: string | null
+  method: $Enums.MonitorMethod | null
   intervalSeconds: number | null
   isActive: boolean | null
   lastCheckedAt: Date | null
@@ -59,7 +59,7 @@ export type MonitorMaxAggregateOutputType = {
   userId: string | null
   name: string | null
   url: string | null
-  method: string | null
+  method: $Enums.MonitorMethod | null
   intervalSeconds: number | null
   isActive: boolean | null
   lastCheckedAt: Date | null
@@ -240,7 +240,7 @@ export type MonitorGroupByOutputType = {
   userId: string
   name: string
   url: string
-  method: string
+  method: $Enums.MonitorMethod
   intervalSeconds: number
   isActive: boolean
   lastCheckedAt: Date | null
@@ -279,7 +279,7 @@ export type MonitorWhereInput = {
   userId?: Prisma.StringFilter<"Monitor"> | string
   name?: Prisma.StringFilter<"Monitor"> | string
   url?: Prisma.StringFilter<"Monitor"> | string
-  method?: Prisma.StringFilter<"Monitor"> | string
+  method?: Prisma.EnumMonitorMethodFilter<"Monitor"> | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFilter<"Monitor"> | number
   isActive?: Prisma.BoolFilter<"Monitor"> | boolean
   lastCheckedAt?: Prisma.DateTimeNullableFilter<"Monitor"> | Date | string | null
@@ -320,7 +320,7 @@ export type MonitorWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"Monitor"> | string
   name?: Prisma.StringFilter<"Monitor"> | string
   url?: Prisma.StringFilter<"Monitor"> | string
-  method?: Prisma.StringFilter<"Monitor"> | string
+  method?: Prisma.EnumMonitorMethodFilter<"Monitor"> | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFilter<"Monitor"> | number
   isActive?: Prisma.BoolFilter<"Monitor"> | boolean
   lastCheckedAt?: Prisma.DateTimeNullableFilter<"Monitor"> | Date | string | null
@@ -363,7 +363,7 @@ export type MonitorScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Monitor"> | string
   name?: Prisma.StringWithAggregatesFilter<"Monitor"> | string
   url?: Prisma.StringWithAggregatesFilter<"Monitor"> | string
-  method?: Prisma.StringWithAggregatesFilter<"Monitor"> | string
+  method?: Prisma.EnumMonitorMethodWithAggregatesFilter<"Monitor"> | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntWithAggregatesFilter<"Monitor"> | number
   isActive?: Prisma.BoolWithAggregatesFilter<"Monitor"> | boolean
   lastCheckedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Monitor"> | Date | string | null
@@ -378,7 +378,7 @@ export type MonitorCreateInput = {
   id?: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -397,7 +397,7 @@ export type MonitorUncheckedCreateInput = {
   userId: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -414,7 +414,7 @@ export type MonitorUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -433,7 +433,7 @@ export type MonitorUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -451,7 +451,7 @@ export type MonitorCreateManyInput = {
   userId: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -466,7 +466,7 @@ export type MonitorUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -482,7 +482,7 @@ export type MonitorUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -610,6 +610,10 @@ export type MonitorUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MonitorScalarWhereInput | Prisma.MonitorScalarWhereInput[]
 }
 
+export type EnumMonitorMethodFieldUpdateOperationsInput = {
+  set?: $Enums.MonitorMethod
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -688,7 +692,7 @@ export type MonitorCreateWithoutUserInput = {
   id?: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -705,7 +709,7 @@ export type MonitorUncheckedCreateWithoutUserInput = {
   id?: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -752,7 +756,7 @@ export type MonitorScalarWhereInput = {
   userId?: Prisma.StringFilter<"Monitor"> | string
   name?: Prisma.StringFilter<"Monitor"> | string
   url?: Prisma.StringFilter<"Monitor"> | string
-  method?: Prisma.StringFilter<"Monitor"> | string
+  method?: Prisma.EnumMonitorMethodFilter<"Monitor"> | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFilter<"Monitor"> | number
   isActive?: Prisma.BoolFilter<"Monitor"> | boolean
   lastCheckedAt?: Prisma.DateTimeNullableFilter<"Monitor"> | Date | string | null
@@ -767,7 +771,7 @@ export type MonitorCreateWithoutIncidentsInput = {
   id?: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -785,7 +789,7 @@ export type MonitorUncheckedCreateWithoutIncidentsInput = {
   userId: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -817,7 +821,7 @@ export type MonitorUpdateWithoutIncidentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -835,7 +839,7 @@ export type MonitorUncheckedUpdateWithoutIncidentsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -851,7 +855,7 @@ export type MonitorCreateWithoutNotificationChannelsInput = {
   id?: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -869,7 +873,7 @@ export type MonitorUncheckedCreateWithoutNotificationChannelsInput = {
   userId: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -906,7 +910,7 @@ export type MonitorCreateManyUserInput = {
   id?: string
   name: string
   url: string
-  method?: string
+  method?: $Enums.MonitorMethod
   intervalSeconds?: number
   isActive?: boolean
   lastCheckedAt?: Date | string | null
@@ -921,7 +925,7 @@ export type MonitorUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -938,7 +942,7 @@ export type MonitorUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -955,7 +959,7 @@ export type MonitorUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -970,7 +974,7 @@ export type MonitorUpdateWithoutNotificationChannelsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -988,7 +992,7 @@ export type MonitorUncheckedUpdateWithoutNotificationChannelsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1005,7 +1009,7 @@ export type MonitorUncheckedUpdateManyWithoutNotificationChannelsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  method?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
   intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1152,7 +1156,7 @@ export type $MonitorPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     userId: string
     name: string
     url: string
-    method: string
+    method: $Enums.MonitorMethod
     intervalSeconds: number
     isActive: boolean
     lastCheckedAt: Date | null
@@ -1591,7 +1595,7 @@ export interface MonitorFieldRefs {
   readonly userId: Prisma.FieldRef<"Monitor", 'String'>
   readonly name: Prisma.FieldRef<"Monitor", 'String'>
   readonly url: Prisma.FieldRef<"Monitor", 'String'>
-  readonly method: Prisma.FieldRef<"Monitor", 'String'>
+  readonly method: Prisma.FieldRef<"Monitor", 'MonitorMethod'>
   readonly intervalSeconds: Prisma.FieldRef<"Monitor", 'Int'>
   readonly isActive: Prisma.FieldRef<"Monitor", 'Boolean'>
   readonly lastCheckedAt: Prisma.FieldRef<"Monitor", 'DateTime'>

@@ -13,6 +13,14 @@ enum MonitorStatus {
   DOWN
 }
 
+enum MonitorMethod {
+  GET
+  PATCH
+  POST
+  DELETE
+  PUT
+}
+
 enum IncidentStatus {
   OPEN
   RESOLVED
@@ -107,7 +115,7 @@ model Monitor {
 
   name   String
   url    String
-  method String @default("GET")
+  method MonitorMethod @default(GET)
 
   intervalSeconds    Int           @default(60)
   isActive           Boolean       @default(true)
@@ -165,7 +173,7 @@ model NotificationChannel {
 }
 
 model Subscription {
-  id     String @id
+  id     String @id @default(cuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 

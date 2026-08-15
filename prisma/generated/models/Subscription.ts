@@ -265,7 +265,7 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
 }
 
 export type SubscriptionCreateInput = {
-  id: string
+  id?: string
   plan?: $Enums.Plan
   status?: $Enums.SubscriptionStatus
   currentPeriodStart?: Date | string | null
@@ -276,7 +276,7 @@ export type SubscriptionCreateInput = {
 }
 
 export type SubscriptionUncheckedCreateInput = {
-  id: string
+  id?: string
   userId: string
   plan?: $Enums.Plan
   status?: $Enums.SubscriptionStatus
@@ -309,7 +309,7 @@ export type SubscriptionUncheckedUpdateInput = {
 }
 
 export type SubscriptionCreateManyInput = {
-  id: string
+  id?: string
   userId: string
   plan?: $Enums.Plan
   status?: $Enums.SubscriptionStatus
@@ -419,7 +419,7 @@ export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
 }
 
 export type SubscriptionCreateWithoutUserInput = {
-  id: string
+  id?: string
   plan?: $Enums.Plan
   status?: $Enums.SubscriptionStatus
   currentPeriodStart?: Date | string | null
@@ -429,7 +429,7 @@ export type SubscriptionCreateWithoutUserInput = {
 }
 
 export type SubscriptionUncheckedCreateWithoutUserInput = {
-  id: string
+  id?: string
   plan?: $Enums.Plan
   status?: $Enums.SubscriptionStatus
   currentPeriodStart?: Date | string | null

@@ -2,15 +2,11 @@ import { IconAlertCircle } from '@tabler/icons-react';
 
 import { Alert } from '@/components/ui/alert';
 
-interface AuthErrorProps {
-  message: string | null;
+interface ErrorCardProps {
+  message: string;
 }
 
-export default function AuthError({ message }: AuthErrorProps) {
-  if (message === null) {
-    return null;
-  }
-
+export default function ErrorCard({ message }: ErrorCardProps) {
   return (
     <Alert
       className="border-destructive/50 bg-destructive/10 text-destructive flex"

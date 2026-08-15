@@ -4,6 +4,7 @@ import { IconLoader2 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Controller } from 'react-hook-form';
 
+import ErrorCard from '@/components/error-card';
 import { Button } from '@/components/ui/button';
 import {
   Field,
@@ -16,7 +17,6 @@ import {
 import { Input } from '@/components/ui/input';
 
 import { useSignupForm } from '../hooks/use-signup-form';
-import AuthError from './auth-error';
 import PasswordField from './password-field';
 import SocialLoginButtonGroup from './social-login-button-group';
 
@@ -26,7 +26,7 @@ export default function SignupForm() {
 
   return (
     <div className="flex flex-col gap-7">
-      <AuthError message={error} />
+      {error !== null && <ErrorCard message={error} />}
 
       <form onSubmit={(e) => void handleSubmit(e)}>
         <FieldGroup className="gap-4">

@@ -2,13 +2,13 @@
 
 import { IconLock } from '@tabler/icons-react';
 
+import ErrorCard from '@/components/error-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Field, FieldGroup } from '@/components/ui/field';
 
 import { useResetPassword } from '../hooks/use-reset-password';
 import AuthCard from './auth-card';
-import AuthError from './auth-error';
 import BackToLoginButton from './back-to-login-button';
 import PasswordField from './password-field';
 
@@ -48,7 +48,7 @@ export default function ResetPasswordForm() {
       description="Choose a new password for your Vigil account."
     >
       <div className="flex flex-col gap-4">
-        <AuthError message={error} />
+        {error !== null && <ErrorCard message={error} />}
 
         <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-7">
           <FieldGroup className="gap-4">

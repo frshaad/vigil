@@ -2,12 +2,12 @@
 
 import { Controller } from 'react-hook-form';
 
+import ErrorCard from '@/components/error-card';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
 import { useForgotPassword } from '../hooks/use-forgot-password';
-import AuthError from './auth-error';
 import BackToLoginButton from './back-to-login-button';
 
 export default function ForgotPasswordForm() {
@@ -15,7 +15,8 @@ export default function ForgotPasswordForm() {
 
   return (
     <div className="flex flex-col gap-4">
-      <AuthError message={error} />
+      {error !== null && <ErrorCard message={error} />}
+
       <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-7">
         <FieldGroup className="gap-4">
           <Controller

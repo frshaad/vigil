@@ -1,10 +1,10 @@
 'use client';
 
+import ErrorCard from '@/components/error-card';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup } from '@/components/ui/field';
 
 import { useChangePassword } from '../hooks/use-change-password';
-import AuthError from './auth-error';
 import PasswordField from './password-field';
 
 export default function ChangePasswordForm() {
@@ -55,7 +55,7 @@ export default function ChangePasswordForm() {
           </Button>
         </Field>
 
-        <AuthError message={error} />
+        {error !== null && <ErrorCard message={error} />}
       </FieldGroup>
     </form>
   );

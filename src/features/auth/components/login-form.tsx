@@ -4,6 +4,7 @@ import { IconLoader2 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Controller } from 'react-hook-form';
 
+import ErrorCard from '@/components/error-card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -18,7 +19,6 @@ import { Input } from '@/components/ui/input';
 import { useIsClient } from '@/hooks/use-is-client';
 
 import { useLoginForm } from '../hooks/use-login-form';
-import AuthError from './auth-error';
 import LastUsedMethodBadge from './last-method-badge';
 import PasswordField from './password-field';
 import SocialLoginButtonGroup from './social-login-button-group';
@@ -38,7 +38,8 @@ export default function LoginForm() {
 
   return (
     <div className="flex flex-col gap-7">
-      <AuthError message={error} />
+      {error !== null && <ErrorCard message={error} />}
+
       <form onSubmit={(e) => void handleSubmit(e)}>
         <FieldGroup className="gap-4">
           <Controller

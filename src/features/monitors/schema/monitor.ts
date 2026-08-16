@@ -8,9 +8,9 @@ const monitorNameSchema = z
   .min(1, 'Monitor name is required.')
   .max(80, 'Monitor name must be 80 characters or less.');
 
-const monitorUrlSchema = z.url({
-  protocol: /^https?$/,
+const monitorUrlSchema = z.httpUrl({
   error: 'Monitor URL must use HTTP or HTTPS.',
+  normalize: true,
 });
 
 const monitorMethodSchema = z.enum(MonitorMethod);

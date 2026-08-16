@@ -10,7 +10,8 @@ export const actionClient = createSafeActionClient({
       actionName: z.string().min(1),
     });
   },
-  handleServerError() {
+  handleServerError(error) {
+    console.error('Server action error:', error);
     return 'An unexpected error occurred. Please try again.';
   },
 });

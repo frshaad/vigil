@@ -30,7 +30,6 @@ export default function CreateMonitorForm() {
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault();
         void handleSubmit(e);
       }}
     >

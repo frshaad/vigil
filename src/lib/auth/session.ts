@@ -25,7 +25,7 @@ export async function requireAuthOrThrow() {
 
 type RequireAuthRedirectOptions = {
   redirectTo?: Route;
-  callbackURL?: string;
+  callbackURL?: Route;
 };
 
 export async function requireAuthOrRedirect(options?: RequireAuthRedirectOptions) {

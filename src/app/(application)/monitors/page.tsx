@@ -1,9 +1,11 @@
+import { IconPlus } from '@tabler/icons-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import MonitorList from '@/features/monitors/components/monitor-list';
 import { getUserMonitors } from '@/features/monitors/dal';
-import { requireAuthOrRedirect } from '@/lib/auth/session';
+import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -13,21 +15,26 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function MonitorsPage() {
-  const { user } = await requireAuthOrRedirect();
+  const user = await getCurrentUserOrRedirect({ callbackURL: '/monitors' });
   const monitors = await getUserMonitors(user.id);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4 p-4">
-      <h1>Monitors</h1>
-      {monitors.map((monitor) => (
-        <Button
-          key={monitor.id}
-          render={<Link href={`/dashboard/monitors/${monitor.id}`} />}
-          nativeButton={false}
-        >
-          {monitor.name}
+    <div className="mx-auto w-full max-w-6xl space-y-8">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Monitors</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Monitor your websites and APIs and get notified when they go down.
+          </p>
+        </div>
+
+        <Button nativeButton={false} render={<Link href="/monitors/new" />}>
+          <IconPlus />
+          Add monitor
         </Button>
-      ))}
+      </header>
+
+      <MonitorList monitors={monitors} />
     </div>
   );
 }

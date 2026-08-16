@@ -14,12 +14,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import type { Monitor } from '../../../../prisma/generated/client';
 import { methods } from '../constants';
 import { useUpdateMonitor } from '../hooks/use-update-monitor';
-import type { MonitorSettings } from '../types';
 
 interface UpdateMonitorFormProps {
-  monitor: MonitorSettings;
+  monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method'>;
 }
 
 export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {

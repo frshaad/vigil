@@ -1,11 +1,12 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { updateTag } from 'next/cache';
 
 import prisma from '@/lib/prisma';
 import { authClient } from '@/lib/safe-action';
 
-import { updateMonitorSchema } from '../schema/monitor';
+import { monitorTag, monitorsTag } from '../cache';
+import { updateMonitorSchema } from '../schema';
 
 export const updateMonitor = authClient
   .metadata({ actionName: 'updateMonitor' })
@@ -27,8 +28,8 @@ export const updateMonitor = authClient
       throw new Error('Monitor not found.');
     }
 
-    revalidatePath('/dashboard/monitors');
-    revalidatePath(`/dashboard/monitors/${parsedInput.id}`);
+    updateTag(monitorTag(ctx.auth.user.id, parsedInput.id));
+    updateTag(monitorsTag(ctx.auth.user.id));
 
     return {
       id: parsedInput.id,

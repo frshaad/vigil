@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { createMonitor } from '../actions/create-monitor';
-import { createMonitorSchema } from '../schema/monitor';
+import { createMonitorSchema } from '../schema';
 
 export function useCreateMonitor() {
   const router = useRouter();

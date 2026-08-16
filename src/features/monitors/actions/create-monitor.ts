@@ -1,9 +1,12 @@
 'use server';
 
+import { updateTag } from 'next/cache';
+
 import prisma from '@/lib/prisma';
 import { authClient } from '@/lib/safe-action';
 
-import { createMonitorSchema } from '../schema/monitor';
+import { monitorsTag } from '../cache';
+import { createMonitorSchema } from '../schema';
 
 export const createMonitor = authClient
   .metadata({ actionName: 'createMonitor' })
@@ -18,6 +21,8 @@ export const createMonitor = authClient
       },
       select: { id: true },
     });
+
+    updateTag(monitorsTag(ctx.auth.user.id));
 
     return { id: monitor.id };
   });

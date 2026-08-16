@@ -5,12 +5,11 @@ import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hoo
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import type { Monitor } from '@/../prisma/generated/client';
-
 import { updateMonitor } from '../actions/update-monitor';
-import { updateMonitorSchema } from '../schema/monitor';
+import { updateMonitorSchema } from '../schema';
+import type { MonitorSettings } from '../types';
 
-export function useUpdateMonitor(monitor: Monitor) {
+export function useUpdateMonitor(monitor: MonitorSettings) {
   const router = useRouter();
 
   const { form, action, handleSubmitWithAction } = useHookFormAction(

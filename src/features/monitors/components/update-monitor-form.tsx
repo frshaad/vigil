@@ -2,17 +2,9 @@
 
 import { Controller } from 'react-hook-form';
 
-import type { Monitor } from '@/../prisma/generated/client';
 import ErrorCard from '@/components/error-card';
 import { Button } from '@/components/ui/button';
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field';
+import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -24,9 +16,10 @@ import {
 
 import { methods } from '../constants';
 import { useUpdateMonitor } from '../hooks/use-update-monitor';
+import type { MonitorSettings } from '../types';
 
 interface UpdateMonitorFormProps {
-  monitor: Monitor;
+  monitor: MonitorSettings;
 }
 
 export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
@@ -51,8 +44,6 @@ export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="update-monitor-name">Monitor name</FieldLabel>
 
-              <FieldDescription>A name to help you identify this monitor.</FieldDescription>
-
               <Input
                 {...field}
                 id="update-monitor-name"
@@ -73,8 +64,6 @@ export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="update-monitor-url">URL</FieldLabel>
-
-              <FieldDescription>The HTTP or HTTPS endpoint Vigil should monitor.</FieldDescription>
 
               <Input
                 {...field}
@@ -100,10 +89,6 @@ export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
             <Field orientation="responsive" data-invalid={fieldState.invalid}>
               <FieldContent>
                 <FieldLabel htmlFor="update-monitor-method">HTTP method</FieldLabel>
-
-                <FieldDescription>
-                  The HTTP method used when checking the endpoint.
-                </FieldDescription>
 
                 {fieldState.error && <FieldError errors={[fieldState.error]} />}
               </FieldContent>

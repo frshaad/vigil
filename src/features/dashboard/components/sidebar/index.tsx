@@ -9,8 +9,6 @@ import {
   IconChartLine,
   IconSettings,
   IconCreditCard,
-  IconKey,
-  IconUsers,
   IconMenu2,
 } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -26,19 +24,17 @@ import SidebarStatus from './status';
 import SidebarUser from './user';
 
 const primaryNav: NavItem[] = [
-  { label: 'Dashboard', icon: IconLayoutDashboard, href: '#' },
-  { label: 'Monitors', icon: IconActivityHeartbeat, href: '#' },
-  { label: 'Incidents', icon: IconAlertTriangle, href: '#' },
-  { label: 'Status Pages', icon: IconWorld, href: '#' },
-  { label: 'Notifications', icon: IconBell, href: '#' },
-  { label: 'Analytics', icon: IconChartLine, href: '#' },
+  { label: 'Dashboard', icon: IconLayoutDashboard, href: '/dashboard' },
+  { label: 'Monitors', icon: IconActivityHeartbeat, href: '/dashboard/monitors' },
+  { label: 'Incidents', icon: IconAlertTriangle, href: '/dashboard' },
+  { label: 'Status Pages', icon: IconWorld, href: '/dashboard' },
+  { label: 'Notifications', icon: IconBell, href: '/dashboard/notifications' },
+  { label: 'Analytics', icon: IconChartLine, href: '/dashboard' },
 ];
 
 const secondaryNav: NavItem[] = [
-  { label: 'Settings', icon: IconSettings, href: '#' },
-  { label: 'Billing', icon: IconCreditCard, href: '#' },
-  { label: 'API Keys', icon: IconKey, href: '#' },
-  { label: 'Team', icon: IconUsers, href: '#' },
+  { label: 'Settings', icon: IconSettings, href: '/dashboard/settings/appearance' },
+  { label: 'Billing', icon: IconCreditCard, href: '/dashboard/settings/security' },
 ];
 
 function SidebarBrand() {

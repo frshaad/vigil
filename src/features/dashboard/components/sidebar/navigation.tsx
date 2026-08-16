@@ -1,13 +1,15 @@
 'use client';
 
 import type { Icon } from '@tabler/icons-react';
+import type { Route } from 'next';
+import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
 export type NavItem = {
   label: string;
   icon: Icon;
-  href: string;
+  href: Route;
 };
 
 export function SidebarNavigationItem({
@@ -23,7 +25,7 @@ export function SidebarNavigationItem({
 
   return (
     <li>
-      <a
+      <Link
         href={item.href}
         aria-current={active ? 'page' : undefined}
         onClick={(e) => {
@@ -47,7 +49,7 @@ export function SidebarNavigationItem({
           )}
         />
         <span className="truncate">{item.label}</span>
-      </a>
+      </Link>
     </li>
   );
 }

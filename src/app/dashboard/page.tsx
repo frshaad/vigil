@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 
-import LogOutButton from '@/features/auth/components/logout-button';
-import { requireAuthOrRedirect } from '@/lib/auth/session';
+import CreateMonitorForm from '@/features/monitors/components/create-monitor-form';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -11,12 +10,9 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function DashboardPage() {
-  const session = await requireAuthOrRedirect();
-
   return (
-    <>
-      <h2>{session.user.email}</h2>
-      <LogOutButton />
-    </>
+    <div className="max-w-lg space-y-4">
+      <CreateMonitorForm />
+    </div>
   );
 }

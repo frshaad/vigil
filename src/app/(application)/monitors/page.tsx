@@ -30,7 +30,7 @@ export default function MonitorsPage() {
         </Button>
       </header>
 
-      <Suspense fallback={'Loading...'}>
+      <Suspense fallback={<div>Loading...</div>}>
         <MonitorList />
       </Suspense>
     </div>

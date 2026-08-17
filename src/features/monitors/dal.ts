@@ -1,17 +1,17 @@
 import { cacheLife, cacheTag } from 'next/cache';
 
-import type { Monitor } from '@/../prisma/generated/client';
+import type { Monitor, Prisma } from '@/../prisma/generated/client';
 import prisma from '@/lib/prisma';
 
 import { monitorTag, monitorsTag } from './cache';
 
-const monitorSelect = {
+export const monitorSelect = {
   id: true,
   name: true,
   url: true,
   method: true,
   isActive: true,
-} satisfies Partial<Record<keyof Monitor, true>>;
+} satisfies Prisma.MonitorSelect;
 
 export async function getMonitor(monitorId: Monitor['id'], userId: Monitor['userId']) {
   'use cache';

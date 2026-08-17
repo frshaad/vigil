@@ -1,11 +1,10 @@
 import { IconPlus } from '@tabler/icons-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { Button } from '@/components/ui/button';
 import MonitorList from '@/features/monitors/components/monitor-list';
-import { getUserMonitors } from '@/features/monitors/dal';
-import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -14,10 +13,7 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default async function MonitorsPage() {
-  const user = await getCurrentUserOrRedirect({ callbackURL: '/monitors' });
-  const monitors = await getUserMonitors(user.id);
-
+export default function MonitorsPage() {
   return (
     <div className="mx-auto w-full max-w-6xl space-y-8">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -34,7 +30,9 @@ export default async function MonitorsPage() {
         </Button>
       </header>
 
-      <MonitorList monitors={monitors} />
+      <Suspense fallback={'Loading...'}>
+        <MonitorList />
+      </Suspense>
     </div>
   );
 }

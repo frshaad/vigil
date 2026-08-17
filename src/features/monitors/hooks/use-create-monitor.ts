@@ -20,7 +20,7 @@ export function useCreateMonitor() {
       },
       actionProps: {
         onSuccess({ data }) {
-          router.push(`/dashboard/monitors/${data.id}`);
+          router.push(`/monitors/${data.id}`);
         },
         onError({ error }) {
           toast.error(error.serverError ?? 'Failed to create monitor.');

@@ -563,9 +563,9 @@ export type MonitorSumOrderByAggregateInput = {
   lastResponseTimeMs?: Prisma.SortOrder
 }
 
-export type MonitorNullableScalarRelationFilter = {
-  is?: Prisma.MonitorWhereInput | null
-  isNot?: Prisma.MonitorWhereInput | null
+export type MonitorScalarRelationFilter = {
+  is?: Prisma.MonitorWhereInput
+  isNot?: Prisma.MonitorWhereInput
 }
 
 export type MonitorCreateNestedManyWithoutUserInput = {
@@ -640,12 +640,10 @@ export type MonitorCreateNestedOneWithoutIncidentsInput = {
   connect?: Prisma.MonitorWhereUniqueInput
 }
 
-export type MonitorUpdateOneWithoutIncidentsNestedInput = {
+export type MonitorUpdateOneRequiredWithoutIncidentsNestedInput = {
   create?: Prisma.XOR<Prisma.MonitorCreateWithoutIncidentsInput, Prisma.MonitorUncheckedCreateWithoutIncidentsInput>
   connectOrCreate?: Prisma.MonitorCreateOrConnectWithoutIncidentsInput
   upsert?: Prisma.MonitorUpsertWithoutIncidentsInput
-  disconnect?: Prisma.MonitorWhereInput | boolean
-  delete?: Prisma.MonitorWhereInput | boolean
   connect?: Prisma.MonitorWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MonitorUpdateToOneWithWhereWithoutIncidentsInput, Prisma.MonitorUpdateWithoutIncidentsInput>, Prisma.MonitorUncheckedUpdateWithoutIncidentsInput>
 }

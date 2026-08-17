@@ -136,8 +136,8 @@ model Monitor {
 
 model Incident {
   id        String   @id @default(cuid())
-  monitorId String?
-  monitor   Monitor? @relation(fields: [monitorId], references: [id])
+  monitorId String
+  monitor   Monitor @relation(fields: [monitorId], references: [id], onDelete: Cascade)
 
   startedAt  DateTime
   resolvedAt DateTime?

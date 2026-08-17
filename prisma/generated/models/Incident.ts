@@ -205,7 +205,7 @@ export type IncidentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type IncidentGroupByOutputType = {
   id: string
-  monitorId: string | null
+  monitorId: string
   startedAt: Date
   resolvedAt: Date | null
   status: $Enums.IncidentStatus
@@ -240,7 +240,7 @@ export type IncidentWhereInput = {
   OR?: Prisma.IncidentWhereInput[]
   NOT?: Prisma.IncidentWhereInput | Prisma.IncidentWhereInput[]
   id?: Prisma.StringFilter<"Incident"> | string
-  monitorId?: Prisma.StringNullableFilter<"Incident"> | string | null
+  monitorId?: Prisma.StringFilter<"Incident"> | string
   startedAt?: Prisma.DateTimeFilter<"Incident"> | Date | string
   resolvedAt?: Prisma.DateTimeNullableFilter<"Incident"> | Date | string | null
   status?: Prisma.EnumIncidentStatusFilter<"Incident"> | $Enums.IncidentStatus
@@ -248,12 +248,12 @@ export type IncidentWhereInput = {
   error?: Prisma.StringNullableFilter<"Incident"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Incident"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Incident"> | Date | string
-  monitor?: Prisma.XOR<Prisma.MonitorNullableScalarRelationFilter, Prisma.MonitorWhereInput> | null
+  monitor?: Prisma.XOR<Prisma.MonitorScalarRelationFilter, Prisma.MonitorWhereInput>
 }
 
 export type IncidentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  monitorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  monitorId?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -269,7 +269,7 @@ export type IncidentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.IncidentWhereInput | Prisma.IncidentWhereInput[]
   OR?: Prisma.IncidentWhereInput[]
   NOT?: Prisma.IncidentWhereInput | Prisma.IncidentWhereInput[]
-  monitorId?: Prisma.StringNullableFilter<"Incident"> | string | null
+  monitorId?: Prisma.StringFilter<"Incident"> | string
   startedAt?: Prisma.DateTimeFilter<"Incident"> | Date | string
   resolvedAt?: Prisma.DateTimeNullableFilter<"Incident"> | Date | string | null
   status?: Prisma.EnumIncidentStatusFilter<"Incident"> | $Enums.IncidentStatus
@@ -277,12 +277,12 @@ export type IncidentWhereUniqueInput = Prisma.AtLeast<{
   error?: Prisma.StringNullableFilter<"Incident"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Incident"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Incident"> | Date | string
-  monitor?: Prisma.XOR<Prisma.MonitorNullableScalarRelationFilter, Prisma.MonitorWhereInput> | null
+  monitor?: Prisma.XOR<Prisma.MonitorScalarRelationFilter, Prisma.MonitorWhereInput>
 }, "id">
 
 export type IncidentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  monitorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  monitorId?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -302,7 +302,7 @@ export type IncidentScalarWhereWithAggregatesInput = {
   OR?: Prisma.IncidentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.IncidentScalarWhereWithAggregatesInput | Prisma.IncidentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Incident"> | string
-  monitorId?: Prisma.StringNullableWithAggregatesFilter<"Incident"> | string | null
+  monitorId?: Prisma.StringWithAggregatesFilter<"Incident"> | string
   startedAt?: Prisma.DateTimeWithAggregatesFilter<"Incident"> | Date | string
   resolvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Incident"> | Date | string | null
   status?: Prisma.EnumIncidentStatusWithAggregatesFilter<"Incident"> | $Enums.IncidentStatus
@@ -321,12 +321,12 @@ export type IncidentCreateInput = {
   error?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  monitor?: Prisma.MonitorCreateNestedOneWithoutIncidentsInput
+  monitor: Prisma.MonitorCreateNestedOneWithoutIncidentsInput
 }
 
 export type IncidentUncheckedCreateInput = {
   id?: string
-  monitorId?: string | null
+  monitorId: string
   startedAt: Date | string
   resolvedAt?: Date | string | null
   status?: $Enums.IncidentStatus
@@ -345,12 +345,12 @@ export type IncidentUpdateInput = {
   error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  monitor?: Prisma.MonitorUpdateOneWithoutIncidentsNestedInput
+  monitor?: Prisma.MonitorUpdateOneRequiredWithoutIncidentsNestedInput
 }
 
 export type IncidentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monitorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monitorId?: Prisma.StringFieldUpdateOperationsInput | string
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
@@ -362,7 +362,7 @@ export type IncidentUncheckedUpdateInput = {
 
 export type IncidentCreateManyInput = {
   id?: string
-  monitorId?: string | null
+  monitorId: string
   startedAt: Date | string
   resolvedAt?: Date | string | null
   status?: $Enums.IncidentStatus
@@ -385,7 +385,7 @@ export type IncidentUpdateManyMutationInput = {
 
 export type IncidentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  monitorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monitorId?: Prisma.StringFieldUpdateOperationsInput | string
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
@@ -548,7 +548,7 @@ export type IncidentScalarWhereInput = {
   OR?: Prisma.IncidentScalarWhereInput[]
   NOT?: Prisma.IncidentScalarWhereInput | Prisma.IncidentScalarWhereInput[]
   id?: Prisma.StringFilter<"Incident"> | string
-  monitorId?: Prisma.StringNullableFilter<"Incident"> | string | null
+  monitorId?: Prisma.StringFilter<"Incident"> | string
   startedAt?: Prisma.DateTimeFilter<"Incident"> | Date | string
   resolvedAt?: Prisma.DateTimeNullableFilter<"Incident"> | Date | string | null
   status?: Prisma.EnumIncidentStatusFilter<"Incident"> | $Enums.IncidentStatus
@@ -614,7 +614,7 @@ export type IncidentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   error?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  monitor?: boolean | Prisma.Incident$monitorArgs<ExtArgs>
+  monitor?: boolean | Prisma.MonitorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["incident"]>
 
 export type IncidentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -627,7 +627,7 @@ export type IncidentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   error?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  monitor?: boolean | Prisma.Incident$monitorArgs<ExtArgs>
+  monitor?: boolean | Prisma.MonitorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["incident"]>
 
 export type IncidentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -640,7 +640,7 @@ export type IncidentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   error?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  monitor?: boolean | Prisma.Incident$monitorArgs<ExtArgs>
+  monitor?: boolean | Prisma.MonitorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["incident"]>
 
 export type IncidentSelectScalar = {
@@ -657,23 +657,23 @@ export type IncidentSelectScalar = {
 
 export type IncidentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "monitorId" | "startedAt" | "resolvedAt" | "status" | "statusCode" | "error" | "createdAt" | "updatedAt", ExtArgs["result"]["incident"]>
 export type IncidentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  monitor?: boolean | Prisma.Incident$monitorArgs<ExtArgs>
+  monitor?: boolean | Prisma.MonitorDefaultArgs<ExtArgs>
 }
 export type IncidentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  monitor?: boolean | Prisma.Incident$monitorArgs<ExtArgs>
+  monitor?: boolean | Prisma.MonitorDefaultArgs<ExtArgs>
 }
 export type IncidentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  monitor?: boolean | Prisma.Incident$monitorArgs<ExtArgs>
+  monitor?: boolean | Prisma.MonitorDefaultArgs<ExtArgs>
 }
 
 export type $IncidentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Incident"
   objects: {
-    monitor: Prisma.$MonitorPayload<ExtArgs> | null
+    monitor: Prisma.$MonitorPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    monitorId: string | null
+    monitorId: string
     startedAt: Date
     resolvedAt: Date | null
     status: $Enums.IncidentStatus
@@ -1075,7 +1075,7 @@ readonly fields: IncidentFieldRefs;
  */
 export interface Prisma__IncidentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  monitor<T extends Prisma.Incident$monitorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Incident$monitorArgs<ExtArgs>>): Prisma.Prisma__MonitorClient<runtime.Types.Result.GetResult<Prisma.$MonitorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  monitor<T extends Prisma.MonitorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MonitorDefaultArgs<ExtArgs>>): Prisma.Prisma__MonitorClient<runtime.Types.Result.GetResult<Prisma.$MonitorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1512,25 +1512,6 @@ export type IncidentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Incidents to delete.
    */
   limit?: number
-}
-
-/**
- * Incident.monitor
- */
-export type Incident$monitorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Monitor
-   */
-  select?: Prisma.MonitorSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Monitor
-   */
-  omit?: Prisma.MonitorOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.MonitorInclude<ExtArgs> | null
-  where?: Prisma.MonitorWhereInput
 }
 
 /**

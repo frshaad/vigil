@@ -133,3 +133,26 @@ export function formatInterval(seconds: number) {
 
   return `${hours} hr`;
 }
+
+export function formatDuration(start: Date, end: Date) {
+  const seconds = Math.max(0, Math.floor((end.getTime() - start.getTime()) / 1000));
+
+  const minutes = Math.floor(seconds / 60);
+
+  if (minutes < 1) {
+    return `${seconds}s`;
+  }
+
+  if (minutes < 60) {
+    return `${minutes}m`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (remainingMinutes === 0) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${remainingMinutes}m`;
+}

@@ -18,16 +18,28 @@ export const monitorDetailsSelect = {
   lastResponseTimeMs: true,
   createdAt: true,
   updatedAt: true,
+
+  incidents: {
+    orderBy: {
+      startedAt: 'desc',
+    },
+    take: 5,
+    select: {
+      id: true,
+      startedAt: true,
+      resolvedAt: true,
+      status: true,
+      statusCode: true,
+      error: true,
+    },
+  },
 } satisfies Prisma.MonitorSelect;
 
 export type MonitorDetails = Prisma.MonitorGetPayload<{
   select: typeof monitorDetailsSelect;
 }>;
 
-export async function getMonitor(
-  monitorId: Monitor['id'],
-  userId: Monitor['userId']
-): Promise<MonitorDetails | null> {
+export async function getMonitor(monitorId: Monitor['id'], userId: Monitor['userId']) {
   'use cache';
 
   cacheLife('minutes');
@@ -39,7 +51,7 @@ export async function getMonitor(
   });
 }
 
-export async function getUserMonitors(userId: Monitor['userId']): Promise<MonitorDetails[] | null> {
+export async function getUserMonitors(userId: Monitor['userId']) {
   'use cache';
 
   cacheLife('minutes');

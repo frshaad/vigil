@@ -35,7 +35,7 @@ export default async function MonitorPage({ params }: PageProps<'/monitors/[moni
 
           <MonitorEndpointCard monitor={monitor} />
 
-          <MonitorActivityCard monitor={monitor} />
+          <MonitorActivityCard incidents={monitor.incidents} />
 
           <MonitorDetailsCard monitor={monitor} />
         </main>

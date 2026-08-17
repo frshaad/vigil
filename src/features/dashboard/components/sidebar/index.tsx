@@ -25,16 +25,16 @@ import SidebarUser from './user';
 
 const primaryNav: NavItem[] = [
   { label: 'Dashboard', icon: IconLayoutDashboard, href: '/dashboard' },
-  { label: 'Monitors', icon: IconActivityHeartbeat, href: '/dashboard/monitors' },
+  { label: 'Monitors', icon: IconActivityHeartbeat, href: '/monitors' },
   { label: 'Incidents', icon: IconAlertTriangle, href: '/dashboard' },
   { label: 'Status Pages', icon: IconWorld, href: '/dashboard' },
-  { label: 'Notifications', icon: IconBell, href: '/dashboard/notifications' },
+  { label: 'Notifications', icon: IconBell, href: '/notifications' },
   { label: 'Analytics', icon: IconChartLine, href: '/dashboard' },
 ];
 
 const secondaryNav: NavItem[] = [
-  { label: 'Settings', icon: IconSettings, href: '/dashboard/settings/appearance' },
-  { label: 'Billing', icon: IconCreditCard, href: '/dashboard/settings/security' },
+  { label: 'Settings', icon: IconSettings, href: '/settings/appearance' },
+  { label: 'Billing', icon: IconCreditCard, href: '/settings/security' },
 ];
 
 function SidebarBrand() {

@@ -59,7 +59,7 @@ export default function MonitorCard({ monitor, isDeleting, onDeleteAction }: Mon
           className="group focus-visible:ring-ring min-w-0 rounded-sm outline-none focus-visible:ring-2"
         >
           <ItemTitle className="flex flex-wrap items-center gap-4">
-            <h3 className="text-sm font-semibold group-hover:underline">{monitor.name}</h3>
+            <h3 className="text-sm font-semibold">{monitor.name}</h3>
 
             <Badge variant="outline">{monitor.method}</Badge>
 

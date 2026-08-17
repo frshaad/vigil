@@ -5,15 +5,29 @@ import prisma from '@/lib/prisma';
 
 import { monitorTag, monitorsTag } from './cache';
 
-export const monitorSelect = {
+export const monitorDetailsSelect = {
   id: true,
   name: true,
   url: true,
   method: true,
+  intervalSeconds: true,
   isActive: true,
+  lastCheckedAt: true,
+  lastStatus: true,
+  lastStatusCode: true,
+  lastResponseTimeMs: true,
+  createdAt: true,
+  updatedAt: true,
 } satisfies Prisma.MonitorSelect;
 
-export async function getMonitor(monitorId: Monitor['id'], userId: Monitor['userId']) {
+export type MonitorDetails = Prisma.MonitorGetPayload<{
+  select: typeof monitorDetailsSelect;
+}>;
+
+export async function getMonitor(
+  monitorId: Monitor['id'],
+  userId: Monitor['userId']
+): Promise<MonitorDetails | null> {
   'use cache';
 
   cacheLife('minutes');
@@ -21,11 +35,11 @@ export async function getMonitor(monitorId: Monitor['id'], userId: Monitor['user
 
   return await prisma.monitor.findFirst({
     where: { id: monitorId, userId },
-    select: monitorSelect,
+    select: monitorDetailsSelect,
   });
 }
 
-export async function getUserMonitors(userId: Monitor['userId']) {
+export async function getUserMonitors(userId: Monitor['userId']): Promise<MonitorDetails[] | null> {
   'use cache';
 
   cacheLife('minutes');
@@ -33,7 +47,7 @@ export async function getUserMonitors(userId: Monitor['userId']) {
 
   return await prisma.monitor.findMany({
     where: { userId },
-    select: monitorSelect,
+    select: monitorDetailsSelect,
     orderBy: { createdAt: 'desc' },
   });
 }

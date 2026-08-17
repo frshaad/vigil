@@ -21,13 +21,13 @@ export default function MonitorEndpointCard({ monitor }: MonitorEndpointCardProp
 
       <CardContent className="space-y-5">
         <div className="flex items-start gap-3">
-          <div className="bg-muted text-muted-foreground flex size-9 shrink-0 items-center justify-center rounded-lg">
+          <div className="bg-muted text-muted-foreground flex size-9 shrink-0 items-center justify-center">
             <IconWorld className="size-4" />
           </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="bg-muted rounded-md px-2 py-1 font-mono text-xs font-medium">
+              <span className="bg-muted px-2 py-1 font-mono text-xs font-medium">
                 {monitor.method}
               </span>
 

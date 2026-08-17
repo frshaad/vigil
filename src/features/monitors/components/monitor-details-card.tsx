@@ -28,7 +28,7 @@ export default function MonitorDetailsCard({ monitor }: MonitorDetailsCardProps)
 
           <div>
             <dt className="text-muted-foreground text-sm">Monitor ID</dt>
-            <dd className="mt-1 truncate font-mono text-xs">{monitor.id}</dd>
+            <dd className="mt-1 truncate font-mono text-sm">{monitor.id}</dd>
           </div>
 
           <div>

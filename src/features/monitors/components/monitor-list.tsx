@@ -1,13 +1,13 @@
-import { getCurrentUserOrRedirect } from '@/lib/auth/session';
-
 import { getUserMonitors } from '../dal';
 import MonitorEmptyState from './monitor-empty-state';
 import MonitorListClient from './monitor-list-client';
 
-export default async function MonitorList() {
-  const user = await getCurrentUserOrRedirect({ callbackURL: '/monitors' });
+interface MonitorListProps {
+  userId: string;
+}
 
-  const monitors = await getUserMonitors(user.id);
+export default async function MonitorList({ userId }: MonitorListProps) {
+  const monitors = await getUserMonitors(userId);
 
   if (monitors.length === 0) {
     return <MonitorEmptyState />;

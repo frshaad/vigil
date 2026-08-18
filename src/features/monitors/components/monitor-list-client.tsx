@@ -1,14 +1,8 @@
 'use client';
 
-import type { Prisma } from '@/../prisma/generated/client';
-
-import type { monitorDetailsSelect } from '../dal';
+import type { MonitorListItem } from '../dal';
 import { useDeleteMonitor } from '../hooks/use-delete-monitor';
 import MonitorCard from './monitor-card';
-
-type MonitorListItem = Prisma.MonitorGetPayload<{
-  select: typeof monitorDetailsSelect;
-}>;
 
 interface MonitorListClientProps {
   monitors: MonitorListItem[];

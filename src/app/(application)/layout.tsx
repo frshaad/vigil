@@ -3,13 +3,13 @@ import { Suspense } from 'react';
 import DashboardSidebar from '@/features/dashboard/components/sidebar';
 import { requireAuthOrRedirect } from '@/lib/auth/session';
 
-async function AuthenticatedDashboard({ children }: { children: React.ReactNode }) {
+async function AuthenticatedApplication({ children }: { children: React.ReactNode }) {
   await requireAuthOrRedirect({ callbackURL: '/dashboard' });
 
   return <main className="mx-auto w-full max-w-6xl space-y-8 p-3 lg:p-6">{children}</main>;
 }
 
-export default async function DashboardLayout({
+export default function ApplicationLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -19,7 +19,7 @@ export default async function DashboardLayout({
       <DashboardSidebar />
 
       <Suspense>
-        <AuthenticatedDashboard>{children}</AuthenticatedDashboard>
+        <AuthenticatedApplication>{children}</AuthenticatedApplication>
       </Suspense>
     </div>
   );

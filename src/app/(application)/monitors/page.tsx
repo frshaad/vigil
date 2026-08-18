@@ -1,11 +1,10 @@
 import { IconPlus } from '@tabler/icons-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Suspense } from 'react';
 
 import { Button } from '@/components/ui/button';
 import MonitorList from '@/features/monitors/components/monitor-list';
-import MonitorListSkeleton from '@/features/monitors/components/skeletons/monitor-list-skeleton';
+import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -14,12 +13,17 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default function MonitorsPage() {
+export default async function MonitorsPage() {
+  const user = await getCurrentUserOrRedirect({
+    callbackURL: '/monitors',
+  });
+
   return (
     <>
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Monitors</h1>
+
           <p className="text-muted-foreground mt-1 text-sm">
             Monitor your websites and APIs and get notified when they go down.
           </p>
@@ -31,9 +35,7 @@ export default function MonitorsPage() {
         </Button>
       </header>
 
-      <Suspense fallback={<MonitorListSkeleton />}>
-        <MonitorList />
-      </Suspense>
+      <MonitorList userId={user.id} />
     </>
   );
 }

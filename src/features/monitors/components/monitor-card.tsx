@@ -44,7 +44,7 @@ export default function MonitorCard({ monitor, isDeleting, onDeleteAction }: Mon
       <ItemMedia
         variant="icon"
         className={cn(
-          'flex size-10 shrink-0 items-center justify-center rounded-lg',
+          'flex size-10 shrink-0 items-center justify-center ',
           isActive
             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
             : 'bg-muted text-muted-foreground'
@@ -56,7 +56,7 @@ export default function MonitorCard({ monitor, isDeleting, onDeleteAction }: Mon
       <ItemContent>
         <Link
           href={`/monitors/${monitor.id}`}
-          className="group focus-visible:ring-ring min-w-0 rounded-sm outline-none focus-visible:ring-2"
+          className="group focus-visible:ring-ring min-w-0 outline-none focus-visible:ring-2"
         >
           <ItemTitle className="flex flex-wrap items-center gap-4">
             <h3 className="text-sm font-semibold">{monitor.name}</h3>

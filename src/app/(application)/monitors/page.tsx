@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 
 import { Button } from '@/components/ui/button';
 import MonitorList from '@/features/monitors/components/monitor-list';
+import MonitorListSkeleton from '@/features/monitors/components/skeletons/monitor-list-skeleton';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -30,7 +31,7 @@ export default function MonitorsPage() {
         </Button>
       </header>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<MonitorListSkeleton />}>
         <MonitorList />
       </Suspense>
     </div>

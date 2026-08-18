@@ -18,7 +18,7 @@ export default async function DashboardLayout({
     <div className="flex min-h-svh w-full flex-col lg:flex-row">
       <DashboardSidebar />
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <AuthenticatedDashboard>{children}</AuthenticatedDashboard>
       </Suspense>
     </div>

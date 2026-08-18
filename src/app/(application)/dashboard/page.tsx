@@ -11,7 +11,7 @@ export const metadata: Metadata = createMetadata({
 
 export default async function DashboardPage() {
   return (
-    <div className="max-w-lg space-y-4">
+    <div className="space-y-8">
       <CreateMonitorForm />
     </div>
   );

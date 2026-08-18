@@ -6,7 +6,7 @@ import CreateMonitorForm from '@/features/monitors/components/create-monitor-for
 
 export default function NewMonitorPage() {
   return (
-    <div className="mx-auto w-full max-w-2xl">
+    <>
       <Button
         variant="ghost"
         size="sm"
@@ -31,6 +31,6 @@ export default function NewMonitorPage() {
       </div>
 
       <CreateMonitorForm />
-    </div>
+    </>
   );
 }

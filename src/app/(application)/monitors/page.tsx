@@ -16,7 +16,7 @@ export const metadata: Metadata = createMetadata({
 
 export default function MonitorsPage() {
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-8">
+    <>
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Monitors</h1>
@@ -34,6 +34,6 @@ export default function MonitorsPage() {
       <Suspense fallback={<MonitorListSkeleton />}>
         <MonitorList />
       </Suspense>
-    </div>
+    </>
   );
 }

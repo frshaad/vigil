@@ -6,7 +6,7 @@ import { requireAuthOrRedirect } from '@/lib/auth/session';
 async function AuthenticatedDashboard({ children }: { children: React.ReactNode }) {
   await requireAuthOrRedirect({ callbackURL: '/dashboard' });
 
-  return <main className="w-full p-3 lg:p-6">{children}</main>;
+  return <main className="mx-auto w-full max-w-6xl space-y-8 p-3 lg:p-6">{children}</main>;
 }
 
 export default async function DashboardLayout({

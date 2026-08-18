@@ -25,7 +25,7 @@ export default async function MonitorPage({ params }: PageProps<'/monitors/[moni
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-8">
+    <>
       <MonitorBreadcrumbs />
       <MonitorHeader monitor={monitor} />
 
@@ -44,6 +44,6 @@ export default async function MonitorPage({ params }: PageProps<'/monitors/[moni
           <UpdateMonitorForm monitor={monitor} />
         </aside>
       </div>
-    </div>
+    </>
   );
 }

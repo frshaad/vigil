@@ -4,7 +4,7 @@ export function useIsClient() {
   const [isClient, setClient] = useState(false);
 
   useEffect(() => {
-    // oxlint-disable-next-line react/react-compiler
+    // oxlint-disable-next-line react/set-state-in-effect
     setClient(true);
   }, []);
 

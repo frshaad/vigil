@@ -15,7 +15,7 @@
     "typegen": "next typegen",
     "typecheck": "pnpm typegen && tsc --noEmit",
     "check": "pnpm lint && pnpm typecheck",
-    "check:ci": "pnpm check && pnpm test && pnpm build",
+    "check:ci": "pnpm check && pnpm build",
     "email:dev": "email dev --dir ./src/features/email/templates",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",

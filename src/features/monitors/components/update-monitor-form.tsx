@@ -2,6 +2,7 @@
 
 import { Controller } from 'react-hook-form';
 
+import type { Monitor } from '@/../prisma/generated/client';
 import ErrorCard from '@/components/error-card';
 import { Button } from '@/components/ui/button';
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
@@ -14,7 +15,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import type { Monitor } from '../../../../prisma/generated/client';
 import { methods } from '../constants';
 import { useUpdateMonitor } from '../hooks/use-update-monitor';
 

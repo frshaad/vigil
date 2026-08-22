@@ -33,5 +33,8 @@ export const updateMonitor = authClient
 
     return {
       id: parsedInput.id,
+      name: parsedInput.name,
+      url: parsedInput.url,
+      method: parsedInput.method,
     };
   });

@@ -5,7 +5,8 @@ import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hoo
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import type { Monitor } from '../../../../prisma/generated/client';
+import type { Monitor } from '@/../../prisma/generated/client';
+
 import { updateMonitor } from '../actions/update-monitor';
 import { updateMonitorSchema } from '../schema';
 
@@ -25,7 +26,8 @@ export function useUpdateMonitor(monitor: Pick<Monitor, 'id' | 'name' | 'url' | 
         },
       },
       actionProps: {
-        onSuccess() {
+        onSuccess({ data }) {
+          form.reset({ id: data.id, name: data.name, url: data.url, method: data.method });
           toast.success('Monitor updated.');
           router.refresh();
         },

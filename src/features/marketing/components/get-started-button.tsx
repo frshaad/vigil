@@ -2,7 +2,7 @@ import { IconArrowNarrowRight } from '@tabler/icons-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import { getSession } from '@/lib/auth/session';
+import { getCurrentSession } from '@/lib/auth/session';
 
 interface GetStartedButtonProps extends React.ComponentProps<typeof Button> {
   withoutIcon?: boolean;
@@ -16,7 +16,7 @@ export default async function GetStartedButton({
   label = 'Get Started',
   ...rest
 }: GetStartedButtonProps) {
-  const session = await getSession();
+  const session = await getCurrentSession();
 
   const href = session ? '/dashboard' : '/signup';
 

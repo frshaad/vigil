@@ -3,64 +3,64 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
 
+import type { Session } from '@/lib/auth';
 import { auth } from '@/lib/auth';
 import { ForbiddenError, UnauthorizedError } from '@/lib/errors';
 
 const LOGIN_ROUTE = '/login' satisfies Route;
-
-export const getSession = cache(
-  async () =>
-    await auth.api.getSession({
-      headers: await headers(),
-    })
-);
-
-export async function requireAuthOrThrow() {
-  const session = await getSession();
-  if (!session) {
-    throw new UnauthorizedError();
-  }
-  return session;
-}
 
 type RequireAuthRedirectOptions = {
   redirectTo?: Route;
   callbackURL?: Route;
 };
 
-export async function requireAuthOrRedirect(options?: RequireAuthRedirectOptions) {
-  const session = await getSession();
+/** Get session - cached per request */
+export const getCurrentSession = cache(async (): Promise<Session | null> => {
+  return await auth.api.getSession({
+    headers: await headers(),
+  });
+});
 
-  if (session) {
-    return session;
+/** Require auth or throw - cached */
+export const requireAuthOrThrow = cache(async (): Promise<Session> => {
+  const session = await getCurrentSession();
+  if (!session) {
+    throw new UnauthorizedError();
   }
+  return session;
+});
 
-  const loginPath = options?.redirectTo ?? LOGIN_ROUTE;
+/** Require auth or redirect - cached */
+export const requireAuthOrRedirect = cache(
+  async (options?: RequireAuthRedirectOptions): Promise<Session> => {
+    const session = await getCurrentSession();
+    if (session) {
+      return session;
+    }
 
-  if (options?.callbackURL !== undefined) {
-    redirect(`${loginPath}?redirect=${encodeURIComponent(options.callbackURL)}`);
+    const loginPath = options?.redirectTo ?? LOGIN_ROUTE;
+    if (options?.callbackURL !== undefined) {
+      redirect(`${loginPath}?redirect=${encodeURIComponent(options.callbackURL)}`);
+    }
+    redirect(loginPath);
   }
+);
 
-  redirect(loginPath);
-}
-
-export async function getCurrentUserOrThrow() {
+export const getCurrentUserOrThrow = cache(async () => {
   return (await requireAuthOrThrow()).user;
-}
+});
 
-export async function getCurrentUserOrRedirect(options?: RequireAuthRedirectOptions) {
+export const getCurrentUserOrRedirect = cache(async (options?: RequireAuthRedirectOptions) => {
   return (await requireAuthOrRedirect(options)).user;
-}
+});
 
-export async function requireOwnerOrThrow(resourceOwnerId: string) {
+export const requireOwnerOrThrow = cache(async (resourceOwnerId: string) => {
   const session = await requireAuthOrThrow();
-
   if (session.user.id !== resourceOwnerId) {
     throw new ForbiddenError();
   }
-
   return session;
-}
+});
 
 export function assertOwner(currentUserId: string, ownerId: string) {
   if (currentUserId !== ownerId) {

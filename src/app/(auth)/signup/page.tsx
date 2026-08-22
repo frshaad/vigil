@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 
 import AuthCard from '@/features/auth/components/auth-card';
 import SignupForm from '@/features/auth/components/signup-form';
-import { getSession } from '@/lib/auth/session';
+import { getCurrentSession } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -13,7 +13,7 @@ export const metadata: Metadata = createMetadata({
 });
 
 export default async function SignupPage() {
-  const session = await getSession();
+  const session = await getCurrentSession();
   if (session) {
     redirect('/');
   }

@@ -6,6 +6,8 @@ import type { Monitor } from '@/../prisma/generated/client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
+import CheckMonitorButton from './check-monitor-button';
+
 type MonitorHeaderProps = {
   monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method' | 'isActive'>;
 };
@@ -38,15 +40,19 @@ export default function MonitorHeader({ monitor }: MonitorHeaderProps) {
         </div>
       </div>
 
-      <Button
-        variant="outline"
-        size="sm"
-        nativeButton={false}
-        render={<Link href={monitor.url as Route} target="_blank" rel="noopener noreferrer" />}
-      >
-        Open URL
-        <IconExternalLink />
-      </Button>
+      <div className="flex items-center gap-2">
+        <CheckMonitorButton monitorId={monitor.id} />
+
+        <Button
+          variant="outline"
+          size="sm"
+          nativeButton={false}
+          render={<Link href={monitor.url as Route} target="_blank" rel="noopener noreferrer" />}
+        >
+          Open URL
+          <IconExternalLink />
+        </Button>
+      </div>
     </header>
   );
 }

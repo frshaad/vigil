@@ -2,6 +2,7 @@ import z from 'zod';
 
 import { MonitorMethod } from '@/../prisma/generated/enums';
 
+const monitorIdSchema = z.string().min(1);
 const monitorNameSchema = z
   .string()
   .trim()
@@ -22,16 +23,20 @@ export const createMonitorSchema = z.object({
 });
 
 export const updateMonitorSchema = createMonitorSchema.extend({
-  id: z.string().min(1),
+  id: monitorIdSchema,
 });
 
 export const deleteMonitorSchema = z.object({
-  id: z.string().min(1),
+  id: monitorIdSchema,
 });
 
 export const toggleMonitorSchema = z.object({
-  id: z.string().min(1),
+  id: monitorIdSchema,
   isActive: z.boolean(),
+});
+
+export const checkMonitorSchema = z.object({
+  id: monitorIdSchema,
 });
 
 export type CreateMonitorInput = z.infer<typeof createMonitorSchema>;

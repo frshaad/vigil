@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import CheckMonitorButton from './check-monitor-button';
 
 type MonitorHeaderProps = {
-  monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method' | 'isActive'>;
+  monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method' | 'isActive' | 'lastCheckedAt'>;
 };
 
 export default function MonitorHeader({ monitor }: MonitorHeaderProps) {
@@ -41,7 +41,7 @@ export default function MonitorHeader({ monitor }: MonitorHeaderProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        <CheckMonitorButton monitorId={monitor.id} />
+        <CheckMonitorButton monitorId={monitor.id} lastCheckedAt={monitor.lastCheckedAt} />
 
         <Button
           variant="outline"

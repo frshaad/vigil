@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Monitor } from '@/../prisma/generated/client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { getManualCheckCooldownRemaining } from '@/features/monitoring/checker/utils';
 
 import CheckMonitorButton from './check-monitor-button';
 
@@ -13,6 +14,10 @@ type MonitorHeaderProps = {
 };
 
 export default function MonitorHeader({ monitor }: MonitorHeaderProps) {
+  const now = new Date();
+
+  const cooldownRemaining = getManualCheckCooldownRemaining(monitor.lastCheckedAt, now);
+
   return (
     <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
       <div className="flex min-w-0 items-start gap-4">
@@ -41,7 +46,7 @@ export default function MonitorHeader({ monitor }: MonitorHeaderProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        <CheckMonitorButton monitorId={monitor.id} lastCheckedAt={monitor.lastCheckedAt} />
+        <CheckMonitorButton monitorId={monitor.id} cooldownRemaining={cooldownRemaining} />
 
         <Button
           variant="outline"

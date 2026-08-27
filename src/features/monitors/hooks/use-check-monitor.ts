@@ -5,29 +5,26 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { MANUAL_CHECK_COOLDOWN_SECONDS } from '@/features/monitoring/checker/constants';
+import { MONITOR_MANUAL_CHECK_COOLDOWN_MS } from '@/features/monitoring/checker/constants';
 
 import { checkMonitor } from '../actions/check-monitor';
 
-interface UseCheckMonitorOptions {
-  lastCheckedAt: Date | null;
-}
+const MANUAL_CHECK_COOLDOWN_SECONDS = MONITOR_MANUAL_CHECK_COOLDOWN_MS / 1000;
 
-export function useCheckMonitor({ lastCheckedAt }: UseCheckMonitorOptions) {
+type UseCheckMonitorOptions = {
+  monitorId: string;
+  initialCooldownRemaining: number;
+};
+
+export function useCheckMonitor({ monitorId, initialCooldownRemaining }: UseCheckMonitorOptions) {
   const router = useRouter();
 
-  const initialCooldownUntil = lastCheckedAt
-    ? lastCheckedAt.getTime() + MANUAL_CHECK_COOLDOWN_SECONDS * 1000
-    : null;
-
-  const [cooldownUntil, setCooldownUntil] = useState<number | null>(initialCooldownUntil);
-  const [now, setNow] = useState(() => Date.now());
+  const [cooldownRemaining, setCooldownRemaining] = useState(initialCooldownRemaining);
 
   const { execute, isExecuting } = useAction(checkMonitor, {
     onSuccess({ data }) {
-      setCooldownUntil(Date.now() + MANUAL_CHECK_COOLDOWN_SECONDS * 1000);
-
       router.refresh();
+      setCooldownRemaining(MANUAL_CHECK_COOLDOWN_SECONDS);
 
       if (data.status === 'UP') {
         toast.success('Monitor is operational.');
@@ -42,33 +39,28 @@ export function useCheckMonitor({ lastCheckedAt }: UseCheckMonitorOptions) {
   });
 
   useEffect(() => {
-    if (cooldownUntil === null) {
+    if (cooldownRemaining <= 0) {
       return;
     }
 
     const interval = window.setInterval(() => {
-      setNow(Date.now());
-    }, 250);
+      setCooldownRemaining((remaining) => {
+        if (remaining <= 1) {
+          window.clearInterval(interval);
+          return 0;
+        }
+
+        return remaining - 1;
+      });
+    }, 1000);
 
     return () => window.clearInterval(interval);
-  }, [cooldownUntil]);
-
-  const cooldownRemaining =
-    cooldownUntil === null
-      ? 0
-      : Math.min(
-          MANUAL_CHECK_COOLDOWN_SECONDS,
-          Math.max(0, Math.ceil((cooldownUntil - now) / 1000))
-        );
-
-  const isCooldown = cooldownRemaining > 0;
-  const isPending = isExecuting;
-  const canCheck = !isPending && !isCooldown;
+  }, [cooldownRemaining]);
 
   return {
-    check: execute,
-    isPending,
-    canCheck,
+    check: () => execute({ id: monitorId }),
+    isPending: isExecuting,
     cooldownRemaining,
+    isCooldownActive: cooldownRemaining > 0,
   };
 }

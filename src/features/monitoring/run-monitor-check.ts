@@ -1,9 +1,11 @@
 import prisma from '@/lib/prisma';
 
 import { checkMonitor } from './checker/check-monitor';
-import { MANUAL_CHECK_COOLDOWN_SECONDS } from './checker/constants';
+import { MONITOR_MANUAL_CHECK_COOLDOWN_MS } from './checker/constants';
 import { monitorCheckResultSchema } from './checker/schema';
 import type { MonitorCheckResult } from './checker/schema';
+
+const MANUAL_CHECK_COOLDOWN_SECONDS = MONITOR_MANUAL_CHECK_COOLDOWN_MS / 1000;
 
 interface RunMonitorCheckInput {
   monitorId: string;

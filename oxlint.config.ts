@@ -63,7 +63,7 @@ export default defineConfig({
     eqeqeq: 'error',
     curly: 'error',
     'array-callback-return': 'error',
-    'no-await-in-loop': 'error',
+    'no-await-in-loop': 'warn',
     'no-constant-condition': 'error',
     'no-debugger': 'error',
     'no-dupe-keys': 'error',

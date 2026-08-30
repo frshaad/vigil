@@ -1,4 +1,4 @@
-import type { MonitorMethod } from '@/../../prisma/generated/enums';
+import type { MonitorMethod } from '@/../prisma/generated/enums';
 
 import {
   MONITOR_CHECK_TIMEOUT_MS,
@@ -8,15 +8,10 @@ import {
 import type { MonitorCheckResult } from './schema';
 import { getCheckErrorMessage } from './utils';
 
-interface CheckMonitorInput {
-  url: string;
-  method: MonitorMethod;
-}
-
-export async function checkMonitor({
-  url,
-  method,
-}: CheckMonitorInput): Promise<MonitorCheckResult> {
+export async function checkMonitor(
+  url: string,
+  method: MonitorMethod
+): Promise<MonitorCheckResult> {
   const startedAt = performance.now();
 
   try {

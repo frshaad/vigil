@@ -12,7 +12,7 @@ export function getCheckErrorMessage(error: unknown): string {
   return 'Request failed.';
 }
 
-export function getManualCheckCooldownRemaining(lastCheckedAt: Date | null, now: Date) {
+export function getManualCheckCooldownRemaining(lastCheckedAt: Date | null, now: Date): number {
   if (!lastCheckedAt) {
     return 0;
   }

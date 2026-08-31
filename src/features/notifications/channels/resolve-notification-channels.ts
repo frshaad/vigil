@@ -1,17 +1,9 @@
-import type { Prisma } from '@/../prisma/generated/client';
+import prisma from '@/lib/prisma';
 
 import { emailChannelConfigSchema } from './schema';
 
-interface ResolveNotificationChannelsInput {
-  tx: Prisma.TransactionClient;
-  monitorId: string;
-}
-
-export async function resolveNotificationChannels({
-  monitorId,
-  tx,
-}: ResolveNotificationChannelsInput) {
-  const channels = await tx.notificationChannel.findMany({
+export async function resolveNotificationChannels(monitorId: string) {
+  const channels = await prisma.notificationChannel.findMany({
     where: {
       isEnabled: true,
       monitors: {

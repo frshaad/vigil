@@ -1,6 +1,7 @@
 import { Prisma } from '@/../prisma/generated/client';
 import prisma from '@/lib/prisma';
 
+import { dispatchNotification } from '../notifications/dispatch-notification';
 import { checkMonitor } from './checker/check-monitor';
 import { MONITOR_MANUAL_CHECK_COOLDOWN_MS } from './checker/constants';
 import { monitorCheckResultSchema } from './checker/schema';
@@ -95,7 +96,7 @@ async function persistMonitorCheck(
             },
           });
 
-          await handleMonitorStatus({
+          const notificationEvent = await handleMonitorStatus({
             tx,
             monitorId,
             previousStatus: monitor.lastStatus,
@@ -105,7 +106,10 @@ async function persistMonitorCheck(
             now: checkedAt,
           });
 
-          return result;
+          return {
+            result,
+            notificationEvent,
+          };
         },
         {
           isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
@@ -149,9 +153,19 @@ export async function runMonitorCheck({ monitorId, userId }: RunMonitorCheckInpu
 
   const rawResult = await checkMonitor(monitor.url, monitor.method);
 
-  const result = monitorCheckResultSchema.parse(rawResult);
+  const validatedResult = monitorCheckResultSchema.parse(rawResult);
 
   const checkedAt = new Date();
 
-  return await persistMonitorCheck(monitorId, result, checkedAt);
+  const { result, notificationEvent } = await persistMonitorCheck(
+    monitorId,
+    validatedResult,
+    checkedAt
+  );
+
+  if (notificationEvent) {
+    await dispatchNotification(notificationEvent);
+  }
+
+  return result;
 }

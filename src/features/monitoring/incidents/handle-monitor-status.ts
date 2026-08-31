@@ -1,5 +1,6 @@
 import type { Prisma } from '@/../prisma/generated/client';
 import type { MonitorStatus } from '@/../prisma/generated/enums';
+import type { NotificationEvent } from '@/features/notifications/events';
 
 interface HandleMonitorStatusInput {
   tx: Prisma.TransactionClient;
@@ -19,7 +20,7 @@ export async function handleMonitorStatus({
   statusCode,
   error,
   now,
-}: HandleMonitorStatusInput) {
+}: HandleMonitorStatusInput): Promise<NotificationEvent | null> {
   const wentDown = previousStatus !== 'DOWN' && nextStatus === 'DOWN';
   const recovered = previousStatus === 'DOWN' && nextStatus === 'UP';
 
@@ -34,27 +35,69 @@ export async function handleMonitorStatus({
       },
     });
 
-    if (!openIncident) {
-      await tx.incident.create({
-        data: {
-          monitorId,
-          startedAt: now,
-          statusCode,
-          error,
-        },
-      });
+    if (openIncident) {
+      return null;
     }
 
-    return;
+    const incident = await tx.incident.create({
+      data: {
+        monitorId,
+        startedAt: now,
+        statusCode,
+        error,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return {
+      type: 'MONITOR_DOWN',
+      monitorId,
+      incidentId: incident.id,
+    };
   }
 
   if (recovered) {
-    await tx.incident.updateMany({
+    const result = await tx.incident.updateMany({
       where: {
         monitorId,
         status: 'OPEN',
       },
-      data: { status: 'RESOLVED', resolvedAt: now },
+      data: {
+        status: 'RESOLVED',
+        resolvedAt: now,
+      },
     });
+
+    if (result.count === 0) {
+      return null;
+    }
+
+    const incident = await tx.incident.findFirst({
+      where: {
+        monitorId,
+        status: 'RESOLVED',
+        resolvedAt: now,
+      },
+      orderBy: {
+        resolvedAt: 'desc',
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!incident) {
+      return null;
+    }
+
+    return {
+      type: 'MONITOR_RECOVERED',
+      monitorId,
+      incidentId: incident.id,
+    };
   }
+
+  return null;
 }

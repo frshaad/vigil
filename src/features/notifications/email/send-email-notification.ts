@@ -3,7 +3,7 @@ import { sendEmail } from '@/features/email/send-email';
 import type { NotificationEvent } from '../events';
 import MonitorNotificationEmail from './monitor-notification-email';
 
-interface SendMonitorNotificationInput {
+interface SendEmailNotificationInput {
   event: NotificationEvent;
   monitorName: string;
   monitorUrl: string;
@@ -14,7 +14,7 @@ interface SendMonitorNotificationInput {
   resolvedAt?: Date | null;
 }
 
-export async function sendMonitorNotification({
+export async function sendEmailNotification({
   event,
   email,
   monitorName,
@@ -23,7 +23,7 @@ export async function sendMonitorNotification({
   error,
   startedAt,
   resolvedAt,
-}: SendMonitorNotificationInput) {
+}: SendEmailNotificationInput) {
   const isDown = event.type === 'MONITOR_DOWN';
 
   await sendEmail({

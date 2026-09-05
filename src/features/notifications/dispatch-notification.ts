@@ -1,9 +1,9 @@
 import prisma from '@/lib/prisma';
 
 import { resolveNotificationChannels } from './channels/resolve-notification-channels';
-import { sendMonitorNotification } from './email/send-monitor-notification';
+import { sendEmailNotification } from './email/send-email-notification';
 import type { NotificationEvent } from './events';
-import { sendTelegramNotification } from './telegram/send-monitor-notification';
+import { sendTelegramNotification } from './telegram/send-telegram-notification';
 
 export async function dispatchNotification(event: NotificationEvent): Promise<void> {
   const monitor = await prisma.monitor.findUnique({
@@ -47,7 +47,7 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
   const results = await Promise.allSettled(
     channels.map((channel) => {
       if (channel.type === 'EMAIL') {
-        return sendMonitorNotification({
+        return sendEmailNotification({
           event,
           email: channel.email,
           monitorName: monitor.name,

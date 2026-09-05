@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { resolveNotificationChannels } from './channels/resolve-notification-channels';
 import { sendMonitorNotification } from './email/send-monitor-notification';
 import type { NotificationEvent } from './events';
+import { sendTelegramNotification } from './telegram/send-monitor-notification';
 
 export async function dispatchNotification(event: NotificationEvent): Promise<void> {
   const monitor = await prisma.monitor.findUnique({
@@ -16,12 +17,7 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
   });
 
   if (!monitor) {
-    return;
-  }
-
-  const channels = await resolveNotificationChannels(event.monitorId);
-
-  if (channels.length === 0) {
+    console.error(`Notification skipped: monitor ${event.monitorId} not found.`);
     return;
   }
 
@@ -38,21 +34,50 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
   });
 
   if (!incident) {
+    console.error(`Notification skipped: incident ${event.incidentId} not found.`);
     return;
   }
 
-  await Promise.all(
-    channels.map((channel) =>
-      sendMonitorNotification({
+  const channels = await resolveNotificationChannels(event.monitorId);
+
+  if (channels.length === 0) {
+    return;
+  }
+
+  const results = await Promise.allSettled(
+    channels.map((channel) => {
+      if (channel.type === 'EMAIL') {
+        return sendMonitorNotification({
+          event,
+          email: channel.email,
+          monitorName: monitor.name,
+          monitorUrl: monitor.url,
+          statusCode: incident.statusCode,
+          error: incident.error,
+          startedAt: incident.startedAt,
+          resolvedAt: incident.resolvedAt,
+        });
+      }
+
+      return sendTelegramNotification({
         event,
-        email: channel.email,
+        chatId: channel.chatId,
         monitorName: monitor.name,
         monitorUrl: monitor.url,
         statusCode: incident.statusCode,
         error: incident.error,
         startedAt: incident.startedAt,
         resolvedAt: incident.resolvedAt,
-      })
-    )
+      });
+    })
   );
+
+  results.forEach((result, index) => {
+    if (result.status === 'rejected') {
+      console.error(
+        `Failed to send notification through channel ${channels[index].id}.`,
+        result.reason
+      );
+    }
+  });
 }

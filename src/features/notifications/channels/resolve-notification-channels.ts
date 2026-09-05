@@ -1,8 +1,22 @@
 import prisma from '@/lib/prisma';
 
-import { emailChannelConfigSchema } from './schema';
+import { emailChannelConfigSchema, telegramChannelConfigSchema } from './schema';
 
-export async function resolveNotificationChannels(monitorId: string) {
+type ResolvedNotificationChannel =
+  | {
+      id: string;
+      type: 'EMAIL';
+      email: string;
+    }
+  | {
+      id: string;
+      type: 'TELEGRAM';
+      chatId: string;
+    };
+
+export async function resolveNotificationChannels(
+  monitorId: string
+): Promise<ResolvedNotificationChannel[]> {
   const channels = await prisma.notificationChannel.findMany({
     where: {
       isEnabled: true,
@@ -19,23 +33,41 @@ export async function resolveNotificationChannels(monitorId: string) {
     },
   });
 
-  return channels.flatMap((channel) => {
-    if (channel.type !== 'EMAIL') {
-      return [];
-    }
+  const resolvedChannels: ResolvedNotificationChannel[] = [];
 
-    const config = emailChannelConfigSchema.safeParse(channel.config);
+  for (const channel of channels) {
+    if (channel.type === 'EMAIL') {
+      const config = emailChannelConfigSchema.safeParse(channel.config);
 
-    if (!config.success) {
-      return [];
-    }
+      if (!config.success) {
+        console.error(`Invalid email notification config for channel ${channel.id}.`);
+        continue;
+      }
 
-    return [
-      {
+      resolvedChannels.push({
         id: channel.id,
         type: channel.type,
         email: config.data.email,
-      },
-    ];
-  });
+      });
+
+      continue;
+    }
+
+    if (channel.type === 'TELEGRAM') {
+      const config = telegramChannelConfigSchema.safeParse(channel.config);
+
+      if (!config.success) {
+        console.error(`Invalid Telegram notification config for channel ${channel.id}.`);
+        continue;
+      }
+
+      resolvedChannels.push({
+        id: channel.id,
+        type: channel.type,
+        chatId: config.data.chatId,
+      });
+    }
+  }
+
+  return resolvedChannels;
 }

@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { dispatchNotification } from '../notifications/dispatch-notification';
 import { checkMonitor } from './checker/check-monitor';
 import { MONITOR_MANUAL_CHECK_COOLDOWN_MS } from './checker/constants';
-import { monitorCheckResultSchema } from './checker/schema';
+import type { monitorCheckResultSchema } from './checker/schema';
 import { getManualCheckCooldownRemaining } from './checker/utils';
 import { handleMonitorStatus } from './incidents/handle-monitor-status';
 
@@ -106,10 +106,7 @@ async function persistMonitorCheck(
             now: checkedAt,
           });
 
-          return {
-            result,
-            notificationEvent,
-          };
+          return { notificationEvent };
         },
         {
           isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
@@ -151,21 +148,15 @@ export async function runMonitorCheck({ monitorId, userId }: RunMonitorCheckInpu
     throw new Error('Monitor not found.');
   }
 
-  const rawResult = await checkMonitor(monitor.url, monitor.method);
-
-  const validatedResult = monitorCheckResultSchema.parse(rawResult);
+  const checkResult = await checkMonitor(monitor.url, monitor.method);
 
   const checkedAt = new Date();
 
-  const { result, notificationEvent } = await persistMonitorCheck(
-    monitorId,
-    validatedResult,
-    checkedAt
-  );
+  const { notificationEvent } = await persistMonitorCheck(monitorId, checkResult, checkedAt);
 
   if (notificationEvent) {
     await dispatchNotification(notificationEvent);
   }
 
-  return result;
+  return checkResult;
 }

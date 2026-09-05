@@ -17,6 +17,7 @@ env:
   GITHUB_CLIENT_SECRET: dummy
   RESEND_API_KEY: dummy
   EMAIL_FROM: dummy
+  TELEGRAM_BOT_TOKEN: dummy
 
 jobs:
   verify:

@@ -11,9 +11,10 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
-    RESEND_API_KEY: z.string(),
-    EMAIL_FROM: z.string(),
-    TELEGRAM_BOT_TOKEN: z.string(),
+    RESEND_API_KEY: z.string().min(1),
+    EMAIL_FROM: z.string().min(1),
+    TELEGRAM_BOT_TOKEN: z.string().min(1),
+    CRON_SECRET: z.string().min(1),
   },
 
   /** Client-side variables (must start with NEXT_PUBLIC_) */
@@ -33,6 +34,7 @@ export const env = createEnv({
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+    CRON_SECRET: process.env.CRON_SECRET,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 

@@ -18,6 +18,7 @@ env:
   RESEND_API_KEY: dummy
   EMAIL_FROM: dummy
   TELEGRAM_BOT_TOKEN: dummy
+  CRON_SECRET: dummy
 
 jobs:
   verify:

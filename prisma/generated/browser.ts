@@ -57,3 +57,8 @@ export type NotificationChannel = Prisma.NotificationChannelModel
  * 
  */
 export type Subscription = Prisma.SubscriptionModel
+/**
+ * Model MonitorCheck
+ * 
+ */
+export type MonitorCheck = Prisma.MonitorCheckModel

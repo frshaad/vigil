@@ -96,6 +96,17 @@ async function persistMonitorCheck(
             },
           });
 
+          await tx.monitorCheck.create({
+            data: {
+              monitorId,
+              checkedAt,
+              status: result.status,
+              statusCode: result.statusCode,
+              responseTimeMs: result.responseTimeMs,
+              error: result.error,
+            },
+          });
+
           const notificationEvent = await handleMonitorStatus({
             tx,
             monitorId,

@@ -291,6 +291,7 @@ export type MonitorWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   incidents?: Prisma.IncidentListRelationFilter
   notificationChannels?: Prisma.NotificationChannelListRelationFilter
+  checks?: Prisma.MonitorCheckListRelationFilter
 }
 
 export type MonitorOrderByWithRelationInput = {
@@ -310,6 +311,7 @@ export type MonitorOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   incidents?: Prisma.IncidentOrderByRelationAggregateInput
   notificationChannels?: Prisma.NotificationChannelOrderByRelationAggregateInput
+  checks?: Prisma.MonitorCheckOrderByRelationAggregateInput
 }
 
 export type MonitorWhereUniqueInput = Prisma.AtLeast<{
@@ -332,6 +334,7 @@ export type MonitorWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   incidents?: Prisma.IncidentListRelationFilter
   notificationChannels?: Prisma.NotificationChannelListRelationFilter
+  checks?: Prisma.MonitorCheckListRelationFilter
 }, "id">
 
 export type MonitorOrderByWithAggregationInput = {
@@ -390,6 +393,7 @@ export type MonitorCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutMonitorsInput
   incidents?: Prisma.IncidentCreateNestedManyWithoutMonitorInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutMonitorsInput
+  checks?: Prisma.MonitorCheckCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorUncheckedCreateInput = {
@@ -408,6 +412,7 @@ export type MonitorUncheckedCreateInput = {
   updatedAt?: Date | string
   incidents?: Prisma.IncidentUncheckedCreateNestedManyWithoutMonitorInput
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutMonitorsInput
+  checks?: Prisma.MonitorCheckUncheckedCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorUpdateInput = {
@@ -426,6 +431,7 @@ export type MonitorUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMonitorsNestedInput
   incidents?: Prisma.IncidentUpdateManyWithoutMonitorNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutMonitorsNestedInput
+  checks?: Prisma.MonitorCheckUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorUncheckedUpdateInput = {
@@ -444,6 +450,7 @@ export type MonitorUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidents?: Prisma.IncidentUncheckedUpdateManyWithoutMonitorNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutMonitorsNestedInput
+  checks?: Prisma.MonitorCheckUncheckedUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorCreateManyInput = {
@@ -686,6 +693,20 @@ export type MonitorUncheckedUpdateManyWithoutNotificationChannelsNestedInput = {
   deleteMany?: Prisma.MonitorScalarWhereInput | Prisma.MonitorScalarWhereInput[]
 }
 
+export type MonitorCreateNestedOneWithoutChecksInput = {
+  create?: Prisma.XOR<Prisma.MonitorCreateWithoutChecksInput, Prisma.MonitorUncheckedCreateWithoutChecksInput>
+  connectOrCreate?: Prisma.MonitorCreateOrConnectWithoutChecksInput
+  connect?: Prisma.MonitorWhereUniqueInput
+}
+
+export type MonitorUpdateOneRequiredWithoutChecksNestedInput = {
+  create?: Prisma.XOR<Prisma.MonitorCreateWithoutChecksInput, Prisma.MonitorUncheckedCreateWithoutChecksInput>
+  connectOrCreate?: Prisma.MonitorCreateOrConnectWithoutChecksInput
+  upsert?: Prisma.MonitorUpsertWithoutChecksInput
+  connect?: Prisma.MonitorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MonitorUpdateToOneWithWhereWithoutChecksInput, Prisma.MonitorUpdateWithoutChecksInput>, Prisma.MonitorUncheckedUpdateWithoutChecksInput>
+}
+
 export type MonitorCreateWithoutUserInput = {
   id?: string
   name: string
@@ -701,6 +722,7 @@ export type MonitorCreateWithoutUserInput = {
   updatedAt?: Date | string
   incidents?: Prisma.IncidentCreateNestedManyWithoutMonitorInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutMonitorsInput
+  checks?: Prisma.MonitorCheckCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorUncheckedCreateWithoutUserInput = {
@@ -718,6 +740,7 @@ export type MonitorUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   incidents?: Prisma.IncidentUncheckedCreateNestedManyWithoutMonitorInput
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutMonitorsInput
+  checks?: Prisma.MonitorCheckUncheckedCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorCreateOrConnectWithoutUserInput = {
@@ -780,6 +803,7 @@ export type MonitorCreateWithoutIncidentsInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMonitorsInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutMonitorsInput
+  checks?: Prisma.MonitorCheckCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorUncheckedCreateWithoutIncidentsInput = {
@@ -797,6 +821,7 @@ export type MonitorUncheckedCreateWithoutIncidentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutMonitorsInput
+  checks?: Prisma.MonitorCheckUncheckedCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorCreateOrConnectWithoutIncidentsInput = {
@@ -830,6 +855,7 @@ export type MonitorUpdateWithoutIncidentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMonitorsNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutMonitorsNestedInput
+  checks?: Prisma.MonitorCheckUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorUncheckedUpdateWithoutIncidentsInput = {
@@ -847,6 +873,7 @@ export type MonitorUncheckedUpdateWithoutIncidentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutMonitorsNestedInput
+  checks?: Prisma.MonitorCheckUncheckedUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorCreateWithoutNotificationChannelsInput = {
@@ -864,6 +891,7 @@ export type MonitorCreateWithoutNotificationChannelsInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMonitorsInput
   incidents?: Prisma.IncidentCreateNestedManyWithoutMonitorInput
+  checks?: Prisma.MonitorCheckCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorUncheckedCreateWithoutNotificationChannelsInput = {
@@ -881,6 +909,7 @@ export type MonitorUncheckedCreateWithoutNotificationChannelsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   incidents?: Prisma.IncidentUncheckedCreateNestedManyWithoutMonitorInput
+  checks?: Prisma.MonitorCheckUncheckedCreateNestedManyWithoutMonitorInput
 }
 
 export type MonitorCreateOrConnectWithoutNotificationChannelsInput = {
@@ -902,6 +931,94 @@ export type MonitorUpdateWithWhereUniqueWithoutNotificationChannelsInput = {
 export type MonitorUpdateManyWithWhereWithoutNotificationChannelsInput = {
   where: Prisma.MonitorScalarWhereInput
   data: Prisma.XOR<Prisma.MonitorUpdateManyMutationInput, Prisma.MonitorUncheckedUpdateManyWithoutNotificationChannelsInput>
+}
+
+export type MonitorCreateWithoutChecksInput = {
+  id?: string
+  name: string
+  url: string
+  method?: $Enums.MonitorMethod
+  intervalSeconds?: number
+  isActive?: boolean
+  lastCheckedAt?: Date | string | null
+  lastStatus?: $Enums.MonitorStatus
+  lastStatusCode?: number | null
+  lastResponseTimeMs?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMonitorsInput
+  incidents?: Prisma.IncidentCreateNestedManyWithoutMonitorInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutMonitorsInput
+}
+
+export type MonitorUncheckedCreateWithoutChecksInput = {
+  id?: string
+  userId: string
+  name: string
+  url: string
+  method?: $Enums.MonitorMethod
+  intervalSeconds?: number
+  isActive?: boolean
+  lastCheckedAt?: Date | string | null
+  lastStatus?: $Enums.MonitorStatus
+  lastStatusCode?: number | null
+  lastResponseTimeMs?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidents?: Prisma.IncidentUncheckedCreateNestedManyWithoutMonitorInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutMonitorsInput
+}
+
+export type MonitorCreateOrConnectWithoutChecksInput = {
+  where: Prisma.MonitorWhereUniqueInput
+  create: Prisma.XOR<Prisma.MonitorCreateWithoutChecksInput, Prisma.MonitorUncheckedCreateWithoutChecksInput>
+}
+
+export type MonitorUpsertWithoutChecksInput = {
+  update: Prisma.XOR<Prisma.MonitorUpdateWithoutChecksInput, Prisma.MonitorUncheckedUpdateWithoutChecksInput>
+  create: Prisma.XOR<Prisma.MonitorCreateWithoutChecksInput, Prisma.MonitorUncheckedCreateWithoutChecksInput>
+  where?: Prisma.MonitorWhereInput
+}
+
+export type MonitorUpdateToOneWithWhereWithoutChecksInput = {
+  where?: Prisma.MonitorWhereInput
+  data: Prisma.XOR<Prisma.MonitorUpdateWithoutChecksInput, Prisma.MonitorUncheckedUpdateWithoutChecksInput>
+}
+
+export type MonitorUpdateWithoutChecksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
+  intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastStatus?: Prisma.EnumMonitorStatusFieldUpdateOperationsInput | $Enums.MonitorStatus
+  lastStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastResponseTimeMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMonitorsNestedInput
+  incidents?: Prisma.IncidentUpdateManyWithoutMonitorNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutMonitorsNestedInput
+}
+
+export type MonitorUncheckedUpdateWithoutChecksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.EnumMonitorMethodFieldUpdateOperationsInput | $Enums.MonitorMethod
+  intervalSeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastCheckedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastStatus?: Prisma.EnumMonitorStatusFieldUpdateOperationsInput | $Enums.MonitorStatus
+  lastStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  lastResponseTimeMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidents?: Prisma.IncidentUncheckedUpdateManyWithoutMonitorNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutMonitorsNestedInput
 }
 
 export type MonitorCreateManyUserInput = {
@@ -934,6 +1051,7 @@ export type MonitorUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidents?: Prisma.IncidentUpdateManyWithoutMonitorNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutMonitorsNestedInput
+  checks?: Prisma.MonitorCheckUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorUncheckedUpdateWithoutUserInput = {
@@ -951,6 +1069,7 @@ export type MonitorUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidents?: Prisma.IncidentUncheckedUpdateManyWithoutMonitorNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutMonitorsNestedInput
+  checks?: Prisma.MonitorCheckUncheckedUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorUncheckedUpdateManyWithoutUserInput = {
@@ -983,6 +1102,7 @@ export type MonitorUpdateWithoutNotificationChannelsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMonitorsNestedInput
   incidents?: Prisma.IncidentUpdateManyWithoutMonitorNestedInput
+  checks?: Prisma.MonitorCheckUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorUncheckedUpdateWithoutNotificationChannelsInput = {
@@ -1000,6 +1120,7 @@ export type MonitorUncheckedUpdateWithoutNotificationChannelsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidents?: Prisma.IncidentUncheckedUpdateManyWithoutMonitorNestedInput
+  checks?: Prisma.MonitorCheckUncheckedUpdateManyWithoutMonitorNestedInput
 }
 
 export type MonitorUncheckedUpdateManyWithoutNotificationChannelsInput = {
@@ -1026,11 +1147,13 @@ export type MonitorUncheckedUpdateManyWithoutNotificationChannelsInput = {
 export type MonitorCountOutputType = {
   incidents: number
   notificationChannels: number
+  checks: number
 }
 
 export type MonitorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   incidents?: boolean | MonitorCountOutputTypeCountIncidentsArgs
   notificationChannels?: boolean | MonitorCountOutputTypeCountNotificationChannelsArgs
+  checks?: boolean | MonitorCountOutputTypeCountChecksArgs
 }
 
 /**
@@ -1057,6 +1180,13 @@ export type MonitorCountOutputTypeCountNotificationChannelsArgs<ExtArgs extends 
   where?: Prisma.NotificationChannelWhereInput
 }
 
+/**
+ * MonitorCountOutputType without action
+ */
+export type MonitorCountOutputTypeCountChecksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MonitorCheckWhereInput
+}
+
 
 export type MonitorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1075,6 +1205,7 @@ export type MonitorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   incidents?: boolean | Prisma.Monitor$incidentsArgs<ExtArgs>
   notificationChannels?: boolean | Prisma.Monitor$notificationChannelsArgs<ExtArgs>
+  checks?: boolean | Prisma.Monitor$checksArgs<ExtArgs>
   _count?: boolean | Prisma.MonitorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["monitor"]>
 
@@ -1133,6 +1264,7 @@ export type MonitorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   incidents?: boolean | Prisma.Monitor$incidentsArgs<ExtArgs>
   notificationChannels?: boolean | Prisma.Monitor$notificationChannelsArgs<ExtArgs>
+  checks?: boolean | Prisma.Monitor$checksArgs<ExtArgs>
   _count?: boolean | Prisma.MonitorCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MonitorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1148,6 +1280,7 @@ export type $MonitorPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     user: Prisma.$UserPayload<ExtArgs>
     incidents: Prisma.$IncidentPayload<ExtArgs>[]
     notificationChannels: Prisma.$NotificationChannelPayload<ExtArgs>[]
+    checks: Prisma.$MonitorCheckPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1560,6 +1693,7 @@ export interface Prisma__MonitorClient<T, Null = never, ExtArgs extends runtime.
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   incidents<T extends Prisma.Monitor$incidentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Monitor$incidentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notificationChannels<T extends Prisma.Monitor$notificationChannelsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Monitor$notificationChannelsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  checks<T extends Prisma.Monitor$checksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Monitor$checksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MonitorCheckPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2048,6 +2182,30 @@ export type Monitor$notificationChannelsArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.NotificationChannelScalarFieldEnum | Prisma.NotificationChannelScalarFieldEnum[]
+}
+
+/**
+ * Monitor.checks
+ */
+export type Monitor$checksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MonitorCheck
+   */
+  select?: Prisma.MonitorCheckSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MonitorCheck
+   */
+  omit?: Prisma.MonitorCheckOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MonitorCheckInclude<ExtArgs> | null
+  where?: Prisma.MonitorCheckWhereInput
+  orderBy?: Prisma.MonitorCheckOrderByWithRelationInput | Prisma.MonitorCheckOrderByWithRelationInput[]
+  cursor?: Prisma.MonitorCheckWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MonitorCheckScalarFieldEnum | Prisma.MonitorCheckScalarFieldEnum[]
 }
 
 /**

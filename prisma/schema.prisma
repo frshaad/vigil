@@ -126,6 +126,7 @@ model Monitor {
 
   incidents            Incident[]
   notificationChannels NotificationChannel[]
+  checks               MonitorCheck[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -135,7 +136,7 @@ model Monitor {
 }
 
 model Incident {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   monitorId String
   monitor   Monitor @relation(fields: [monitorId], references: [id], onDelete: Cascade)
 
@@ -187,4 +188,18 @@ model Subscription {
   updatedAt DateTime @updatedAt
 
   @@map("subscription")
+}
+
+model MonitorCheck {
+  id        String  @id @default(cuid())
+  monitorId String
+  monitor   Monitor @relation(fields: [monitorId], references: [id], onDelete: Cascade)
+
+  checkedAt      DateTime
+  status         MonitorStatus
+  statusCode     Int?
+  responseTimeMs Int?
+  error          String?
+
+  @@index([monitorId, checkedAt])
 }

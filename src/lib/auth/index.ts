@@ -39,7 +39,7 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
+    // requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
     resetPasswordTokenExpiresIn: PASSWORD_RESET.tokenExpiresIn,
 
@@ -72,7 +72,11 @@ export const auth = betterAuth({
     },
   },
 
-  experimental: { joins: true },
+  advanced: {
+    database: {
+      joins: true,
+    },
+  },
 
   plugins: [
     lastLoginMethod(),

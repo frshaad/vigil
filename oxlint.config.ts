@@ -19,34 +19,33 @@ const ignorePatterns = [
   '**/pnpm-lock.yaml',
   '**/yarn.lock',
 
-  '**/next-env.d.ts',
-
-  '**/components/ui/*',
+  '**/components/ui/**',
 ] satisfies OxlintConfig['ignorePatterns'];
 
 const overrides = [
   {
-    // Testing
     files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
     rules: {
       'typescript/no-explicit-any': 'off',
       'no-empty-function': 'off',
     },
   },
-  {
-    // Next.js
-    files: ['**/next-env.d.ts'],
-    rules: {
-      'import/no-unassigned-import': 'off',
-    },
-  },
 ] satisfies OxlintConfig['overrides'];
 
 export default defineConfig({
-  env: { browser: true },
+  env: {
+    browser: true,
+  },
+
+  options: {
+    typeAware: true,
+  },
+
   ignorePatterns,
   overrides,
-  jsPlugins: ['oxlint-plugin-complexity', '@tanstack/eslint-plugin-query'],
+
+  jsPlugins: ['@tanstack/eslint-plugin-query'],
+
   plugins: [
     'eslint',
     'typescript',
@@ -58,12 +57,15 @@ export default defineConfig({
     'unicorn',
     'nextjs',
   ],
+
   rules: {
-    // --- ESLint ---------------------------------------
+    // ============================================================
+    // ESLint — correctness
+    // ============================================================
+
     eqeqeq: 'error',
     curly: 'error',
     'array-callback-return': 'error',
-    'no-await-in-loop': 'warn',
     'no-constant-condition': 'error',
     'no-debugger': 'error',
     'no-dupe-keys': 'error',
@@ -74,27 +76,26 @@ export default defineConfig({
     'no-loss-of-precision': 'error',
     'no-redeclare': 'error',
     'no-self-assign': 'error',
-    'no-shadow': 'error',
     'no-throw-literal': 'error',
     'no-unused-vars': 'error',
-    'no-use-before-define': 'error',
     'prefer-const': 'error',
-    'prefer-template': 'error',
     'prefer-object-spread': 'error',
-    'object-shorthand': 'error',
-    radix: 'error',
+    'object-shorthand': 'warn',
 
-    'no-nested-ternary': 'error',
-    'complexity/complexity': ['warn', { cognitive: 15 }],
+    // ============================================================
+    // Accessibility
+    // ============================================================
 
-    // --- Accessibility ---------------------------------------
     'jsx-a11y/control-has-associated-label': 'error',
     'jsx-a11y/interactive-supports-focus': 'error',
     'jsx-a11y/no-interactive-element-to-noninteractive-role': 'error',
     'jsx-a11y/no-noninteractive-element-interactions': 'error',
     'jsx-a11y/no-noninteractive-element-to-interactive-role': 'error',
 
-    // --- Import ---------------------------------------
+    // ============================================================
+    // Imports
+    // ============================================================
+
     'import/first': 'error',
     'import/newline-after-import': 'error',
     'import/no-cycle': 'error',
@@ -102,7 +103,10 @@ export default defineConfig({
     'import/no-duplicates': 'error',
     'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
 
-    // --- OXC ---------------------------------------
+    // ============================================================
+    // OXC
+    // ============================================================
+
     'oxc/approx-constant': 'error',
     'oxc/bad-array-method-on-arguments': 'error',
     'oxc/bad-char-at-comparison': 'error',
@@ -119,46 +123,72 @@ export default defineConfig({
     'oxc/uninvoked-array-callback': 'error',
     'oxc/no-accumulating-spread': 'error',
 
-    // --- Promise ---------------------------------------
+    // ============================================================
+    // Promise
+    // ============================================================
+
     'promise/no-multiple-resolved': 'error',
     'promise/no-return-wrap': 'error',
     'promise/param-names': 'error',
     'promise/valid-params': 'error',
 
-    'promise/prefer-await-to-callbacks': 'error',
-    'promise/prefer-await-to-then': 'error',
+    // ============================================================
+    // TypeScript
+    // ============================================================
 
-    // --- TypeScript ---------------------------------------
     'typescript/await-thenable': 'error',
     'typescript/consistent-type-imports': 'error',
     'typescript/consistent-type-exports': 'error',
+
     'typescript/no-explicit-any': 'error',
     'typescript/no-floating-promises': 'error',
     'typescript/no-misused-promises': 'error',
+
     'typescript/no-unnecessary-type-assertion': 'error',
     'typescript/no-unnecessary-type-constraint': 'error',
     'typescript/no-unnecessary-type-conversion': 'error',
     'typescript/no-unnecessary-type-parameters': 'error',
+
     'typescript/no-unsafe-assignment': 'error',
     'typescript/no-unsafe-call': 'error',
     'typescript/no-unsafe-member-access': 'error',
     'typescript/no-unsafe-return': 'error',
+    'typescript/no-unsafe-argument': 'error',
+
+    'typescript/restrict-template-expressions': 'error',
+    'typescript/restrict-plus-operands': 'error',
+
     'typescript/only-throw-error': 'error',
-    'typescript/prefer-nullish-coalescing': 'error',
+
+    'typescript/ban-ts-comment': [
+      'error',
+      {
+        'ts-ignore': 'allow-with-description',
+        'ts-expect-error': 'allow-with-description',
+        'ts-nocheck': true,
+        'ts-check': false,
+      },
+    ],
+
     'typescript/prefer-as-const': 'error',
-    'typescript/return-await': ['error', 'always'],
-    'typescript/strict-boolean-expressions': 'error',
+
+    'typescript/return-await': ['error', 'error-handling-correctness-only'],
+
     'typescript/switch-exhaustiveness-check': 'error',
     'typescript/unbound-method': 'error',
-    'typescript/prefer-find': 'error',
 
-    // --- React ---------------------------------------
+    // ============================================================
+    // React
+    // ============================================================
+
     'react/no-unstable-nested-components': 'error',
     'react/rules-of-hooks': 'error',
-    'react/no-array-index-key': 'error',
     'react/jsx-no-constructed-context-values': 'warn',
 
-    // --- React Compiler -------------------------------
+    // ============================================================
+    // React Compiler
+    // ============================================================
+
     'react/error-boundaries': 'error',
     'react/immutability': 'error',
     'react/incompatible-library': 'error',
@@ -171,7 +201,10 @@ export default defineConfig({
     'react/use-memo': 'error',
     'react/unsupported-syntax': 'error',
 
-    // --- Unicorn ---------------------------------------
+    // ============================================================
+    // Unicorn
+    // ============================================================
+
     'unicorn/error-message': 'error',
     'unicorn/prefer-array-find': 'error',
     'unicorn/prefer-array-some': 'error',
@@ -180,17 +213,18 @@ export default defineConfig({
     'unicorn/prefer-modern-dom-apis': 'error',
     'unicorn/no-useless-undefined': 'error',
     'unicorn/no-useless-spread': 'error',
-    'unicorn/no-useless-fallback-in-spread': 'error',
-    'unicorn/prefer-optional-catch-binding': 'error',
-    'unicorn/consistent-function-scoping': 'error',
 
-    // --- Tanstack Query ---------------------------------------
+    // ============================================================
+    // TanStack Query
+    // ============================================================
+
     '@tanstack/query/exhaustive-deps': 'error',
-    '@tanstack/query/no-rest-destructuring': 'warn',
+    '@tanstack/query/no-rest-destructuring': 'error',
     '@tanstack/query/stable-query-client': 'error',
     '@tanstack/query/no-unstable-deps': 'error',
     '@tanstack/query/infinite-query-property-order': 'error',
     '@tanstack/query/no-void-query-fn': 'error',
     '@tanstack/query/mutation-property-order': 'error',
+    '@tanstack/query/prefer-query-options': 'error',
   },
 });

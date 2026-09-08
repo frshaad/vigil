@@ -16,7 +16,6 @@ export function withCurrentUser<C>(handler: AuthenticatedRouteHandler<C>) {
       throw new UnauthorizedError();
     }
 
-    // oxlint-disable-next-line typescript/return-await
     return handler(req, session.user, context);
   };
 }

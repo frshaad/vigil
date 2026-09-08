@@ -68,7 +68,6 @@ async function persistMonitorCheck(
 ) {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
-      // oxlint-disable-next-line no-await-in-loop -- Retries must run sequentially.
       return await prisma.$transaction(
         async (tx) => {
           const monitor = await tx.monitor.findUnique({

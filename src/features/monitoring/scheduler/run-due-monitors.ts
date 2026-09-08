@@ -18,7 +18,6 @@ export async function runDueMonitorChecks(): Promise<SchedulerResult> {
   for (let i = 0; i < monitors.length; i += SCHEDULER_CONCURRENCY) {
     const batch = monitors.slice(i, i + SCHEDULER_CONCURRENCY);
 
-    // oxlint-disable-next-line no-await-in-loop
     await Promise.all(
       batch.map(async (monitor) => {
         try {

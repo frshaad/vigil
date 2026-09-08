@@ -1,4 +1,3 @@
-// oxlint-disable react/no-array-index-key
 import { IconArrowNarrowRight, IconBell, IconCircle, IconSearch } from '@tabler/icons-react';
 
 import { cn } from '@/lib/utils';

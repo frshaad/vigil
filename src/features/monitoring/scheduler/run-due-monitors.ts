@@ -37,7 +37,7 @@ export async function runDueMonitorChecks(): Promise<SchedulerResult> {
 
           console.error(`Scheduled monitor check failed for ${monitor.id}:`, error);
         }
-      })
+      }),
     );
   }
 

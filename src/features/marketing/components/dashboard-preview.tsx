@@ -199,7 +199,7 @@ export default function DashboardPreview() {
                     <span
                       className={cn(
                         'rounded-full px-2 py-0.5 text-[10px] font-medium',
-                        statusStyles[m.status]
+                        statusStyles[m.status],
                       )}
                     >
                       {statusLabel[m.status]}

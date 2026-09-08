@@ -44,7 +44,7 @@ export function useChangePassword() {
           onResponse() {
             setIsPending(false);
           },
-        }
+        },
       );
     } catch {
       setError(DEFAULT_ERROR_MESSAGE);

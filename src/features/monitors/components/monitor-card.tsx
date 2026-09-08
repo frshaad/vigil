@@ -47,7 +47,7 @@ export default function MonitorCard({ monitor, isDeleting, onDeleteAction }: Mon
           'flex size-10 shrink-0 items-center justify-center ',
           isActive
             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-            : 'bg-muted text-muted-foreground'
+            : 'bg-muted text-muted-foreground',
         )}
       >
         {isActive ? <IconActivity className="size-5" /> : <IconPlayerPause className="size-5" />}

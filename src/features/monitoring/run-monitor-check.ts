@@ -64,7 +64,7 @@ async function claimMonitorCheck(monitorId: string, userId: string, now: Date) {
 async function persistMonitorCheck(
   monitorId: string,
   result: ReturnType<typeof monitorCheckResultSchema.parse>,
-  checkedAt: Date
+  checkedAt: Date,
 ) {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
@@ -120,7 +120,7 @@ async function persistMonitorCheck(
         },
         {
           isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
-        }
+        },
       );
     } catch (error) {
       if (

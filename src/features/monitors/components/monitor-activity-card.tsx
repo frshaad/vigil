@@ -40,7 +40,7 @@ export default function MonitorActivityCard({ incidents }: MonitorActivityCardPr
                     'mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full',
                     incident.status === 'OPEN'
                       ? 'bg-destructive/10 text-destructive'
-                      : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                      : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
                   )}
                 >
                   {incident.status === 'OPEN' ? (

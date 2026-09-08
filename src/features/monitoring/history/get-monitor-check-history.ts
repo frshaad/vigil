@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 const HISTORY_LIMIT = 100;
 
 export async function getMonitorCheckHistory(
-  monitorId: string
+  monitorId: string,
 ): Promise<Omit<MonitorCheck, 'monitorId'>[]> {
   const checks = await prisma.monitorCheck.findMany({
     where: {

@@ -10,7 +10,7 @@ export function handleRouteError(error: unknown): Response {
           message: error.expose ? error.message : 'Something went wrong',
         },
       },
-      { status: error.status }
+      { status: error.status },
     );
   }
 
@@ -23,7 +23,7 @@ export function handleRouteError(error: unknown): Response {
           fields: error.flattened,
         },
       },
-      { status: error.status }
+      { status: error.status },
     );
   }
 
@@ -37,6 +37,6 @@ export function handleRouteError(error: unknown): Response {
         message: 'Something went wrong',
       },
     },
-    { status: 500 }
+    { status: 500 },
   );
 }

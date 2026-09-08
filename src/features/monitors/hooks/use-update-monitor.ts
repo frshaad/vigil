@@ -35,7 +35,7 @@ export function useUpdateMonitor(monitor: Pick<Monitor, 'id' | 'name' | 'url' | 
           toast.error(error.serverError ?? 'Failed to update monitor.');
         },
       },
-    }
+    },
   );
 
   return {

@@ -71,14 +71,14 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
         startedAt: incident.startedAt,
         resolvedAt: incident.resolvedAt,
       });
-    })
+    }),
   );
 
   results.forEach((result, index) => {
     if (result.status === 'rejected') {
       console.error(
         `Failed to send notification through channel ${channels[index].id}.`,
-        result.reason
+        result.reason,
       );
     }
   });

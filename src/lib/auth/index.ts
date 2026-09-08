@@ -49,7 +49,7 @@ export const auth = betterAuth({
           to: user.email,
           subject: 'Reset your password',
           react: ResetPasswordEmail({ resetUrl: url }),
-        })
+        }),
       );
     },
   },
@@ -99,7 +99,7 @@ export const auth = betterAuth({
           to: user.email,
           subject: 'Verify your email address',
           react: VerificationEmail({ verificationUrl: url }),
-        })
+        }),
       );
     },
   },

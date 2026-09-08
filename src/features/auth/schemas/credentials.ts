@@ -19,11 +19,11 @@ export const displayNameSchema = z
   .trim()
   .min(
     baseSchemaConfig.MIN_NAME_LENGTH,
-    `Name must be at least ${baseSchemaConfig.MIN_NAME_LENGTH} characters`
+    `Name must be at least ${baseSchemaConfig.MIN_NAME_LENGTH} characters`,
   )
   .max(
     baseSchemaConfig.MAX_NAME_LENGTH,
-    `Name must be ${baseSchemaConfig.MAX_NAME_LENGTH} characters or fewer`
+    `Name must be ${baseSchemaConfig.MAX_NAME_LENGTH} characters or fewer`,
   );
 
 export const emailSchema = z

@@ -15,7 +15,7 @@ type ResolvedNotificationChannel =
     };
 
 export async function resolveNotificationChannels(
-  monitorId: string
+  monitorId: string,
 ): Promise<ResolvedNotificationChannel[]> {
   const channels = await prisma.notificationChannel.findMany({
     where: {

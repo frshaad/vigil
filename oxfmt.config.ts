@@ -21,16 +21,20 @@ const ignorePatterns = [
 
   '**/next-env.d.ts',
 
-  'prisma/generated',
-  'prisma/migrations',
+  'prisma/generated/**',
+  'prisma/migrations/**',
 ] satisfies OxlintConfig['ignorePatterns'];
 
 export default defineConfig({
   ignorePatterns,
+
+  printWidth: 100,
   singleQuote: true,
+  trailingComma: 'all',
+
   sortTailwindcss: true,
+
   sortImports: {
     groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index'], 'style'],
   },
-  trailingComma: 'es5',
 });

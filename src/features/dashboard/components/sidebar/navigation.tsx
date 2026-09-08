@@ -37,7 +37,7 @@ export function SidebarNavigationItem({
           'focus-visible:ring-2 focus-visible:ring-ring/50',
           active
             ? 'bg-primary/10 text-primary'
-            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            : 'text-muted-foreground hover:bg-muted hover:text-foreground',
         )}
       >
         <Icon
@@ -45,7 +45,7 @@ export function SidebarNavigationItem({
           stroke={1.75}
           className={cn(
             'shrink-0 transition-colors',
-            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
+            active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
           )}
         />
         <span className="truncate">{item.label}</span>

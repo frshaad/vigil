@@ -31,7 +31,7 @@ export default function Header() {
         'sticky top-0 z-50 w-full transition-colors duration-300',
         scrolled
           ? 'border-b border-border bg-background/70 backdrop-blur-xl'
-          : 'border-b border-transparent bg-transparent'
+          : 'border-b border-transparent bg-transparent',
       )}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">

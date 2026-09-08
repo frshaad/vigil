@@ -90,7 +90,7 @@ export default function Pricing() {
               'relative flex flex-col rounded-2xl border p-8 transition-colors',
               tier.featured
                 ? 'border-primary/50 bg-card shadow-[0_0_0_1px_var(--primary)]'
-                : 'border-border bg-card'
+                : 'border-border bg-card',
             )}
           >
             {tier.featured && (
@@ -124,7 +124,7 @@ export default function Pricing() {
                       'flex size-5 shrink-0 items-center justify-center rounded-full',
                       feature.included
                         ? 'bg-primary/15 text-primary'
-                        : 'bg-muted text-muted-foreground'
+                        : 'bg-muted text-muted-foreground',
                     )}
                   >
                     {feature.included ? (
@@ -138,7 +138,7 @@ export default function Pricing() {
                       'text-sm',
                       feature.included
                         ? 'text-foreground'
-                        : 'text-muted-foreground line-through decoration-border'
+                        : 'text-muted-foreground line-through decoration-border',
                     )}
                   >
                     {feature.label}

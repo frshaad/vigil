@@ -27,7 +27,7 @@ export function useSocialLogin(provider: Provider) {
           onResponse() {
             setIsPending(false);
           },
-        }
+        },
       );
     } catch {
       toast.error(DEFAULT_ERROR_MESSAGE);

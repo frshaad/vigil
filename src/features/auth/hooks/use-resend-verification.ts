@@ -34,7 +34,7 @@ export function useResendVerification(options?: { callbackURL?: Route }) {
             setIsPending(false);
             setIsSent(true);
           },
-        }
+        },
       );
     } catch {
       toast.error(DEFAULT_ERROR_MESSAGE);

@@ -7,5 +7,5 @@ export type RouteHandler<C = unknown> = (req: NextRequest, context: C) => Promis
 export type AuthenticatedRouteHandler<C = unknown> = (
   req: NextRequest,
   user: Session['user'],
-  context: C
+  context: C,
 ) => Promise<Response>;

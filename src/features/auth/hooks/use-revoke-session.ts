@@ -29,7 +29,7 @@ export function useRevokeSession(options: UseRevokeSessionOptions = {}) {
           onResponse() {
             setPendingToken(null);
           },
-        }
+        },
       );
     } catch {
       toast.error(DEFAULT_ERROR_MESSAGE);

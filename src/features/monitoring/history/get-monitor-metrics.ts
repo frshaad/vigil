@@ -10,7 +10,7 @@ export interface MonitorMetrics {
 
 export async function getMonitorMetrics(
   monitorId: string,
-  now = new Date()
+  now = new Date(),
 ): Promise<MonitorMetrics> {
   const since = new Date(now.getTime() - METRICS_WINDOW_MS);
 

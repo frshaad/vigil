@@ -10,7 +10,7 @@ import { getCheckErrorMessage } from './utils';
 
 export async function checkMonitor(
   url: string,
-  method: MonitorMethod
+  method: MonitorMethod,
 ): Promise<MonitorCheckResult> {
   const startedAt = performance.now();
 

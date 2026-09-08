@@ -26,7 +26,7 @@ export function useCreateMonitor() {
           toast.error(error.serverError ?? 'Failed to create monitor.');
         },
       },
-    }
+    },
   );
 
   return {

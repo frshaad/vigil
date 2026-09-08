@@ -43,7 +43,7 @@ export const requireAuthOrRedirect = cache(
       redirect(`${loginPath}?redirect=${encodeURIComponent(options.callbackURL)}`);
     }
     redirect(loginPath);
-  }
+  },
 );
 
 export const getCurrentUserOrThrow = cache(async () => {

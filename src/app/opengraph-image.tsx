@@ -48,6 +48,6 @@ export default function OpenGraphImage() {
         vigil.example.com
       </div>
     </div>,
-    size
+    size,
   );
 }

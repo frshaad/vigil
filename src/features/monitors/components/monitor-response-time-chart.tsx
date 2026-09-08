@@ -27,19 +27,10 @@ export default function MonitorResponseTimeChart({ data }: MonitorResponseTimeCh
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickFormatter={(value) =>
-            new Date(value).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            })
-          }
+          tickFormatter={formatTime}
         />
         <YAxis tickLine={false} axisLine={false} tickMargin={8} width={45} />
-        <ChartTooltip
-          content={
-            <ChartTooltipContent labelFormatter={(value) => new Date(value).toLocaleString()} />
-          }
-        />
+        <ChartTooltip content={<ChartTooltipContent labelFormatter={formatDate} />} />
         <Line
           type="monotone"
           dataKey="responseTimeMs"
@@ -51,4 +42,23 @@ export default function MonitorResponseTimeChart({ data }: MonitorResponseTimeCh
       </LineChart>
     </ChartContainer>
   );
+}
+
+function formatDate(value: unknown) {
+  if (typeof value !== 'string' && typeof value !== 'number' && !(value instanceof Date)) {
+    return '';
+  }
+
+  return new Date(value).toLocaleString();
+}
+
+function formatTime(value: unknown) {
+  if (typeof value !== 'string' && typeof value !== 'number' && !(value instanceof Date)) {
+    return '';
+  }
+
+  return new Date(value).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }

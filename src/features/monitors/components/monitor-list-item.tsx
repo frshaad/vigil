@@ -8,7 +8,7 @@ import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/comp
 import MonitorStatusBadge from './monitor-status-badge';
 
 type MonitorListItemProps = {
-  monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method' | 'isActive'>;
+  monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method' | 'isActive' | 'lastStatus'>;
 };
 
 export default function MonitorListItem({ monitor }: MonitorListItemProps) {
@@ -35,7 +35,7 @@ export default function MonitorListItem({ monitor }: MonitorListItemProps) {
 
           <Badge variant="outline">{monitor.method}</Badge>
 
-          <MonitorStatusBadge isActive={monitor.isActive} />
+          <MonitorStatusBadge status={monitor.lastStatus} />
         </ItemTitle>
 
         <ItemDescription>{monitor.url}</ItemDescription>

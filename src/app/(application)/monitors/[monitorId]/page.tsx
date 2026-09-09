@@ -1,7 +1,10 @@
 import type { Route } from 'next';
 import { notFound } from 'next/navigation';
 
-import { getMonitorCheckHistory } from '@/features/monitoring/history/get-monitor-check-history';
+import {
+  getMonitorCheckHistory,
+  getRecentMonitorChecks,
+} from '@/features/monitoring/history/get-monitor-check-history';
 import { getMonitorMetrics } from '@/features/monitoring/history/get-monitor-metrics';
 import { MetricCard } from '@/features/monitors/components/metric-card';
 import MonitorActivityCard from '@/features/monitors/components/monitor-activity-card';
@@ -9,6 +12,7 @@ import MonitorBreadcrumbs from '@/features/monitors/components/monitor-breadcrum
 import MonitorDetailsCard from '@/features/monitors/components/monitor-details-card';
 import MonitorEndpointCard from '@/features/monitors/components/monitor-endpoint-card';
 import MonitorHeader from '@/features/monitors/components/monitor-header';
+import MonitorRecentChecks from '@/features/monitors/components/monitor-recent-checks';
 import MonitorResponseTimeChart from '@/features/monitors/components/monitor-response-time-chart';
 import UpdateMonitorForm from '@/features/monitors/components/update-monitor-form';
 import { getMonitor } from '@/features/monitors/dal';
@@ -27,9 +31,10 @@ export default async function MonitorPage({ params }: PageProps<'/monitors/[moni
     notFound();
   }
 
-  const [metrics, history] = await Promise.all([
+  const [metrics, history, recentChecks] = await Promise.all([
     getMonitorMetrics(monitor.id),
     getMonitorCheckHistory(monitor.id),
+    getRecentMonitorChecks(monitor.id),
   ]);
 
   const chartData = history.map((check) => ({
@@ -67,6 +72,8 @@ export default async function MonitorPage({ params }: PageProps<'/monitors/[moni
           </section>
 
           <MonitorResponseTimeChart data={chartData} />
+
+          <MonitorRecentChecks checks={recentChecks} />
 
           <MonitorActivityCard incidents={monitor.incidents} />
 

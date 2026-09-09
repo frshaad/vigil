@@ -11,6 +11,11 @@ const monitorSelect = {
   url: true,
   method: true,
   isActive: true,
+  lastStatus: true,
+  intervalSeconds: true,
+  lastCheckedAt: true,
+  lastResponseTimeMs: true,
+  lastStatusCode: true,
 } satisfies Prisma.MonitorSelect;
 
 const monitorDetailsSelect = {

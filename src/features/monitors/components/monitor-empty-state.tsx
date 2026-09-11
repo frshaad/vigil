@@ -20,7 +20,7 @@ export default function MonitorEmptyState() {
       </CardHeader>
 
       <CardContent className="flex justify-center">
-        <Button nativeButton={false} render={<Link href="/monitors/new" />}>
+        <Button nativeButton={false} render={<Link href="/dashboard/monitors/new" />}>
           <IconPlus />
           Add your first monitor
         </Button>

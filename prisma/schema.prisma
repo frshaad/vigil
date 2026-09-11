@@ -55,6 +55,7 @@ model User {
   monitors             Monitor[]
   notificationChannels NotificationChannel[]
   subscription         Subscription?
+  monitorPreferences   MonitorPreference[]
 
   @@unique([email])
   @@map("user")
@@ -127,6 +128,7 @@ model Monitor {
   incidents            Incident[]
   notificationChannels NotificationChannel[]
   checks               MonitorCheck[]
+  monitorPreference    MonitorPreference?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -202,4 +204,22 @@ model MonitorCheck {
   error          String?
 
   @@index([monitorId, checkedAt])
+}
+
+model MonitorPreference {
+  id        String @id @default(cuid())
+  userId    String
+  monitorId String @unique
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  monitor Monitor @relation(fields: [monitorId], references: [id], onDelete: Cascade)
+
+  isPinned Boolean @default(false)
+  position Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, isPinned, position])
+  @@map("monitor_preference")
 }

@@ -15,7 +15,7 @@ export const metadata: Metadata = createMetadata({
 
 export default async function MonitorsPage() {
   const user = await getCurrentUserOrRedirect({
-    callbackURL: '/monitors',
+    callbackURL: '/dashboard/monitors',
   });
 
   return (
@@ -29,7 +29,7 @@ export default async function MonitorsPage() {
           </p>
         </div>
 
-        <Button nativeButton={false} render={<Link href="/monitors/new" />}>
+        <Button nativeButton={false} render={<Link href="/dashboard/monitors/new" />}>
           <IconPlus />
           Add monitor
         </Button>

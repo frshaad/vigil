@@ -10,7 +10,7 @@ export default function MonitorBreadcrumbs() {
       size="sm"
       className="-ml-2"
       nativeButton={false}
-      render={<Link href="/monitors" />}
+      render={<Link href="/dashboard/monitors" />}
     >
       <IconArrowLeft />
       Monitors

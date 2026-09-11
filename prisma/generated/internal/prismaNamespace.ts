@@ -405,7 +405,8 @@ export const ModelName = {
   Incident: 'Incident',
   NotificationChannel: 'NotificationChannel',
   Subscription: 'Subscription',
-  MonitorCheck: 'MonitorCheck'
+  MonitorCheck: 'MonitorCheck',
+  MonitorPreference: 'MonitorPreference'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -421,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "monitor" | "incident" | "notificationChannel" | "subscription" | "monitorCheck"
+    modelProps: "user" | "session" | "account" | "verification" | "monitor" | "incident" | "notificationChannel" | "subscription" | "monitorCheck" | "monitorPreference"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1091,6 +1092,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MonitorPreference: {
+      payload: Prisma.$MonitorPreferencePayload<ExtArgs>
+      fields: Prisma.MonitorPreferenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MonitorPreferenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MonitorPreferenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>
+        }
+        findFirst: {
+          args: Prisma.MonitorPreferenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MonitorPreferenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>
+        }
+        findMany: {
+          args: Prisma.MonitorPreferenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>[]
+        }
+        create: {
+          args: Prisma.MonitorPreferenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>
+        }
+        createMany: {
+          args: Prisma.MonitorPreferenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MonitorPreferenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>[]
+        }
+        delete: {
+          args: Prisma.MonitorPreferenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>
+        }
+        update: {
+          args: Prisma.MonitorPreferenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>
+        }
+        deleteMany: {
+          args: Prisma.MonitorPreferenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MonitorPreferenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MonitorPreferenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>[]
+        }
+        upsert: {
+          args: Prisma.MonitorPreferenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MonitorPreferencePayload>
+        }
+        aggregate: {
+          args: Prisma.MonitorPreferenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMonitorPreference>
+        }
+        groupBy: {
+          args: Prisma.MonitorPreferenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MonitorPreferenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MonitorPreferenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MonitorPreferenceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1261,6 +1336,19 @@ export const MonitorCheckScalarFieldEnum = {
 } as const
 
 export type MonitorCheckScalarFieldEnum = (typeof MonitorCheckScalarFieldEnum)[keyof typeof MonitorCheckScalarFieldEnum]
+
+
+export const MonitorPreferenceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  monitorId: 'monitorId',
+  isPinned: 'isPinned',
+  position: 'position',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MonitorPreferenceScalarFieldEnum = (typeof MonitorPreferenceScalarFieldEnum)[keyof typeof MonitorPreferenceScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1629,6 +1717,7 @@ export type GlobalOmitConfig = {
   notificationChannel?: Prisma.NotificationChannelOmit
   subscription?: Prisma.SubscriptionOmit
   monitorCheck?: Prisma.MonitorCheckOmit
+  monitorPreference?: Prisma.MonitorPreferenceOmit
 }
 
 /* Types for Logging */

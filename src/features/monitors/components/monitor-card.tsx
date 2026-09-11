@@ -50,7 +50,7 @@ export default function MonitorCard({ monitor, isDeleting, onDeleteAction }: Mon
 
       <ItemContent className="min-w-0">
         <Link
-          href={`/monitors/${monitor.id}`}
+          href={`/dashboard/monitors/${monitor.id}`}
           className="group focus-visible:ring-ring min-w-0 outline-none focus-visible:ring-2"
         >
           <ItemTitle className="flex flex-wrap items-center gap-x-3 gap-y-1">

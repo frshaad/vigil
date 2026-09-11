@@ -12,7 +12,7 @@ export default function NewMonitorPage() {
         size="sm"
         className="mb-6 -ml-2"
         nativeButton={false}
-        render={<Link href="/monitors" />}
+        render={<Link href="/dashboard/monitors" />}
       >
         <IconArrowLeft />
         Back to monitors

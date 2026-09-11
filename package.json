@@ -29,6 +29,8 @@
   "dependencies": {
     "@base-ui/react": "^1.7.0",
     "@better-auth/prisma-adapter": "^1.7.3",
+    "@dnd-kit/helpers": "^0.5.0",
+    "@dnd-kit/react": "^0.5.0",
     "@hookform/resolvers": "^5.9.1",
     "@next-safe-action/adapter-better-auth": "^0.1.7",
     "@next-safe-action/adapter-react-hook-form": "^2.1.0",

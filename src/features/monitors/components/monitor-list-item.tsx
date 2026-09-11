@@ -13,7 +13,7 @@ type MonitorListItemProps = {
 
 export default function MonitorListItem({ monitor }: MonitorListItemProps) {
   return (
-    <Item variant="outline" render={<Link href={`/monitors/${monitor.id}`} />}>
+    <Item variant="outline" render={<Link href={`/dashboard/monitors/${monitor.id}`} />}>
       <ItemMedia
         variant="icon"
         className={

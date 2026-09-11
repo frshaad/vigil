@@ -59,7 +59,8 @@ export const ModelName = {
   Incident: 'Incident',
   NotificationChannel: 'NotificationChannel',
   Subscription: 'Subscription',
-  MonitorCheck: 'MonitorCheck'
+  MonitorCheck: 'MonitorCheck',
+  MonitorPreference: 'MonitorPreference'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -209,6 +210,19 @@ export const MonitorCheckScalarFieldEnum = {
 } as const
 
 export type MonitorCheckScalarFieldEnum = (typeof MonitorCheckScalarFieldEnum)[keyof typeof MonitorCheckScalarFieldEnum]
+
+
+export const MonitorPreferenceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  monitorId: 'monitorId',
+  isPinned: 'isPinned',
+  position: 'position',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MonitorPreferenceScalarFieldEnum = (typeof MonitorPreferenceScalarFieldEnum)[keyof typeof MonitorPreferenceScalarFieldEnum]
 
 
 export const SortOrder = {

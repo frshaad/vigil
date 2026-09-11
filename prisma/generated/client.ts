@@ -86,3 +86,8 @@ export type Subscription = Prisma.SubscriptionModel
  * 
  */
 export type MonitorCheck = Prisma.MonitorCheckModel
+/**
+ * Model MonitorPreference
+ * 
+ */
+export type MonitorPreference = Prisma.MonitorPreferenceModel

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import DashboardSidebar from '@/features/dashboard/components/sidebar';
+import DashboardSidebar from '@/features/sidebar';
 import { requireAuthOrRedirect } from '@/lib/auth/session';
 
 async function AuthenticatedApplication({ children }: { children: React.ReactNode }) {

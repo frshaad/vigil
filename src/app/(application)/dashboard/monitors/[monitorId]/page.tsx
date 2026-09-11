@@ -18,7 +18,9 @@ import UpdateMonitorForm from '@/features/monitors/components/update-monitor-for
 import { getMonitor } from '@/features/monitors/dal';
 import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 
-export default async function MonitorPage({ params }: PageProps<'/monitors/[monitorId]'>) {
+export default async function MonitorPage({
+  params,
+}: PageProps<'/dashboard/monitors/[monitorId]'>) {
   const { monitorId } = await params;
 
   const user = await getCurrentUserOrRedirect({

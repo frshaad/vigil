@@ -66,7 +66,7 @@ export default function DashboardMonitorCard({
   const [isPinned, setIsPinned] = useState(initialIsPinned);
   const [isPending, setIsPending] = useState(false);
 
-  async function handleTogglePin() {
+  const handleTogglePin = async () => {
     const nextIsPinned = !isPinned;
 
     setIsPinned(nextIsPinned);
@@ -85,7 +85,7 @@ export default function DashboardMonitorCard({
     }
 
     router.refresh();
-  }
+  };
 
   return (
     <div className="group bg-card hover:bg-muted/30 flex items-center gap-3 rounded-lg border p-4 transition-colors">

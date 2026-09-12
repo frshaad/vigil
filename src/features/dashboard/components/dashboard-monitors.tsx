@@ -42,10 +42,27 @@ export default function DashboardMonitors({ monitors }: DashboardMonitorsProps) 
       </CardHeader>
 
       <CardContent className="space-y-3">
-        {pinnedMonitors.length > 0 && <DashboardPinnedMonitors monitors={pinnedMonitors} />}
+        {pinnedMonitors.length > 0 && (
+          <DashboardPinnedMonitors
+            key={pinnedMonitors
+              .map((monitor) => {
+                const position = monitor.monitorPreference?.position ?? 0;
+
+                return `${monitor.id}:${position}`;
+              })
+              .join('|')}
+            monitors={pinnedMonitors}
+          />
+        )}
 
         {visibleUnpinnedMonitors.map((monitor) => (
-          <DashboardMonitorCard key={monitor.id} monitor={monitor} isPinned={false} />
+          <div key={monitor.id} className="flex items-center gap-1">
+            <div className="size-8 shrink-0" aria-hidden="true" />
+
+            <div className="min-w-0 flex-1">
+              <DashboardMonitorCard monitor={monitor} isPinned={false} />
+            </div>
+          </div>
         ))}
 
         {monitors.length === 0 && (

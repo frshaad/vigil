@@ -3,8 +3,16 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import CreateMonitorForm from '@/features/monitors/components/create-monitor-form';
+import { getMonitorBackLabel, resolveMonitorBackUrl } from '@/features/monitors/navigation';
 
-export default function NewMonitorPage() {
+interface NewMonitorPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function NewMonitorPage({ searchParams }: NewMonitorPageProps) {
+  const rawBackUrl = (await searchParams).backUrl;
+  const backUrl = resolveMonitorBackUrl(rawBackUrl);
+
   return (
     <>
       <Button
@@ -12,10 +20,10 @@ export default function NewMonitorPage() {
         size="sm"
         className="mb-6 -ml-2"
         nativeButton={false}
-        render={<Link href="/dashboard/monitors" />}
+        render={<Link href={backUrl} />}
       >
         <IconArrowLeft />
-        Back to monitors
+        {getMonitorBackLabel(backUrl)}
       </Button>
 
       <div className="mb-8">

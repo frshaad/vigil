@@ -43,7 +43,7 @@ export default async function DashboardPage() {
         <Button
           nativeButton={false}
           render={
-            <Link href="/dashboard/monitors/new">
+            <Link href="/dashboard/monitors/new?backUrl=/dashboard">
               <IconPlus />
               Add monitor
             </Link>

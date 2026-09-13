@@ -11,7 +11,7 @@ interface DashboardMetricsProps {
 
 export default function DashboardMetrics({ metrics }: DashboardMetricsProps) {
   return (
-    <section aria-label="Monitor summary" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <section aria-label="Monitor summary" className="grid grid-cols-2 gap-4 md:grid-cols-4">
       <MetricCard label="Monitors" value={metrics.total} />
 
       <MetricCard label="Up" value={metrics.up} />

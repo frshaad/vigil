@@ -39,7 +39,8 @@ export type IncidentStatus = (typeof IncidentStatus)[keyof typeof IncidentStatus
 
 export const NotificationChannelType = {
   EMAIL: 'EMAIL',
-  TELEGRAM: 'TELEGRAM'
+  TELEGRAM: 'TELEGRAM',
+  IN_APP: 'IN_APP'
 } as const
 
 export type NotificationChannelType = (typeof NotificationChannelType)[keyof typeof NotificationChannelType]

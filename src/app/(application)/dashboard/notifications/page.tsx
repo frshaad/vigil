@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
+import NotificationsPage from '@/features/notifications/components/notifications-page';
+import { getNotificationChannels } from '@/features/notifications/dal';
+import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
@@ -8,10 +12,14 @@ export const metadata: Metadata = createMetadata({
   noIndex: true,
 });
 
-export default function NotificationsPage() {
-  return (
-    <div className="mx-auto max-w-2xl p-4">
-      <h1>Notifications </h1>
-    </div>
-  );
+export default async function Page() {
+  const user = await getCurrentUserOrRedirect();
+
+  if (!user) {
+    redirect('/login');
+  }
+
+  const channels = await getNotificationChannels(user.id);
+
+  return <NotificationsPage channels={channels} />;
 }

@@ -29,6 +29,7 @@ enum IncidentStatus {
 enum NotificationChannelType {
   EMAIL
   TELEGRAM
+  IN_APP
 }
 
 enum Plan {

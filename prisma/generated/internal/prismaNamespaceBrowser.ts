@@ -58,6 +58,7 @@ export const ModelName = {
   Monitor: 'Monitor',
   Incident: 'Incident',
   NotificationChannel: 'NotificationChannel',
+  InAppNotification: 'InAppNotification',
   Subscription: 'Subscription',
   MonitorCheck: 'MonitorCheck',
   MonitorPreference: 'MonitorPreference'
@@ -183,6 +184,20 @@ export const NotificationChannelScalarFieldEnum = {
 } as const
 
 export type NotificationChannelScalarFieldEnum = (typeof NotificationChannelScalarFieldEnum)[keyof typeof NotificationChannelScalarFieldEnum]
+
+
+export const InAppNotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  monitorId: 'monitorId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InAppNotificationScalarFieldEnum = (typeof InAppNotificationScalarFieldEnum)[keyof typeof InAppNotificationScalarFieldEnum]
 
 
 export const SubscriptionScalarFieldEnum = {

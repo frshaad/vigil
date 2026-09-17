@@ -77,6 +77,11 @@ export type Incident = Prisma.IncidentModel
  */
 export type NotificationChannel = Prisma.NotificationChannelModel
 /**
+ * Model InAppNotification
+ * 
+ */
+export type InAppNotification = Prisma.InAppNotificationModel
+/**
  * Model Subscription
  * 
  */

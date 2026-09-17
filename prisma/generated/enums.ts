@@ -46,6 +46,14 @@ export const NotificationChannelType = {
 export type NotificationChannelType = (typeof NotificationChannelType)[keyof typeof NotificationChannelType]
 
 
+export const InAppNotificationType = {
+  MONITOR_DOWN: 'MONITOR_DOWN',
+  MONITOR_RECOVERED: 'MONITOR_RECOVERED'
+} as const
+
+export type InAppNotificationType = (typeof InAppNotificationType)[keyof typeof InAppNotificationType]
+
+
 export const Plan = {
   FREE: 'FREE',
   PRO: 'PRO'

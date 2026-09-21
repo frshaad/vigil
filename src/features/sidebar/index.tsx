@@ -3,12 +3,7 @@
 import {
   IconLayoutDashboard,
   IconActivityHeartbeat,
-  IconAlertTriangle,
-  IconWorld,
   IconBell,
-  IconChartLine,
-  // IconSettings,
-  IconCreditCard,
   IconMenu2,
 } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -26,15 +21,7 @@ import SidebarUser from './user';
 const primaryNav: NavItem[] = [
   { label: 'Dashboard', icon: IconLayoutDashboard, href: '/dashboard' },
   { label: 'Monitors', icon: IconActivityHeartbeat, href: '/dashboard/monitors' },
-  { label: 'Incidents', icon: IconAlertTriangle, href: '/dashboard' },
-  { label: 'Status Pages', icon: IconWorld, href: '/dashboard' },
   { label: 'Notifications', icon: IconBell, href: '/dashboard/notifications' },
-  { label: 'Analytics', icon: IconChartLine, href: '/dashboard' },
-];
-
-const secondaryNav: NavItem[] = [
-  // { label: 'Settings', icon: IconSettings, href: '/dashboard' },
-  { label: 'Billing', icon: IconCreditCard, href: '/dashboard/settings/security' },
 ];
 
 function SidebarBrand() {
@@ -43,6 +30,7 @@ function SidebarBrand() {
       <span className="border-border bg-muted/50 flex size-9 items-center justify-center rounded-lg border">
         <Logo className="size-5" />
       </span>
+
       <span className="flex flex-col leading-tight">
         <span className="text-foreground text-sm font-semibold tracking-tight">Vigil</span>
         <span className="text-muted-foreground text-xs">Website Monitoring</span>
@@ -52,56 +40,61 @@ function SidebarBrand() {
 }
 
 function SidebarContent({
-  activeItem,
+  unreadNotificationCount,
   onSelect,
 }: {
-  activeItem: string;
-  onSelect: (label: string) => void;
+  unreadNotificationCount: number;
+  onSelect: () => void;
 }) {
+  const navigationItems = primaryNav.map((item) =>
+    item.label === 'Notifications'
+      ? {
+          ...item,
+          badge: unreadNotificationCount,
+        }
+      : item,
+  );
+
   return (
     <div className="flex h-full flex-col gap-5 p-3">
       <SidebarBrand />
+
       <Separator />
+
       <nav className="flex flex-1 flex-col gap-6 overflow-y-auto">
-        <SidebarNavigation
-          label="Platform"
-          items={primaryNav}
-          activeItem={activeItem}
-          action={onSelect}
-        />
-        <SidebarNavigation
-          label="Workspace"
-          items={secondaryNav}
-          activeItem={activeItem}
-          action={onSelect}
-        />
+        <SidebarNavigation label="Platform" items={navigationItems} action={onSelect} />
       </nav>
+
       <div className="flex flex-col gap-3">
         <SidebarStatus />
+
         <Separator />
+
         <SidebarUser />
       </div>
     </div>
   );
 }
 
-export default function DashboardSidebar() {
-  const [activeItem, setActiveItem] = useState('Dashboard');
+export default function DashboardSidebar({
+  unreadNotificationCount,
+}: {
+  unreadNotificationCount: number;
+}) {
   const [open, setOpen] = useState(false);
 
-  const handleSelect = (label: string) => {
-    setActiveItem(label);
+  const handleSelect = () => {
     setOpen(false);
   };
 
   return (
     <>
-      {/* Desktop: fixed sticky sidebar */}
+      {/* Desktop */}
       <aside className="border-border bg-sidebar sticky top-0 hidden h-screen w-65 shrink-0 border-r lg:block">
-        <SidebarContent activeItem={activeItem} onSelect={handleSelect} />
+        <SidebarContent unreadNotificationCount={unreadNotificationCount} onSelect={handleSelect} />
       </aside>
 
-      {/* Mobile: top bar with drawer trigger */}
+      {/* Mobile */}
       <header className="border-border bg-background/80 sticky top-0 z-30 flex h-14 items-center gap-3 border-b px-4 backdrop-blur lg:hidden">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
@@ -109,11 +102,17 @@ export default function DashboardSidebar() {
           >
             <IconMenu2 size={18} stroke={1.75} />
           </SheetTrigger>
+
           <SheetContent side="left" className="w-70 p-0 sm:max-w-70">
             <SheetTitle className="sr-only">Navigation</SheetTitle>
-            <SidebarContent activeItem={activeItem} onSelect={handleSelect} />
+
+            <SidebarContent
+              unreadNotificationCount={unreadNotificationCount}
+              onSelect={handleSelect}
+            />
           </SheetContent>
         </Sheet>
+
         <span className="flex items-center gap-2">
           <Logo className="size-5" />
           <span className="text-foreground text-sm font-semibold tracking-tight">Vigil</span>

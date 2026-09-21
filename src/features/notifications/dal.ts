@@ -60,13 +60,17 @@ export async function getUnreadInAppNotifications(userId: string) {
       type: true,
       title: true,
       message: true,
-      monitorId: true,
+      readAt: true,
       createdAt: true,
+      monitorId: true,
+      monitor: {
+        select: { name: true },
+      },
     },
     orderBy: {
       createdAt: 'desc',
     },
-    take: 10,
+    take: 50,
   });
 }
 

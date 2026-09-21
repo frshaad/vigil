@@ -44,12 +44,39 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
     return;
   }
 
-  const tasks: Promise<unknown>[] = [];
+  const inAppContent =
+    event.type === 'MONITOR_DOWN'
+      ? {
+          title: `${monitor.name} is down`,
+          message:
+            incident.error ??
+            (incident.statusCode
+              ? `The monitor returned HTTP ${incident.statusCode}.`
+              : 'The monitor is not responding.'),
+        }
+      : {
+          title: `${monitor.name} recovered`,
+          message: incident.statusCode
+            ? `The monitor is responding again with HTTP ${incident.statusCode}.`
+            : 'The monitor is responding again.',
+        };
 
-  for (const channel of channels) {
-    if (channel.type === 'EMAIL') {
-      tasks.push(
-        sendEmailNotification({
+  const deliveryChannels = channels.filter(
+    (channel) => channel.type === 'EMAIL' || channel.type === 'TELEGRAM',
+  );
+
+  const results = await Promise.allSettled([
+    createInAppNotification({
+      userId: monitor.userId,
+      monitorId: event.monitorId,
+      type: event.type,
+      title: inAppContent.title,
+      message: inAppContent.message,
+    }),
+
+    ...deliveryChannels.map((channel) => {
+      if (channel.type === 'EMAIL') {
+        return sendEmailNotification({
           event,
           email: channel.email,
           monitorName: monitor.name,
@@ -58,14 +85,10 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
           error: incident.error,
           startedAt: incident.startedAt,
           resolvedAt: incident.resolvedAt,
-        }),
-      );
+        });
+      }
 
-      continue;
-    }
-
-    tasks.push(
-      sendTelegramNotification({
+      return sendTelegramNotification({
         event,
         chatId: channel.chatId,
         monitorName: monitor.name,
@@ -74,47 +97,22 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
         error: incident.error,
         startedAt: incident.startedAt,
         resolvedAt: incident.resolvedAt,
-      }),
+      });
+    }),
+  ]);
+
+  if (results[0]?.status === 'rejected') {
+    console.error(
+      `Failed to create in-app notification for monitor ${event.monitorId}.`,
+      results[0].reason,
     );
   }
 
-  const inAppChannel = await prisma.notificationChannel.findFirst({
-    where: {
-      userId: monitor.userId,
-      type: 'IN_APP',
-      isEnabled: true,
-    },
-    select: {
-      id: true,
-    },
-  });
+  deliveryChannels.forEach((channel, index) => {
+    const result = results[index + 1];
 
-  if (inAppChannel) {
-    const isDown = event.type === 'MONITOR_DOWN';
-
-    tasks.push(
-      createInAppNotification({
-        userId: monitor.userId,
-        type: isDown ? 'MONITOR_DOWN' : 'MONITOR_RECOVERED',
-        title: isDown ? `${monitor.name} is down` : `${monitor.name} recovered`,
-        message: isDown
-          ? incident.statusCode
-            ? `The monitor returned HTTP ${incident.statusCode}.`
-            : (incident.error ?? 'The monitor check failed.')
-          : 'The monitor is back up.',
-      }),
-    );
-  }
-
-  if (tasks.length === 0) {
-    return;
-  }
-
-  const results = await Promise.allSettled(tasks);
-
-  results.forEach((result, index) => {
-    if (result.status === 'rejected') {
-      console.error(`Failed to send notification task at index ${index}.`, result.reason);
+    if (result?.status === 'rejected') {
+      console.error(`Failed to send notification through channel ${channel.id}.`, result.reason);
     }
   });
 }

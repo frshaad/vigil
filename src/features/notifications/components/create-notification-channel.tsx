@@ -17,7 +17,7 @@ import { Label } from '@/components/ui/label';
 
 import { createNotificationChannel } from '../actions/create-notification-channel';
 
-type ChannelType = 'EMAIL' | 'TELEGRAM' | 'IN_APP';
+type ChannelType = 'EMAIL' | 'TELEGRAM';
 
 export default function CreateNotificationChannel() {
   const [open, setOpen] = useState(false);
@@ -60,20 +60,14 @@ export default function CreateNotificationChannel() {
                 email,
               },
             })
-          : type === 'TELEGRAM'
-            ? await createNotificationChannel({
-                type: 'TELEGRAM',
-                name,
-                config: {
-                  botToken,
-                  chatId,
-                },
-              })
-            : await createNotificationChannel({
-                type: 'IN_APP',
-                name,
-                config: {},
-              });
+          : await createNotificationChannel({
+              type: 'TELEGRAM',
+              name,
+              config: {
+                botToken,
+                chatId,
+              },
+            });
 
       if (result.serverError) {
         setError(result.serverError);
@@ -112,7 +106,7 @@ export default function CreateNotificationChannel() {
           <div className="space-y-2">
             <Label>Type</Label>
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 type="button"
                 variant={type === 'EMAIL' ? 'default' : 'outline'}
@@ -127,14 +121,6 @@ export default function CreateNotificationChannel() {
                 onClick={() => setType('TELEGRAM')}
               >
                 Telegram
-              </Button>
-
-              <Button
-                type="button"
-                variant={type === 'IN_APP' ? 'default' : 'outline'}
-                onClick={() => setType('IN_APP')}
-              >
-                In-app
               </Button>
             </div>
           </div>
@@ -189,12 +175,6 @@ export default function CreateNotificationChannel() {
                 />
               </div>
             </div>
-          )}
-
-          {type === 'IN_APP' && (
-            <p className="text-muted-foreground text-sm">
-              In-app notifications are delivered directly inside Vigil.
-            </p>
           )}
 
           {error && <p className="text-destructive text-sm">{error}</p>}

@@ -21,7 +21,7 @@ export default function NotificationChannelList({ channels }: NotificationChanne
           <h3 className="mt-4 text-sm font-medium">No notification channels</h3>
 
           <p className="text-muted-foreground mt-1 max-w-sm text-sm">
-            Add a notification channel to receive alerts when your monitors change status.
+            Add an email or Telegram channel to receive monitor alerts outside Vigil.
           </p>
         </CardContent>
       </Card>

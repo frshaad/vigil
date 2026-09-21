@@ -1,25 +1,26 @@
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 
-import NotificationsPage from '@/features/notifications/components/notifications-page';
-import { getNotificationChannels } from '@/features/notifications/dal';
+import NotificationInbox from '@/features/notifications/components/notification-inbox';
+import {
+  getUnreadInAppNotificationCount,
+  getUnreadInAppNotifications,
+} from '@/features/notifications/dal';
 import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
 export const metadata: Metadata = createMetadata({
   title: 'Notifications',
-  description: 'See all your notifications in one place.',
+  description: 'View alerts and notifications from your monitors.',
   noIndex: true,
 });
 
 export default async function Page() {
   const user = await getCurrentUserOrRedirect();
 
-  if (!user) {
-    redirect('/login');
-  }
+  const [notifications, unreadCount] = await Promise.all([
+    getUnreadInAppNotifications(user.id),
+    getUnreadInAppNotificationCount(user.id),
+  ]);
 
-  const channels = await getNotificationChannels(user.id);
-
-  return <NotificationsPage channels={channels} />;
+  return <NotificationInbox notifications={notifications} unreadCount={unreadCount} />;
 }

@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 
+import ApplicationHeader from '@/features/application/components/application-header';
 import DashboardSidebar from '@/features/sidebar';
 import { requireAuthOrRedirect } from '@/lib/auth/session';
 
@@ -18,9 +19,13 @@ export default function ApplicationLayout({
     <div className="flex min-h-svh w-full flex-col lg:flex-row">
       <DashboardSidebar />
 
-      <Suspense>
-        <AuthenticatedApplication>{children}</AuthenticatedApplication>
-      </Suspense>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <ApplicationHeader />
+
+        <Suspense>
+          <AuthenticatedApplication>{children}</AuthenticatedApplication>
+        </Suspense>
+      </div>
     </div>
   );
 }

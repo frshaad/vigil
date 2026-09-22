@@ -35,7 +35,10 @@ async function main() {
   const user = await getOrCreateDemoUser();
 
   await prisma.$transaction(async (tx) => {
+    // ---------------------------------------------------------------------------
     // Subscription
+    // ---------------------------------------------------------------------------
+
     await tx.subscription.upsert({
       where: {
         userId: user.id,
@@ -55,7 +58,10 @@ async function main() {
       },
     });
 
+    // ---------------------------------------------------------------------------
     // Notification channels
+    // ---------------------------------------------------------------------------
+
     const emailChannel = await tx.notificationChannel.upsert({
       where: {
         id: 'demo-email-channel',
@@ -106,7 +112,10 @@ async function main() {
       },
     });
 
+    // ---------------------------------------------------------------------------
     // Monitors
+    // ---------------------------------------------------------------------------
+
     const website = await tx.monitor.upsert({
       where: {
         id: 'demo-monitor-website',
@@ -217,7 +226,38 @@ async function main() {
 
     const monitorIds = [website.id, api.id, docs.id];
 
-    // Re-seed demo history.
+    // ---------------------------------------------------------------------------
+    // Dashboard monitor preferences
+    // ---------------------------------------------------------------------------
+
+    // Reset demo preferences so repeated seeds stay deterministic.
+    await tx.monitorPreference.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    await tx.monitorPreference.createMany({
+      data: [
+        {
+          userId: user.id,
+          monitorId: website.id,
+          isPinned: true,
+          position: 0,
+        },
+        {
+          userId: user.id,
+          monitorId: api.id,
+          isPinned: true,
+          position: 1,
+        },
+      ],
+    });
+
+    // ---------------------------------------------------------------------------
+    // Monitor checks
+    // ---------------------------------------------------------------------------
+
     await tx.monitorCheck.deleteMany({
       where: {
         monitorId: {
@@ -241,7 +281,6 @@ async function main() {
 
     const apiChecks = Array.from({ length: 60 }, (_, index) => {
       const minutesAgo = 59 - index;
-
       const isDown = index === 24 || index === 25;
 
       return {
@@ -267,7 +306,10 @@ async function main() {
       data: [...websiteChecks, ...apiChecks, ...docsChecks],
     });
 
-    // Re-seed demo incidents.
+    // ---------------------------------------------------------------------------
+    // Incidents
+    // ---------------------------------------------------------------------------
+
     await tx.incident.deleteMany({
       where: {
         monitorId: {
@@ -312,6 +354,120 @@ async function main() {
         },
       ],
     });
+
+    // ---------------------------------------------------------------------------
+    // In-app notifications
+    // ---------------------------------------------------------------------------
+
+    // Reset demo notifications so every seed produces a predictable inbox.
+    await tx.inAppNotification.deleteMany({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    await tx.inAppNotification.createMany({
+      data: [
+        // Recent unread notification
+        {
+          userId: user.id,
+          monitorId: api.id,
+          type: 'MONITOR_DOWN',
+          title: 'Production API is down',
+          message: 'Gateway timeout. The monitor returned HTTP 504.',
+          readAt: null,
+          createdAt: demoTime(18),
+        },
+
+        // Recent unread notification
+        {
+          userId: user.id,
+          monitorId: website.id,
+          type: 'MONITOR_RECOVERED',
+          title: 'Marketing Website recovered',
+          message: 'The monitor is responding normally again with HTTP 200.',
+          readAt: null,
+          createdAt: demoTime(95),
+        },
+
+        // Unread but older
+        {
+          userId: user.id,
+          monitorId: api.id,
+          type: 'MONITOR_RECOVERED',
+          title: 'Production API recovered',
+          message: 'The monitor is responding again with HTTP 200.',
+          readAt: null,
+          createdAt: demoTime(60 * 8),
+        },
+
+        // Read notification
+        {
+          userId: user.id,
+          monitorId: api.id,
+          type: 'MONITOR_DOWN',
+          title: 'Production API went down',
+          message: 'Internal server error. The monitor returned HTTP 500.',
+          readAt: demoTime(60 * 8 - 15),
+          createdAt: demoTime(60 * 8 + 20),
+        },
+
+        // Read notification
+        {
+          userId: user.id,
+          monitorId: website.id,
+          type: 'MONITOR_RECOVERED',
+          title: 'Marketing Website recovered',
+          message: 'The monitor recovered after a temporary bad gateway response.',
+          readAt: demoTime(3 * 24 * 60),
+          createdAt: demoTime(6 * 24 * 60 + 3),
+        },
+
+        // Read notification
+        {
+          userId: user.id,
+          monitorId: website.id,
+          type: 'MONITOR_DOWN',
+          title: 'Marketing Website is down',
+          message: 'Service temporarily unavailable. The monitor returned HTTP 503.',
+          readAt: demoTime(13 * 24 * 60),
+          createdAt: demoTime(14 * 24 * 60),
+        },
+
+        // Read notification
+        {
+          userId: user.id,
+          monitorId: website.id,
+          type: 'MONITOR_RECOVERED',
+          title: 'Marketing Website recovered',
+          message: 'The monitor recovered and is responding with HTTP 200.',
+          readAt: demoTime(13 * 24 * 60 - 10),
+          createdAt: demoTime(14 * 24 * 60 - 8),
+        },
+
+        // Older read notification
+        {
+          userId: user.id,
+          monitorId: api.id,
+          type: 'MONITOR_RECOVERED',
+          title: 'Production API recovered',
+          message: 'The monitor recovered after an internal server error.',
+          readAt: demoTime(3 * 24 * 60 - 20),
+          createdAt: demoTime(3 * 24 * 60 - 10),
+        },
+
+        // Another older read notification
+        {
+          userId: user.id,
+          monitorId: website.id,
+          type: 'MONITOR_DOWN',
+          title: 'Marketing Website is down',
+          message: 'The monitor detected a temporary service interruption.',
+          readAt: demoTime(20 * 24 * 60),
+          createdAt: demoTime(21 * 24 * 60),
+        },
+      ],
+    });
   });
 
   console.log('Demo user seeded successfully.');
@@ -319,6 +475,10 @@ async function main() {
   console.log(`Password: ${DEMO_PASSWORD}`);
   console.log('Monitors: 3');
   console.log('Monitor checks: 132');
+  console.log('Incidents: 4');
+  console.log('Notification channels: 2');
+  console.log('In-app notifications: 9');
+  console.log('Pinned monitors: 2');
 }
 
 try {

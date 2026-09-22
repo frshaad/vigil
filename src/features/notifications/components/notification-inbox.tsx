@@ -2,6 +2,7 @@
 
 import { IconCircleX, IconCircleCheck, IconInfoCircle, IconSettings } from '@tabler/icons-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -12,17 +13,17 @@ import {
   markAllInAppNotificationsAsRead,
   markInAppNotificationAsRead,
 } from '../actions/notification-read-actions';
-import type { UnreadInAppNotification } from '../dal';
+import type { InAppNotification } from '../dal';
 import { formatNotificationTime } from '../format';
 
 type Filter = 'all' | 'unread';
 
 interface NotificationInboxProps {
-  notifications: UnreadInAppNotification[];
+  notifications: InAppNotification[];
   unreadCount: number;
 }
 
-function NotificationIcon({ type }: { type: UnreadInAppNotification['type'] }) {
+function NotificationIcon({ type }: { type: InAppNotification['type'] }) {
   if (type === 'MONITOR_DOWN') {
     return <IconCircleX className="text-destructive size-5" stroke={1.75} />;
   }
@@ -38,15 +39,9 @@ export default function NotificationInbox({
   notifications: initialNotifications,
   unreadCount: initialUnreadCount,
 }: NotificationInboxProps) {
-  const [notifications, setNotifications] = useState(
-    initialNotifications.map((notification) => ({
-      ...notification,
-      createdAt:
-        notification.createdAt instanceof Date
-          ? notification.createdAt.toISOString()
-          : notification.createdAt,
-    })),
-  );
+  const router = useRouter();
+
+  const [notifications, setNotifications] = useState(initialNotifications);
   const [unreadCount, setUnreadCount] = useState(initialUnreadCount);
   const [filter, setFilter] = useState<Filter>('all');
 
@@ -54,13 +49,13 @@ export default function NotificationInbox({
 
   const visibleNotifications =
     filter === 'unread'
-      ? notifications.filter((notification) => !notification.readAt)
+      ? notifications.filter((notification) => notification.readAt === null)
       : notifications;
 
   const markAsRead = (notificationId: string) => {
     const notification = notifications.find((item) => item.id === notificationId);
 
-    if (!notification || notification.readAt) {
+    if (!notification || notification.readAt !== null) {
       return;
     }
 
@@ -73,18 +68,22 @@ export default function NotificationInbox({
         return;
       }
 
+      const readAt = new Date();
+
       setNotifications((current) =>
         current.map((item) =>
           item.id === notificationId
             ? {
                 ...item,
-                readAt: new Date(),
+                readAt,
               }
             : item,
         ),
       );
 
       setUnreadCount((count) => Math.max(0, count - 1));
+
+      router.refresh();
     });
   };
 
@@ -100,16 +99,18 @@ export default function NotificationInbox({
         return;
       }
 
-      const now = new Date();
+      const readAt = new Date();
 
       setNotifications((current) =>
         current.map((notification) => ({
           ...notification,
-          readAt: notification.readAt ?? now,
+          readAt: notification.readAt ?? readAt,
         })),
       );
 
       setUnreadCount(0);
+
+      router.refresh();
     });
   };
 
@@ -192,20 +193,31 @@ export default function NotificationInbox({
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {visibleNotifications.map((notification) => {
-            const isUnread = !notification.readAt;
+            const isUnread = notification.readAt === null;
 
             return (
               <Card
                 key={notification.id}
-                className={cn('transition-colors', isUnread && 'border-primary/20 bg-primary/2')}
+                className={cn(
+                  'transition-colors',
+                  isUnread
+                    ? 'border-primary/30 bg-primary/[0.035] shadow-sm'
+                    : 'border-border/70 bg-muted/12',
+                )}
               >
-                <CardContent className="flex gap-4 p-4">
+                <CardContent
+                  className={cn(
+                    'relative flex gap-4 p-4',
+                    isUnread &&
+                      'before:bg-primary before:absolute before:inset-y-3 before:left-0 before:w-0.5 before:rounded-r-full',
+                  )}
+                >
                   <div
                     className={cn(
                       'mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full',
-                      isUnread ? 'bg-muted' : 'bg-muted/60',
+                      isUnread ? 'bg-background' : 'bg-muted',
                     )}
                   >
                     <NotificationIcon type={notification.type} />
@@ -217,18 +229,30 @@ export default function NotificationInbox({
                         <div className="flex items-center gap-2">
                           {isUnread && (
                             <span
-                              className="bg-primary size-1.5 shrink-0 rounded-full"
+                              className="bg-primary size-2 shrink-0 rounded-full"
                               aria-label="Unread"
                             />
                           )}
 
-                          <h2 className="truncate text-sm font-medium">{notification.title}</h2>
+                          <h2
+                            className={cn(
+                              'truncate text-sm',
+                              isUnread
+                                ? 'text-foreground font-semibold'
+                                : 'text-muted-foreground font-medium',
+                            )}
+                          >
+                            {notification.title}
+                          </h2>
                         </div>
 
                         {notification.monitorId ? (
                           <Link
                             href={`/dashboard/monitors/${notification.monitorId}`}
-                            className="text-primary mt-1 inline-block text-xs hover:underline"
+                            className={cn(
+                              'mt-1 inline-block text-xs hover:underline',
+                              isUnread ? 'text-primary' : 'text-muted-foreground',
+                            )}
                           >
                             {notification.monitor?.name ?? 'View monitor'}
                           </Link>
@@ -240,14 +264,19 @@ export default function NotificationInbox({
                       </div>
 
                       <time
-                        dateTime={notification.createdAt}
+                        dateTime={notification.createdAt.toISOString()}
                         className="text-muted-foreground shrink-0 text-xs"
                       >
                         {formatNotificationTime(notification.createdAt)}
                       </time>
                     </div>
 
-                    <p className="text-muted-foreground mt-2 text-sm leading-6">
+                    <p
+                      className={cn(
+                        'mt-2 text-sm leading-6',
+                        isUnread ? 'text-foreground/80' : 'text-muted-foreground',
+                      )}
+                    >
                       {notification.message}
                     </p>
 

@@ -2,8 +2,12 @@
 
 import { z } from 'zod';
 
-import prisma from '@/lib/prisma';
 import { authClient } from '@/lib/safe-action';
+
+import {
+  markAllInAppNotificationsAsRead as markAllInAppNotificationsAsReadInDb,
+  markInAppNotificationAsRead as markInAppNotificationAsReadInDb,
+} from '../dal';
 
 const notificationIdSchema = z.object({
   notificationId: z.string().min(1),
@@ -15,19 +19,7 @@ export const markInAppNotificationAsRead = authClient
   })
   .inputSchema(notificationIdSchema)
   .action(async ({ ctx, parsedInput }) => {
-    const userId = ctx.auth.user.id;
-    const { notificationId } = parsedInput;
-
-    await prisma.inAppNotification.updateMany({
-      where: {
-        id: notificationId,
-        userId,
-        readAt: null,
-      },
-      data: {
-        readAt: new Date(),
-      },
-    });
+    await markInAppNotificationAsReadInDb(ctx.auth.user.id, parsedInput.notificationId);
   });
 
 export const markAllInAppNotificationsAsRead = authClient
@@ -35,15 +27,5 @@ export const markAllInAppNotificationsAsRead = authClient
     actionName: 'markAllInAppNotificationsAsRead',
   })
   .action(async ({ ctx }) => {
-    const userId = ctx.auth.user.id;
-
-    await prisma.inAppNotification.updateMany({
-      where: {
-        userId,
-        readAt: null,
-      },
-      data: {
-        readAt: new Date(),
-      },
-    });
+    await markAllInAppNotificationsAsReadInDb(ctx.auth.user.id);
   });

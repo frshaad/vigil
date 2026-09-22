@@ -1,8 +1,12 @@
 import prisma from '@/lib/prisma';
 
+const IN_APP_NOTIFICATION_LIMIT = 50;
+
 export async function getNotificationChannels(userId: string) {
   return prisma.notificationChannel.findMany({
-    where: { userId },
+    where: {
+      userId,
+    },
     select: {
       id: true,
       type: true,
@@ -49,11 +53,10 @@ export async function createInAppNotification({
   });
 }
 
-export async function getUnreadInAppNotifications(userId: string) {
+export async function getInAppNotifications(userId: string) {
   return prisma.inAppNotification.findMany({
     where: {
       userId,
-      readAt: null,
     },
     select: {
       id: true,
@@ -64,15 +67,19 @@ export async function getUnreadInAppNotifications(userId: string) {
       createdAt: true,
       monitorId: true,
       monitor: {
-        select: { name: true },
+        select: {
+          name: true,
+        },
       },
     },
     orderBy: {
       createdAt: 'desc',
     },
-    take: 50,
+    take: IN_APP_NOTIFICATION_LIMIT,
   });
 }
+
+export type InAppNotification = Awaited<ReturnType<typeof getInAppNotifications>>[number];
 
 export async function getUnreadInAppNotificationCount(userId: string) {
   return prisma.inAppNotification.count({
@@ -83,6 +90,27 @@ export async function getUnreadInAppNotificationCount(userId: string) {
   });
 }
 
-export type UnreadInAppNotification = Awaited<
-  ReturnType<typeof getUnreadInAppNotifications>
->[number];
+export async function markInAppNotificationAsRead(userId: string, notificationId: string) {
+  return prisma.inAppNotification.updateMany({
+    where: {
+      id: notificationId,
+      userId,
+      readAt: null,
+    },
+    data: {
+      readAt: new Date(),
+    },
+  });
+}
+
+export async function markAllInAppNotificationsAsRead(userId: string) {
+  return prisma.inAppNotification.updateMany({
+    where: {
+      userId,
+      readAt: null,
+    },
+    data: {
+      readAt: new Date(),
+    },
+  });
+}

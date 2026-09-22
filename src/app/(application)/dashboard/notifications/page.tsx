@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import NotificationInbox from '@/features/notifications/components/notification-inbox';
 import {
   getUnreadInAppNotificationCount,
-  getUnreadInAppNotifications,
+  getInAppNotifications,
 } from '@/features/notifications/dal';
 import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
@@ -18,7 +18,7 @@ export default async function Page() {
   const user = await getCurrentUserOrRedirect();
 
   const [notifications, unreadCount] = await Promise.all([
-    getUnreadInAppNotifications(user.id),
+    getInAppNotifications(user.id),
     getUnreadInAppNotificationCount(user.id),
   ]);
 

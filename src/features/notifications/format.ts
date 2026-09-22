@@ -1,6 +1,6 @@
-export function formatNotificationTime(value: string) {
+export function formatNotificationTime(value: Date | string) {
   const date = new Date(value);
-  const diff = Date.now() - date.getTime();
+  const diff = Math.max(0, Date.now() - date.getTime());
 
   const minute = 60 * 1000;
   const hour = 60 * minute;

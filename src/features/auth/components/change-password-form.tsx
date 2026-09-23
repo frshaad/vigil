@@ -43,7 +43,7 @@ export default function ChangePasswordForm() {
         <PasswordField
           name="confirmNewPassword"
           control={control}
-          label="Confirm New password"
+          label="Confirm new password"
           visible={showNewPassword}
           onToggle={toggleNewPasswordVisibility}
           autoComplete="new-password"

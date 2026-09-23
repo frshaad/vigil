@@ -11,7 +11,14 @@ async function AuthenticatedApplication({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-svh w-full flex-col lg:flex-row">
-      <DashboardSidebar unreadNotificationCount={unreadNotificationCount} />
+      <DashboardSidebar
+        unreadNotificationCount={unreadNotificationCount}
+        user={{
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        }}
+      />
 
       <main className="mx-auto w-full max-w-6xl space-y-8 p-3 lg:p-6">{children}</main>
     </div>

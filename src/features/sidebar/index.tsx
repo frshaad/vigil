@@ -1,10 +1,11 @@
 'use client';
 
 import {
-  IconLayoutDashboard,
   IconActivityHeartbeat,
   IconBell,
+  IconLayoutDashboard,
   IconMenu2,
+  IconSettings,
 } from '@tabler/icons-react';
 import { useState } from 'react';
 
@@ -15,37 +16,66 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/s
 
 import SidebarNavigation from './navigation';
 import type { NavItem } from './navigation';
-import SidebarStatus from './status';
 import SidebarUser from './user';
 
 const primaryNav: NavItem[] = [
-  { label: 'Dashboard', icon: IconLayoutDashboard, href: '/dashboard' },
-  { label: 'Monitors', icon: IconActivityHeartbeat, href: '/dashboard/monitors' },
-  { label: 'Notifications', icon: IconBell, href: '/dashboard/notifications' },
+  {
+    label: 'Dashboard',
+    icon: IconLayoutDashboard,
+    href: '/dashboard',
+  },
+  {
+    label: 'Monitors',
+    icon: IconActivityHeartbeat,
+    href: '/dashboard/monitors',
+    match: 'prefix',
+  },
+  {
+    label: 'Notifications',
+    icon: IconBell,
+    href: '/dashboard/notifications',
+    badge: 0,
+  },
 ];
+
+const secondaryNav: NavItem[] = [
+  {
+    label: 'Settings',
+    icon: IconSettings,
+    href: '/dashboard/settings/profile',
+    match: 'prefix',
+  },
+];
+
+interface SidebarUserData {
+  name: string;
+  email: string;
+  image?: string | null;
+}
+
+interface SidebarContentProps {
+  unreadNotificationCount: number;
+  user: SidebarUserData;
+  onNavigate: () => void;
+}
 
 function SidebarBrand() {
   return (
     <div className="flex items-center gap-2.5 px-3 py-1">
-      <span className="border-border bg-muted/50 flex size-9 items-center justify-center rounded-lg border">
+      <span className="border-border bg-muted/50 flex size-9 shrink-0 items-center justify-center rounded-lg border">
         <Logo className="size-5" />
       </span>
 
-      <span className="flex flex-col leading-tight">
+      <span className="flex min-w-0 flex-col leading-tight">
         <span className="text-foreground text-sm font-semibold tracking-tight">Vigil</span>
-        <span className="text-muted-foreground text-xs">Website Monitoring</span>
+
+        <span className="text-muted-foreground truncate text-xs">Website Monitoring</span>
       </span>
     </div>
   );
 }
 
-function SidebarContent({
-  unreadNotificationCount,
-  onSelect,
-}: {
-  unreadNotificationCount: number;
-  onSelect: () => void;
-}) {
+function SidebarContent({ unreadNotificationCount, user, onNavigate }: SidebarContentProps) {
   const navigationItems = primaryNav.map((item) =>
     item.label === 'Notifications'
       ? {
@@ -56,34 +86,33 @@ function SidebarContent({
   );
 
   return (
-    <div className="flex h-full flex-col gap-5 p-3">
+    <div className="flex h-full flex-col p-3">
       <SidebarBrand />
 
-      <Separator />
+      <Separator className="my-4" />
 
       <nav className="flex flex-1 flex-col gap-6 overflow-y-auto">
-        <SidebarNavigation label="Platform" items={navigationItems} action={onSelect} />
+        <SidebarNavigation label="Platform" items={navigationItems} onNavigate={onNavigate} />
+
+        <SidebarNavigation label="Account" items={secondaryNav} onNavigate={onNavigate} />
       </nav>
 
-      <div className="flex flex-col gap-3">
-        <SidebarStatus />
-
-        <Separator />
-
-        <SidebarUser />
+      <div className="pt-4">
+        <SidebarUser user={user} />
       </div>
     </div>
   );
 }
 
-export default function DashboardSidebar({
-  unreadNotificationCount,
-}: {
+interface DashboardSidebarProps {
   unreadNotificationCount: number;
-}) {
+  user: SidebarUserData;
+}
+
+export default function DashboardSidebar({ unreadNotificationCount, user }: DashboardSidebarProps) {
   const [open, setOpen] = useState(false);
 
-  const handleSelect = () => {
+  const handleNavigate = () => {
     setOpen(false);
   };
 
@@ -91,7 +120,11 @@ export default function DashboardSidebar({
     <>
       {/* Desktop */}
       <aside className="border-border bg-sidebar sticky top-0 hidden h-screen w-65 shrink-0 border-r lg:block">
-        <SidebarContent unreadNotificationCount={unreadNotificationCount} onSelect={handleSelect} />
+        <SidebarContent
+          unreadNotificationCount={unreadNotificationCount}
+          user={user}
+          onNavigate={handleNavigate}
+        />
       </aside>
 
       {/* Mobile */}
@@ -108,13 +141,15 @@ export default function DashboardSidebar({
 
             <SidebarContent
               unreadNotificationCount={unreadNotificationCount}
-              onSelect={handleSelect}
+              user={user}
+              onNavigate={handleNavigate}
             />
           </SheetContent>
         </Sheet>
 
         <span className="flex items-center gap-2">
           <Logo className="size-5" />
+
           <span className="text-foreground text-sm font-semibold tracking-tight">Vigil</span>
         </span>
       </header>

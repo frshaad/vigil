@@ -1,16 +1,10 @@
 'use client';
 
-import {
-  IconUser,
-  IconShieldLock,
-  IconPalette,
-  IconCreditCard,
-  IconBook,
-  IconBrandGithub,
-  IconLifebuoy,
-  IconLogout,
-  IconSelector,
-} from '@tabler/icons-react';
+import { IconLogout, IconSelector, IconShieldLock, IconUser } from '@tabler/icons-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -22,21 +16,60 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { authClient } from '@/lib/auth/client';
 
-const accountItems = [
-  { label: 'Profile', icon: IconUser },
-  { label: 'Security', icon: IconShieldLock },
-  { label: 'Appearance', icon: IconPalette },
-  { label: 'Billing', icon: IconCreditCard },
-];
+interface SidebarUserProps {
+  user: {
+    name: string;
+    email: string;
+    image: string | null;
+  };
+}
 
-const resourceItems = [
-  { label: 'Documentation', icon: IconBook },
-  { label: 'GitHub', icon: IconBrandGithub },
-  { label: 'Support', icon: IconLifebuoy },
-];
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
 
-export default function SidebarUser() {
+  if (parts.length === 0) {
+    return '?';
+  }
+
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+
+  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+}
+
+export default function SidebarUser({ user }: SidebarUserProps) {
+  const router = useRouter();
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  const handleSignOut = async () => {
+    if (isSigningOut) {
+      return;
+    }
+
+    setIsSigningOut(true);
+
+    try {
+      const result = await authClient.signOut();
+
+      if (result.error) {
+        toast.error(result.error.message ?? 'Unable to sign out.');
+        return;
+      }
+
+      router.replace('/login');
+      router.refresh();
+    } catch {
+      toast.error('Unable to sign out.');
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
+
+  const initials = getInitials(user.name);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -48,48 +81,71 @@ export default function SidebarUser() {
           />
         }
       >
-        <Avatar>
-          <AvatarImage src="/professional-headshot.png" alt="" />
-          <AvatarFallback>JD</AvatarFallback>
+        <Avatar className="size-9 shrink-0">
+          <AvatarImage src={user.image ?? undefined} alt="" />
+          <AvatarFallback className="text-xs">{initials}</AvatarFallback>
         </Avatar>
+
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-foreground truncate text-sm font-medium">John Doe</span>
-          <span className="text-muted-foreground truncate text-xs">john@example.com</span>
+          <span className="text-foreground truncate text-sm font-medium">{user.name}</span>
+
+          <span className="text-muted-foreground truncate text-xs">{user.email}</span>
         </span>
+
         <IconSelector size={16} stroke={1.75} className="text-muted-foreground shrink-0" />
       </DropdownMenuTrigger>
+
       <DropdownMenuContent align="end" side="top" sideOffset={8} className="w-60">
         <DropdownMenuGroup>
           <DropdownMenuLabel>
-            <span className="flex flex-col">
-              <span className="text-foreground text-sm font-medium">John Doe</span>
-              <span className="text-muted-foreground text-xs font-normal">john@example.com</span>
+            <span className="flex items-center gap-3">
+              <Avatar className="size-9 shrink-0">
+                <AvatarImage src={user.image ?? undefined} alt="" />
+                <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+              </Avatar>
+
+              <span className="flex min-w-0 flex-col">
+                <span className="text-foreground truncate text-sm font-medium">{user.name}</span>
+
+                <span className="text-muted-foreground truncate text-xs font-normal">
+                  {user.email}
+                </span>
+              </span>
             </span>
           </DropdownMenuLabel>
         </DropdownMenuGroup>
+
         <DropdownMenuSeparator />
+
         <DropdownMenuGroup>
-          {accountItems.map(({ label, icon: Icon }) => (
-            <DropdownMenuItem key={label}>
-              <Icon size={16} stroke={1.75} />
-              {label}
-            </DropdownMenuItem>
-          ))}
+          <DropdownMenuItem
+            render={
+              <Link href="/dashboard/settings/profile">
+                <IconUser size={16} stroke={1.75} />
+                Profile
+              </Link>
+            }
+          />
+
+          <DropdownMenuItem
+            render={
+              <Link href="/dashboard/settings/security">
+                <IconShieldLock size={16} stroke={1.75} />
+                Security
+              </Link>
+            }
+          />
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+
         <DropdownMenuGroup>
-          {resourceItems.map(({ label, icon: Icon }) => (
-            <DropdownMenuItem key={label}>
-              <Icon size={16} stroke={1.75} />
-              {label}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem
+            variant="destructive"
+            disabled={isSigningOut}
+            onClick={() => void handleSignOut()}
+          >
             <IconLogout size={16} stroke={1.75} />
-            Sign out
+            {isSigningOut ? 'Signing out…' : 'Sign out'}
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

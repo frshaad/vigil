@@ -22,7 +22,7 @@ interface SidebarUserProps {
   user: {
     name: string;
     email: string;
-    image: string | null;
+    image?: string | null;
   };
 }
 

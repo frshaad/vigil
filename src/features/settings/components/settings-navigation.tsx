@@ -1,18 +1,21 @@
 'use client';
 
-import { IconBell, IconShieldLock, IconUser } from '@tabler/icons-react';
+import { IconBell, IconCreditCard, IconShieldLock, IconUser } from '@tabler/icons-react';
+import type { Icon } from '@tabler/icons-react';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 
-const settingsItems: {
+type SettingsItem = {
   label: string;
   description: string;
-  icon: typeof IconUser;
+  icon: Icon;
   href: Route;
-}[] = [
+};
+
+const settingsItems: SettingsItem[] = [
   {
     label: 'Profile',
     description: 'Personal information',
@@ -30,6 +33,12 @@ const settingsItems: {
     description: 'Alert delivery',
     icon: IconBell,
     href: '/dashboard/settings/notifications',
+  },
+  {
+    label: 'Billing',
+    description: 'Subscription and plan',
+    icon: IconCreditCard,
+    href: '/dashboard/settings/billing',
   },
 ];
 

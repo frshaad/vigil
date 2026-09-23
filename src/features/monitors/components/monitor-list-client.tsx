@@ -29,19 +29,28 @@ export default function MonitorListClient({ monitors }: MonitorListClientProps) 
     [monitors, search, status, state],
   );
 
-  const hasFilters = search !== '' || status !== 'all' || state !== 'all';
+  const hasFilters = search.trim() !== '' || status !== 'all' || state !== 'all';
+
+  const resultCount = filteredMonitors.length;
 
   return (
     <div className="space-y-4">
       <MonitorFilters />
 
-      <div className="text-muted-foreground text-sm">
-        {hasFilters
-          ? `${filteredMonitors.length} of ${monitors.length} monitors`
-          : `${monitors.length} ${monitors.length === 1 ? 'monitor' : 'monitors'}`}
+      <div className="text-muted-foreground text-sm" aria-live="polite">
+        {hasFilters ? (
+          <>
+            Showing {resultCount} of {monitors.length}{' '}
+            {monitors.length === 1 ? 'monitor' : 'monitors'}
+          </>
+        ) : (
+          <>
+            {monitors.length} {monitors.length === 1 ? 'monitor' : 'monitors'}
+          </>
+        )}
       </div>
 
-      {filteredMonitors.length === 0 ? (
+      {resultCount === 0 ? (
         <MonitorNoResults />
       ) : (
         <div className="space-y-3">

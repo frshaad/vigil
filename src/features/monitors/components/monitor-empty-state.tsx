@@ -1,4 +1,4 @@
-import { IconActivity, IconPlus } from '@tabler/icons-react';
+import { IconActivityHeartbeat, IconPlus } from '@tabler/icons-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -9,21 +9,26 @@ export default function MonitorEmptyState() {
     <Card>
       <CardHeader className="items-center text-center">
         <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
-          <IconActivity className="size-6" />
+          <IconActivityHeartbeat className="size-6" stroke={1.75} />
         </div>
 
         <CardTitle className="mt-2">No monitors yet</CardTitle>
 
         <CardDescription className="max-w-md">
-          Add your first website or API endpoint and Vigil will start checking it automatically.
+          Add a website or API endpoint to start monitoring its availability and response time.
         </CardDescription>
       </CardHeader>
 
       <CardContent className="flex justify-center">
-        <Button nativeButton={false} render={<Link href="/dashboard/monitors/new" />}>
-          <IconPlus />
-          Add your first monitor
-        </Button>
+        <Button
+          nativeButton={false}
+          render={
+            <Link href="/dashboard/monitors/new">
+              <IconPlus />
+              Add your first monitor
+            </Link>
+          }
+        />
       </CardContent>
     </Card>
   );

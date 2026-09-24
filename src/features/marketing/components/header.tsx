@@ -1,12 +1,8 @@
-'use client';
-
 import { IconArrowUpRight } from '@tabler/icons-react';
 import type { Route } from 'next';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 import { Wordmark } from '@/components/logo';
-import { cn } from '@/lib/utils';
 
 import HeaderActions from './header-actions';
 
@@ -16,24 +12,8 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-50 w-full transition-colors duration-300',
-        scrolled
-          ? 'border-b border-border bg-background/70 backdrop-blur-xl'
-          : 'border-b border-transparent bg-transparent',
-      )}
-    >
+    <header className="border-border/60 bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center" aria-label="Vigil home">
           <Wordmark />
@@ -52,16 +32,16 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
-            key={'github'}
+
+          <a
             href="https://github.com/frshaad/vigil"
-            className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm transition-colors"
             target="_blank"
             rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-sm transition-colors"
           >
             GitHub
             <IconArrowUpRight size={14} />
-          </Link>
+          </a>
         </nav>
 
         <HeaderActions />

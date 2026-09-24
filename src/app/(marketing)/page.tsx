@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import CallToAction from '@/features/marketing/components/cta';
+import CTA from '@/features/marketing/components/cta';
 import Features from '@/features/marketing/components/features';
 import Footer from '@/features/marketing/components/footer';
 import Header from '@/features/marketing/components/header';
@@ -9,25 +9,38 @@ import HowItWorks from '@/features/marketing/components/how-it-works';
 import Pricing from '@/features/marketing/components/pricing';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
-export const metadata: Metadata = createMetadata({
-  description: 'Landing page for Vigil, a website monitoring service.',
-});
+const title = 'Vigil — Website & API Uptime Monitoring';
+const description =
+  'Simple uptime monitoring for websites and APIs. Track uptime, response times, incidents, and get notified when something goes down.';
+
+export const metadata: Metadata = {
+  ...createMetadata({
+    title,
+    description,
+  }),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title,
+    description,
+    url: '/',
+  },
+};
 
 export default function LandingPage() {
   return (
     <div className="bg-background min-h-screen">
       <Header />
+
       <main>
         <Hero />
-        <div className="border-border border-t">
-          <Features />
-        </div>
+        <Features />
         <HowItWorks />
-        <div className="border-border border-t">
-          <Pricing />
-        </div>
-        <CallToAction />
+        <Pricing />
+        <CTA />
       </main>
+
       <Footer />
     </div>
   );

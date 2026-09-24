@@ -1,6 +1,6 @@
 'use server';
 
-import { updateTag } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 import {
   MonitorCheckCooldownError,
@@ -23,6 +23,9 @@ export const checkMonitor = authClient
 
       updateTag(monitorTag(ctx.auth.user.id, parsedInput.id));
       updateTag(monitorsTag(ctx.auth.user.id));
+
+      revalidatePath('/dashboard');
+      revalidatePath('/dashboard/notifications');
 
       return result;
     } catch (error) {

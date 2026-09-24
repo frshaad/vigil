@@ -24,12 +24,7 @@ interface UpdateMonitorFormProps {
 }
 
 export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
-  const normalizedMonitor = {
-    ...monitor,
-    url: normalizeMonitorUrl(monitor.url),
-  };
-
-  const { form, handleSubmit, isPending, serverError } = useUpdateMonitor(normalizedMonitor);
+  const { form, handleSubmit, isPending, serverError } = useUpdateMonitor(monitor);
 
   const isDisabled = isPending || !form.formState.isDirty;
 

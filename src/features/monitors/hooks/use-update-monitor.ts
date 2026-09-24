@@ -9,6 +9,7 @@ import type { Monitor } from '@/../prisma/generated/client';
 
 import { updateMonitor } from '../actions/update-monitor';
 import { updateMonitorSchema } from '../schema';
+import { normalizeMonitorUrl } from '../utils';
 
 export function useUpdateMonitor(monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method'>) {
   const router = useRouter();
@@ -21,13 +22,19 @@ export function useUpdateMonitor(monitor: Pick<Monitor, 'id' | 'name' | 'url' | 
         defaultValues: {
           id: monitor.id,
           name: monitor.name,
-          url: monitor.url,
+          url: normalizeMonitorUrl(monitor.url),
           method: monitor.method,
         },
       },
       actionProps: {
         onSuccess({ data }) {
-          form.reset({ id: data.id, name: data.name, url: data.url, method: data.method });
+          form.reset({
+            id: data.id,
+            name: data.name,
+            url: normalizeMonitorUrl(data.url),
+            method: data.method,
+          });
+
           toast.success('Monitor updated.');
           router.refresh();
         },

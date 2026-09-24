@@ -7,6 +7,7 @@ import {
   IconMenu2,
   IconSettings,
 } from '@tabler/icons-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { Logo } from '@/components/logo';
@@ -61,7 +62,7 @@ interface SidebarContentProps {
 
 function SidebarBrand() {
   return (
-    <div className="flex items-center gap-2.5 px-3 py-1">
+    <Link href="/dashboard" className="flex items-center gap-2.5 px-3 py-1">
       <span className="border-border bg-muted/50 flex size-9 shrink-0 items-center justify-center rounded-lg border">
         <Logo className="size-5" />
       </span>
@@ -71,7 +72,7 @@ function SidebarBrand() {
 
         <span className="text-muted-foreground truncate text-xs">Website Monitoring</span>
       </span>
-    </div>
+    </Link>
   );
 }
 
@@ -147,11 +148,11 @@ export default function DashboardSidebar({ unreadNotificationCount, user }: Dash
           </SheetContent>
         </Sheet>
 
-        <span className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2">
           <Logo className="size-5" />
 
           <span className="text-foreground text-sm font-semibold tracking-tight">Vigil</span>
-        </span>
+        </Link>
       </header>
     </>
   );

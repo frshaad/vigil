@@ -44,8 +44,6 @@ export default defineConfig({
   ignorePatterns,
   overrides,
 
-  jsPlugins: ['@tanstack/eslint-plugin-query'],
-
   plugins: [
     'eslint',
     'typescript',
@@ -213,18 +211,5 @@ export default defineConfig({
     'unicorn/prefer-modern-dom-apis': 'error',
     'unicorn/no-useless-undefined': 'error',
     'unicorn/no-useless-spread': 'error',
-
-    // ============================================================
-    // TanStack Query
-    // ============================================================
-
-    '@tanstack/query/exhaustive-deps': 'error',
-    '@tanstack/query/no-rest-destructuring': 'error',
-    '@tanstack/query/stable-query-client': 'error',
-    '@tanstack/query/no-unstable-deps': 'error',
-    '@tanstack/query/infinite-query-property-order': 'error',
-    '@tanstack/query/no-void-query-fn': 'error',
-    '@tanstack/query/mutation-property-order': 'error',
-    '@tanstack/query/prefer-query-options': 'error',
   },
 });

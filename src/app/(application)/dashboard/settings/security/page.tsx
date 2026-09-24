@@ -21,7 +21,7 @@ export default function SecuritySettingsPage() {
         </p>
       </div>
 
-      <section className="border-border rounded-lg border">
+      <section className="border-border border">
         <div className="border-b px-6 py-5">
           <h3 className="text-base font-medium">Change password</h3>
 
@@ -35,7 +35,7 @@ export default function SecuritySettingsPage() {
         </div>
       </section>
 
-      <section className="border-border rounded-lg border">
+      <section className="border-border border">
         <div className="border-b px-6 py-5">
           <h3 className="text-base font-medium">Active sessions</h3>
 

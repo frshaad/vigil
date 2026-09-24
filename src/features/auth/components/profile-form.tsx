@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { Controller } from 'react-hook-form';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { authClient } from '@/lib/auth/client';
+
+import { useChangeName } from '../hooks/use-change-name';
 
 interface ProfileFormProps {
   initialName: string;
@@ -31,54 +33,24 @@ function getInitials(name: string) {
 
 export default function ProfileForm({ initialName, email, image }: ProfileFormProps) {
   const [name, setName] = useState(initialName);
-  const [error, setError] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
+
+  const { control, error, handleSubmit, isPending } = useChangeName();
 
   const hasChanges = name.trim() !== initialName;
   const isValid = name.trim().length >= 2;
 
-  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const nextName = name.trim();
-
-    if (!isValid || !hasChanges) {
-      return;
-    }
-
-    setError(null);
-    setIsPending(true);
-
-    try {
-      const { error: updateError } = await authClient.updateUser({
-        name: nextName,
-      });
-
-      if (updateError) {
-        setError(updateError.message || 'Unable to update your profile.');
-        return;
-      }
-
-      toast.success('Profile updated successfully.');
-    } catch {
-      setError('Unable to update your profile.');
-    } finally {
-      setIsPending(false);
-    }
-  };
-
   return (
-    <div className="border-border rounded-lg border">
+    <div className="border-border border">
       <form onSubmit={(e) => void handleSubmit(e)}>
         <div className="space-y-6 p-6">
           <div className="flex items-center gap-4">
             <Avatar className="size-14">
               <AvatarImage src={image ?? undefined} alt="" />
-              <AvatarFallback className="text-sm">{getInitials(name)}</AvatarFallback>
+              <AvatarFallback className="text-sm">{getInitials(initialName)}</AvatarFallback>
             </Avatar>
 
             <div>
-              <p className="text-sm font-medium">{name || 'Your name'}</p>
+              <p className="text-sm font-medium">{initialName || 'Your name'}</p>
 
               <p className="text-muted-foreground text-sm">
                 Your profile information is used throughout Vigil.
@@ -86,21 +58,33 @@ export default function ProfileForm({ initialName, email, image }: ProfileFormPr
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="profile-name">Name</Label>
+          <FieldGroup>
+            <Controller
+              name="newName"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="update-name-input" className="justify-between">
+                    Name
+                  </FieldLabel>
 
-            <Input
-              id="profile-name"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              autoComplete="name"
-              maxLength={100}
+                  <Input
+                    {...field}
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    id="update-name-input"
+                    aria-invalid={fieldState.invalid}
+                    aria-describedby={fieldState.invalid ? 'update-name-input-error' : undefined}
+                    autoComplete="name"
+                  />
+
+                  {fieldState.invalid && (
+                    <FieldError id="update-name-input-error" errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
             />
-
-            <p className="text-muted-foreground text-xs">
-              This name is displayed in your Vigil account.
-            </p>
-          </div>
+          </FieldGroup>
 
           <div className="space-y-2">
             <Label htmlFor="profile-email">Email</Label>

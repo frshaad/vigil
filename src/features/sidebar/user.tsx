@@ -2,9 +2,6 @@
 
 import { IconLogout, IconSelector, IconShieldLock, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -16,7 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { authClient } from '@/lib/auth/client';
+
+import { useLogOut } from '../auth/hooks/use-log-out';
 
 interface SidebarUserProps {
   user: {
@@ -41,32 +39,7 @@ function getInitials(name: string) {
 }
 
 export default function SidebarUser({ user }: SidebarUserProps) {
-  const router = useRouter();
-  const [isSigningOut, setIsSigningOut] = useState(false);
-
-  const handleSignOut = async () => {
-    if (isSigningOut) {
-      return;
-    }
-
-    setIsSigningOut(true);
-
-    try {
-      const result = await authClient.signOut();
-
-      if (result.error) {
-        toast.error(result.error.message ?? 'Unable to sign out.');
-        return;
-      }
-
-      router.replace('/login');
-      router.refresh();
-    } catch {
-      toast.error('Unable to sign out.');
-    } finally {
-      setIsSigningOut(false);
-    }
-  };
+  const { logOut, isPending: isSigningOut } = useLogOut();
 
   const initials = getInitials(user.name);
 
@@ -142,7 +115,7 @@ export default function SidebarUser({ user }: SidebarUserProps) {
           <DropdownMenuItem
             variant="destructive"
             disabled={isSigningOut}
-            onClick={() => void handleSignOut()}
+            onClick={() => void logOut()}
           >
             <IconLogout size={16} stroke={1.75} />
             {isSigningOut ? 'Signing out…' : 'Sign out'}

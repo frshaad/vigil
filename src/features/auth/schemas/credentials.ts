@@ -14,7 +14,7 @@ export const baseSchemaConfig = {
   MAX_EMAIL_LENGTH: 254,
 };
 
-export const displayNameSchema = z
+export const nameSchema = z
   .string()
   .trim()
   .min(
@@ -54,7 +54,7 @@ export const passwordSchema = z
 
 export const signupInputSchema = z
   .object({
-    name: displayNameSchema,
+    name: nameSchema,
     email: emailSchema,
     password: passwordSchema,
     confirmPassword: z.string(),
@@ -68,6 +68,10 @@ export const loginInputSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, 'Password is required'),
   rememberMe: z.boolean(),
+});
+
+export const changeNameInputSchema = z.object({
+  newName: nameSchema,
 });
 
 export const forgetPasswordInputSchema = z.object({

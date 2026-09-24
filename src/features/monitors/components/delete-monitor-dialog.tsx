@@ -1,5 +1,6 @@
 'use client';
 
+import { IconTrash } from '@tabler/icons-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -30,11 +31,12 @@ export default function DeleteMonitorDialog({
     <>
       <Button
         type="button"
-        variant="outline"
+        variant="destructive"
         size="sm"
         disabled={isDeleting}
         onClick={() => setOpen(true)}
       >
+        <IconTrash />
         Delete
       </Button>
 

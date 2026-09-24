@@ -7,7 +7,11 @@ import { toast } from 'sonner';
 
 import { deleteMonitor } from '../actions/delete-monitor';
 
-export function useDeleteMonitor() {
+interface UseDeleteMonitorOptions {
+  onSuccess?: () => void;
+}
+
+export function useDeleteMonitor({ onSuccess }: UseDeleteMonitorOptions = {}) {
   const router = useRouter();
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -15,7 +19,12 @@ export function useDeleteMonitor() {
   const { execute } = useAction(deleteMonitor, {
     onSuccess() {
       toast.success('Monitor deleted.');
-      router.refresh();
+
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.refresh();
+      }
     },
 
     onError({ error }) {

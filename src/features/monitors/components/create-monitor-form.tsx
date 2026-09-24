@@ -23,6 +23,7 @@ import {
 
 import { methods } from '../constants';
 import { useCreateMonitor } from '../hooks/use-create-monitor';
+import { normalizeMonitorUrl } from '../utils';
 
 export default function CreateMonitorForm() {
   const { form, handleSubmit, isPending, serverError } = useCreateMonitor();
@@ -74,7 +75,7 @@ export default function CreateMonitorForm() {
               <Input
                 {...field}
                 id="create-monitor-url"
-                type="url"
+                type="text"
                 inputMode="url"
                 aria-invalid={fieldState.invalid}
                 aria-describedby={fieldState.error ? 'create-monitor-url-error' : undefined}
@@ -82,6 +83,15 @@ export default function CreateMonitorForm() {
                 autoComplete="url"
                 spellCheck={false}
                 disabled={isPending}
+                onBlur={() => {
+                  const normalizedUrl = normalizeMonitorUrl(field.value);
+
+                  if (normalizedUrl !== field.value) {
+                    field.onChange(normalizedUrl);
+                  }
+
+                  field.onBlur();
+                }}
               />
 
               {fieldState.error && (

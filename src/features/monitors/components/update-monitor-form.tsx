@@ -17,13 +17,19 @@ import {
 
 import { methods } from '../constants';
 import { useUpdateMonitor } from '../hooks/use-update-monitor';
+import { normalizeMonitorUrl } from '../utils';
 
 interface UpdateMonitorFormProps {
   monitor: Pick<Monitor, 'id' | 'name' | 'url' | 'method'>;
 }
 
 export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
-  const { form, handleSubmit, isPending, serverError } = useUpdateMonitor(monitor);
+  const normalizedMonitor = {
+    ...monitor,
+    url: normalizeMonitorUrl(monitor.url),
+  };
+
+  const { form, handleSubmit, isPending, serverError } = useUpdateMonitor(normalizedMonitor);
 
   const isDisabled = isPending || !form.formState.isDirty;
 
@@ -68,13 +74,22 @@ export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
               <Input
                 {...field}
                 id="update-monitor-url"
-                type="url"
+                type="text"
                 inputMode="url"
                 aria-invalid={fieldState.invalid}
                 placeholder="https://api.example.com/health"
                 autoComplete="url"
                 spellCheck={false}
                 disabled={isPending}
+                onBlur={() => {
+                  const normalizedUrl = normalizeMonitorUrl(field.value);
+
+                  if (normalizedUrl !== field.value) {
+                    field.onChange(normalizedUrl);
+                  }
+
+                  field.onBlur();
+                }}
               />
 
               {fieldState.error && <FieldError errors={[fieldState.error]} />}

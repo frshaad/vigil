@@ -2,17 +2,26 @@ import z from 'zod';
 
 import { MonitorMethod } from '@/../prisma/generated/enums';
 
+import { normalizeMonitorUrl } from './utils';
+
 const monitorIdSchema = z.string().min(1);
+
 const monitorNameSchema = z
   .string()
   .trim()
   .min(1, 'Monitor name is required.')
   .max(80, 'Monitor name must be 80 characters or less.');
 
-const monitorUrlSchema = z.httpUrl({
-  error: 'Monitor URL must use HTTP or HTTPS.',
-  normalize: true,
-});
+const monitorUrlSchema = z
+  .string()
+  .trim()
+  .transform(normalizeMonitorUrl)
+  .pipe(
+    z.httpUrl({
+      error: 'Monitor URL must use HTTP or HTTPS.',
+      normalize: true,
+    }),
+  );
 
 const monitorMethodSchema = z.enum(MonitorMethod);
 

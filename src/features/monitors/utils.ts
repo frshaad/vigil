@@ -184,3 +184,19 @@ export function formatLastChecked(date: Date | null) {
 
   return `Checked ${days}d ago`;
 }
+
+export function normalizeMonitorUrl(value: string): string {
+  const trimmedUrl = value.trim();
+
+  if (!trimmedUrl) {
+    return trimmedUrl;
+  }
+
+  const urlWithProtocol = /^https?:\/\//i.test(trimmedUrl) ? trimmedUrl : `https://${trimmedUrl}`;
+
+  try {
+    return new URL(urlWithProtocol).toString();
+  } catch {
+    return urlWithProtocol;
+  }
+}

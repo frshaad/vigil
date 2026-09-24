@@ -1,4 +1,4 @@
-import { IconCheck } from '@tabler/icons-react';
+import { IconArrowNarrowRight, IconCheck, IconPointFilled } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
@@ -10,34 +10,31 @@ import GetStartedButton from './get-started-button';
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-175 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklch,var(--primary)_14%,transparent),transparent_62%)]"
-      />
-
+    <section className="relative">
       <div className="mx-auto max-w-6xl px-5 pt-20 pb-20 sm:px-8 sm:pt-28 sm:pb-28">
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-          <div className="border-border bg-card/70 text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs backdrop-blur-sm">
-            <span
-              aria-hidden="true"
-              className="size-1.5 rounded-full bg-(--success) shadow-[0_0_0_3px_color-mix(in_oklch,var(--success)_12%,transparent)]"
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+          <div className="border-border/80 bg-background/60 text-muted-foreground inline-flex items-center gap-2 border px-3 py-1.5 text-xs shadow-sm backdrop-blur-sm">
+            <IconPointFilled
+              size={13}
+              className="text-(--success) drop-shadow-[0_0_6px_color-mix(in_oklch,var(--success)_55%,transparent)]"
             />
-            Open-source uptime monitoring
+            All systems operational
+            <IconArrowNarrowRight className="size-3" />
           </div>
 
-          <h1 className="text-foreground mt-7 max-w-4xl text-5xl leading-[0.98] font-semibold tracking-tight text-balance sm:text-7xl">
-            Know when your websites and APIs go down.
+          <h1 className="text-foreground mt-7 text-4xl leading-[1.02] font-semibold tracking-[-0.035em] text-balance sm:text-6xl lg:text-[4.25rem]">
+            Know when your services go down.
+            <span className="text-muted-foreground"> Before your users do.</span>
           </h1>
 
-          <p className="text-muted-foreground mt-6 max-w-2xl text-base leading-relaxed text-pretty sm:text-lg">
-            Vigil automatically checks your endpoints, tracks uptime, response times, and incidents,
-            and notifies you when a monitor goes down or recovers.
+          <p className="text-muted-foreground mt-6 max-w-2xl text-base leading-7 text-pretty sm:text-lg">
+            Vigil continuously checks your websites and APIs, tracks incidents and response times,
+            and alerts you when something breaks.
           </p>
 
           <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
             <Suspense>
-              <GetStartedButton />
+              <GetStartedButton size="lg" />
             </Suspense>
 
             <Button
@@ -57,28 +54,28 @@ export default function Hero() {
             </Button>
           </div>
 
-          <div className="text-muted-foreground mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            <div className="flex items-center gap-1.5 text-sm">
-              <IconCheck className="size-4" />
-              Free plan
-            </div>
+          <div className="text-muted-foreground mt-10 grid grid-cols-1 gap-2 text-sm sm:grid-cols-3 sm:gap-6">
+            <p className="flex items-center justify-center gap-1.5">
+              <IconCheck className="size-4 text-(--success)" />
+              Free to start
+            </p>
 
-            <div className="flex items-center gap-1.5 text-sm">
-              <IconCheck className="size-4" />
-              HTTP & HTTPS
-            </div>
+            <p className="flex items-center justify-center gap-1.5">
+              <IconCheck className="size-4 text-(--success)" />
+              No credit card
+            </p>
 
-            <div className="flex items-center gap-1.5 text-sm">
-              <IconCheck className="size-4" />
+            <p className="flex items-center justify-center gap-1.5">
+              <IconCheck className="size-4 text-(--success)" />
               Open source
-            </div>
+            </p>
           </div>
         </div>
 
         <div className="relative mx-auto mt-16 max-w-5xl sm:mt-20">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-12 -top-12 -z-10 h-full bg-[radial-gradient(ellipse_at_top,color-mix(in_oklch,var(--primary)_16%,transparent),transparent_65%)]"
+            className="bg-primary/0 dark:bg-primary/0 pointer-events-none absolute -inset-x-12 -top-16 -bottom-16 mask-[radial-gradient(ellipse_at_top,black_0%,transparent_68%)]"
           />
 
           <DashboardPreview />

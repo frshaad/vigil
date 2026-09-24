@@ -1,14 +1,8 @@
-import {
-  IconActivity,
-  IconArrowNarrowRight,
-  IconBell,
-  IconCircle,
-  IconSearch,
-} from '@tabler/icons-react';
+import { IconArrowNarrowRight, IconBell, IconCircle, IconSearch } from '@tabler/icons-react';
 
 import { cn } from '@/lib/utils';
 
-type MonitorStatus = 'up' | 'down';
+type MonitorStatus = 'up' | 'degraded' | 'down';
 
 const monitors: {
   name: string;
@@ -17,100 +11,73 @@ const monitors: {
   uptime: string;
   latency: string;
 }[] = [
-  {
-    name: 'Marketing site',
-    url: 'vigil.io',
-    status: 'up',
-    uptime: '100%',
-    latency: '112ms',
-  },
-  {
-    name: 'API Gateway',
-    url: 'api.vigil.io',
-    status: 'up',
-    uptime: '99.98%',
-    latency: '184ms',
-  },
+  { name: 'Marketing site', url: 'vigil.io', status: 'up', uptime: '100%', latency: '112ms' },
+  { name: 'API Gateway', url: 'api.vigil.io', status: 'up', uptime: '99.98%', latency: '184ms' },
   {
     name: 'Auth service',
     url: 'auth.vigil.io',
-    status: 'up',
-    uptime: '99.94%',
-    latency: '168ms',
+    status: 'degraded',
+    uptime: '99.4%',
+    latency: '642ms',
   },
-  {
-    name: 'Payments',
-    url: 'pay.vigil.io',
-    status: 'up',
-    uptime: '99.99%',
-    latency: '203ms',
-  },
+  { name: 'Payments', url: 'pay.vigil.io', status: 'up', uptime: '99.99%', latency: '203ms' },
+  { name: 'Docs', url: 'docs.vigil.io', status: 'down', uptime: '97.2%', latency: '—' },
 ];
 
 const statusStyles: Record<MonitorStatus, string> = {
-  up: 'bg-(--success)/10 text-(--success)',
-  down: 'bg-destructive/10 text-destructive',
+  up: 'border-(--success)/20 bg-(--success)/8 text-(--success)',
+  degraded: 'border-(--warning)/20 bg-(--warning)/8 text-(--warning)',
+  down: 'border-destructive/20 bg-destructive/8 text-destructive',
 };
 
 const statusDot: Record<MonitorStatus, string> = {
   up: 'bg-(--success)',
+  degraded: 'bg-(--warning)',
   down: 'bg-destructive',
 };
 
 const statusLabel: Record<MonitorStatus, string> = {
   up: 'Operational',
+  degraded: 'Degraded',
   down: 'Down',
 };
 
 const incidents = [
-  {
-    time: '14:32',
-    title: 'Docs endpoint recovered',
-    detail: '503 → 200',
-  },
-  {
-    time: '09:41',
-    title: 'Payments recovered',
-    detail: 'Downtime resolved',
-  },
-  {
-    time: 'Yesterday',
-    title: 'API Gateway incident',
-    detail: '12 min downtime',
-  },
+  { time: '14:32', title: 'Docs endpoint returned 503', level: 'down' as MonitorStatus },
+  { time: '11:08', title: 'Auth latency above threshold', level: 'degraded' as MonitorStatus },
+  { time: '09:41', title: 'Payments recovered', level: 'up' as MonitorStatus },
 ];
 
-const uptimeBars: MonitorStatus[] = Array.from({ length: 42 }, (_, index) =>
-  index === 27 ? 'down' : 'up',
-);
+const uptimeBars = Array.from({ length: 40 }, (_, i) => {
+  if (i === 27) {
+    return 'down';
+  }
+  if (i === 14 || i === 33) {
+    return 'degraded';
+  }
+  return 'up';
+}) as MonitorStatus[];
 
 function AreaChart() {
-  const points = [42, 36, 44, 33, 46, 39, 51, 45, 55, 48, 58, 52, 62, 56, 64];
-  const width = 320;
-  const height = 90;
-  const step = width / (points.length - 1);
+  const points = [38, 34, 40, 30, 44, 36, 48, 42, 52, 46, 58, 50, 62, 55, 60];
+  const w = 320;
+  const h = 96;
+  const step = w / (points.length - 1);
   const max = 70;
-
-  const coordinates = points.map((point, index) => [index * step, height - (point / max) * height]);
-
-  const line = coordinates.map(([x, y]) => `${x},${y}`).join(' ');
-  const area = `0,${height} ${line} ${width},${height}`;
+  const coords = points.map((p, i) => [i * step, h - (p / max) * h]);
+  const line = coords.map(([x, y]) => `${x},${y}`).join(' ');
+  const area = `0,${h} ${line} ${w},${h}`;
 
   return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      className="h-22 w-full"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
+    <svg viewBox={`0 0 ${w} ${h}`} className="h-24 w-full" preserveAspectRatio="none">
       <defs>
-        <linearGradient id="dashboard-area-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.24" />
+        <linearGradient id="area-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.32" />
           <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
         </linearGradient>
       </defs>
 
-      <polygon points={area} fill="url(#dashboard-area-fill)" />
+      <polygon points={area} fill="url(#area-fill)" />
 
       <polyline
         points={line}
@@ -126,16 +93,12 @@ function AreaChart() {
 }
 
 function ResponseBars() {
-  const bars = [44, 56, 42, 62, 48, 53, 69, 46, 58, 51, 64, 49, 43, 59, 47, 63];
+  const bars = [42, 55, 38, 60, 47, 52, 66, 44, 58, 50, 63, 48, 40, 57, 45, 61, 49, 54];
 
   return (
-    <div className="flex h-22 items-end gap-1">
-      {bars.map((height, index) => (
-        <div
-          key={index}
-          className="bg-primary/35 flex-1 rounded-t-[3px]"
-          style={{ height: `${height}%` }}
-        />
+    <div className="flex h-24 items-end gap-1">
+      {bars.map((bar, index) => (
+        <div key={index} className="bg-primary/35 flex-1" style={{ height: `${bar}%` }} />
       ))}
     </div>
   );
@@ -143,218 +106,147 @@ function ResponseBars() {
 
 export default function DashboardPreview() {
   return (
-    <div
-      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role
-      role="img"
-      aria-label="Preview of the Vigil monitoring dashboard"
-      className="border-border bg-card overflow-hidden rounded-2xl border shadow-2xl shadow-black/25"
-    >
-      {/* Browser chrome */}
-      <div className="border-border bg-background/70 flex items-center gap-3 border-b px-4 py-3">
+    <div className="border-border/80 bg-card relative overflow-hidden border shadow-2xl shadow-black/15 dark:shadow-black/50">
+      <div
+        aria-hidden="true"
+        className="via-primary/70 pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent"
+      />
+
+      <div className="border-border/80 bg-background/50 flex items-center gap-2 border-b px-4 py-3">
         <div className="flex gap-1.5">
-          <span className="bg-muted-foreground/25 size-2.5 rounded-full" />
-          <span className="bg-muted-foreground/25 size-2.5 rounded-full" />
-          <span className="bg-muted-foreground/25 size-2.5 rounded-full" />
+          <span className="bg-muted-foreground/25 size-2.5" />
+          <span className="bg-muted-foreground/25 size-2.5" />
+          <span className="bg-muted-foreground/25 size-2.5" />
         </div>
 
-        <div className="border-border bg-muted/30 mx-auto flex w-full max-w-sm items-center gap-2 rounded-md border px-3 py-1.5">
-          <IconSearch className="text-muted-foreground size-3.5" />
-          <span className="text-muted-foreground truncate font-mono text-[11px]">
-            app.vigil.io/dashboard
-          </span>
+        <div className="border-border bg-muted/40 mx-auto flex w-full max-w-xs items-center gap-2 border px-3 py-1.5">
+          <IconSearch className="text-muted-foreground size-3" />
+          <span className="text-muted-foreground font-mono text-xs">app.vigil.io/dashboard</span>
         </div>
 
-        <div className="w-13" />
+        <div className="w-13.5" />
       </div>
 
-      <div className="bg-border flex gap-px">
-        {/* Sidebar */}
-        <aside className="bg-background hidden w-40 shrink-0 flex-col p-3 sm:flex">
-          <div className="border-border bg-card rounded-lg border p-2.5">
-            <div className="flex items-center gap-2">
-              <span className="bg-primary/12 flex size-7 items-center justify-center rounded-md">
-                <IconActivity className="text-primary size-4" />
-              </span>
-
-              <div>
-                <p className="text-foreground text-xs font-semibold">Vigil</p>
-                <p className="text-muted-foreground text-[10px]">Monitoring</p>
-              </div>
-            </div>
-          </div>
-
-          <nav className="mt-4 space-y-1">
-            <div className="bg-primary/10 text-primary rounded-md px-2.5 py-2 text-xs font-medium">
-              Overview
-            </div>
-            <div className="text-muted-foreground px-2.5 py-2 text-xs">Monitors</div>
-            <div className="text-muted-foreground px-2.5 py-2 text-xs">Notifications</div>
-          </nav>
-
-          <div className="text-muted-foreground mt-auto px-2.5 text-[10px]">
-            All your monitors in one place.
-          </div>
-        </aside>
-
-        {/* Main */}
-        <div className="min-w-0 flex-1">
-          {/* Header */}
+      <div className="bg-border grid gap-px sm:grid-cols-[1fr_1.4fr]">
+        <div className="bg-border flex flex-col gap-px">
           <div className="bg-card flex items-center justify-between px-5 py-4">
             <div>
               <p className="text-foreground text-sm font-semibold">Overview</p>
-              <p className="text-muted-foreground mt-0.5 text-[11px]">Last 24 hours</p>
+              <p className="text-muted-foreground text-xs">Last 24 hours</p>
             </div>
 
-            <div className="relative flex size-7 items-center justify-center rounded-md">
+            <div className="relative">
               <IconBell className="text-muted-foreground size-4" />
-              <span className="bg-destructive text-destructive-foreground absolute -top-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full text-[8px] font-medium">
-                2
-              </span>
+              <span className="bg-destructive absolute -top-0.5 -right-0.5 size-1.5" />
             </div>
           </div>
 
-          {/* Metrics */}
-          <div className="bg-border grid gap-px sm:grid-cols-3">
+          <div className="bg-border grid grid-cols-2 gap-px">
             <div className="bg-card px-5 py-4">
-              <p className="text-muted-foreground text-[11px]">Monitors</p>
-              <p className="text-foreground mt-1 font-mono text-xl font-semibold">4</p>
-              <p className="mt-1 text-[10px] text-(--success)">All operational</p>
-            </div>
-
-            <div className="bg-card px-5 py-4">
-              <p className="text-muted-foreground text-[11px]">Uptime</p>
+              <p className="text-muted-foreground text-xs">Uptime</p>
               <p className="text-foreground mt-1 font-mono text-xl font-semibold">99.98%</p>
-              <p className="mt-1 flex items-center gap-1 text-[10px] text-(--success)">
+              <p className="mt-1 flex items-center gap-1 text-xs text-(--success)">
                 <IconArrowNarrowRight className="size-3" />
                 0.04%
               </p>
             </div>
 
             <div className="bg-card px-5 py-4">
-              <p className="text-muted-foreground text-[11px]">Avg. response</p>
+              <p className="text-muted-foreground text-xs">Avg. response</p>
               <p className="text-foreground mt-1 font-mono text-xl font-semibold">184ms</p>
-              <p className="text-muted-foreground mt-1 text-[10px]">Across all monitors</p>
+              <p className="text-muted-foreground mt-1 text-xs">across 12 monitors</p>
             </div>
           </div>
 
-          {/* Main dashboard grid */}
-          <div className="bg-border grid gap-px lg:grid-cols-[1.25fr_0.75fr]">
-            {/* Monitors */}
-            <div className="bg-card px-5 py-4">
-              <div className="mb-3 flex items-center justify-between">
-                <div>
-                  <p className="text-foreground text-sm font-semibold">Monitors</p>
-                  <p className="text-muted-foreground mt-0.5 text-[10px]">Current monitor status</p>
-                </div>
+          <div className="bg-card flex flex-1 flex-col px-5 py-4">
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-foreground text-xs font-medium">Uptime</p>
 
-                <span className="text-muted-foreground rounded-full border px-2 py-1 text-[10px]">
-                  4 active
-                </span>
-              </div>
+              <span className="border-primary/20 bg-primary/10 text-primary border px-2 py-0.5 text-[10px] font-medium">
+                7d
+              </span>
+            </div>
 
-              <div className="space-y-1">
-                {monitors.map((monitor) => (
-                  <div
-                    key={monitor.name}
-                    className="hover:bg-muted/40 flex items-center justify-between rounded-lg px-2 py-2 transition-colors"
-                  >
-                    <div className="flex min-w-0 items-center gap-3">
-                      <span
-                        className={cn('size-2 shrink-0 rounded-full', statusDot[monitor.status])}
-                      />
+            <AreaChart />
 
-                      <div className="min-w-0">
-                        <p className="text-foreground truncate text-xs font-medium">
-                          {monitor.name}
-                        </p>
-                        <p className="text-muted-foreground truncate font-mono text-[10px]">
-                          {monitor.url}
-                        </p>
-                      </div>
-                    </div>
+            <div className="mt-auto flex gap-0.75 pt-3">
+              {uptimeBars.map((status, index) => (
+                <span
+                  key={index}
+                  className={cn('h-6 flex-1', statusDot[status], status === 'up' && 'opacity-70')}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
 
-                    <div className="flex shrink-0 items-center gap-3">
-                      <span className="text-muted-foreground hidden font-mono text-[10px] sm:inline">
-                        {monitor.latency}
-                      </span>
+        <div className="bg-border flex flex-col gap-px">
+          <div className="bg-card px-5 py-4">
+            <div className="mb-3 flex items-center justify-between">
+              <p className="text-foreground text-sm font-semibold">Monitors</p>
+              <span className="text-muted-foreground text-xs">5 active</span>
+            </div>
 
-                      <span
-                        className={cn(
-                          'rounded-full px-2 py-0.5 text-[9px] font-medium',
-                          statusStyles[monitor.status],
-                        )}
-                      >
-                        {statusLabel[monitor.status]}
-                      </span>
+            <div className="space-y-1">
+              {monitors.map((monitor) => (
+                <div
+                  key={monitor.name}
+                  className="hover:bg-muted/40 flex items-center justify-between px-2 py-2 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={cn('size-2', statusDot[monitor.status])} />
+
+                    <div>
+                      <p className="text-foreground text-sm">{monitor.name}</p>
+                      <p className="text-muted-foreground font-mono text-xs">{monitor.url}</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Uptime */}
-            <div className="bg-card px-5 py-4">
-              <div className="mb-2 flex items-center justify-between">
-                <div>
-                  <p className="text-foreground text-xs font-medium">Uptime</p>
-                  <p className="text-muted-foreground mt-0.5 text-[10px]">Last 7 days</p>
+                  <div className="flex items-center gap-4">
+                    <span className="text-muted-foreground hidden font-mono text-xs sm:inline">
+                      {monitor.latency}
+                    </span>
+
+                    <span
+                      className={cn(
+                        'border px-2 py-0.5 text-[10px] font-medium',
+                        statusStyles[monitor.status],
+                      )}
+                    >
+                      {statusLabel[monitor.status]}
+                    </span>
+                  </div>
                 </div>
-
-                <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[9px] font-medium">
-                  99.98%
-                </span>
-              </div>
-
-              <AreaChart />
-
-              <div className="mt-3 flex gap-0.75">
-                {uptimeBars.map((status, index) => (
-                  <span
-                    key={index}
-                    className={cn(
-                      'h-5 flex-1 rounded-[3px]',
-                      statusDot[status],
-                      status === 'up' && 'opacity-65',
-                    )}
-                  />
-                ))}
-              </div>
+              ))}
             </div>
+          </div>
 
-            {/* Response time */}
+          <div className="bg-border grid gap-px sm:grid-cols-2">
             <div className="bg-card px-5 py-4">
-              <div className="mb-2 flex items-center justify-between">
-                <p className="text-foreground text-xs font-medium">Response time</p>
-                <span className="text-muted-foreground font-mono text-[10px]">184ms avg.</span>
-              </div>
+              <p className="text-foreground mb-2 text-xs font-medium">Response time</p>
 
               <ResponseBars />
 
-              <div className="text-muted-foreground mt-2 flex justify-between font-mono text-[9px]">
-                <span>Earlier</span>
-                <span>Now</span>
-              </div>
+              <p className="text-muted-foreground mt-2 font-mono text-xs">p95 · 214ms</p>
             </div>
 
-            {/* Incidents */}
             <div className="bg-card px-5 py-4">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="text-foreground text-xs font-medium">Recent incidents</p>
-                <span className="text-muted-foreground text-[10px]">History</span>
-              </div>
+              <p className="text-foreground mb-3 text-xs font-medium">Incidents</p>
 
               <ol className="space-y-3">
                 {incidents.map((incident) => (
-                  <li key={`${incident.time}-${incident.title}`} className="flex gap-2.5">
-                    <IconCircle className="mt-0.5 size-2.5 shrink-0 fill-current text-(--success)" />
+                  <li key={incident.time} className="flex gap-3">
+                    <IconCircle
+                      className={cn('mt-1 size-2 shrink-0 fill-current', {
+                        'text-(--success)': incident.level === 'up',
+                        'text-(--warning)': incident.level === 'degraded',
+                        'text-destructive': incident.level === 'down',
+                      })}
+                    />
 
-                    <div className="min-w-0">
-                      <p className="text-foreground truncate text-[10px] font-medium">
-                        {incident.title}
-                      </p>
-                      <p className="text-muted-foreground mt-0.5 text-[9px]">
-                        {incident.time} · {incident.detail}
-                      </p>
+                    <div>
+                      <p className="text-foreground text-xs leading-tight">{incident.title}</p>
+                      <p className="text-muted-foreground font-mono text-[10px]">{incident.time}</p>
                     </div>
                   </li>
                 ))}

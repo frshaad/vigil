@@ -13,7 +13,7 @@ const navLinks = [
 
 export default function Header() {
   return (
-    <header className="border-border/60 bg-background/80 sticky top-0 z-50 w-full border-b backdrop-blur-xl">
+    <header className="border-border/60 bg-background/75 sticky top-0 z-50 w-full border-b backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center" aria-label="Vigil home">
           <Wordmark />

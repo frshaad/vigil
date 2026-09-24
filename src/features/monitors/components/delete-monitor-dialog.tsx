@@ -26,10 +26,6 @@ export default function DeleteMonitorDialog({
 }: DeleteMonitorDialogProps) {
   const [open, setOpen] = useState(false);
 
-  function handleConfirm() {
-    onConfirmAction();
-  }
-
   return (
     <>
       <Button
@@ -66,7 +62,7 @@ export default function DeleteMonitorDialog({
             <Button
               type="button"
               variant="destructive"
-              onClick={handleConfirm}
+              onClick={onConfirmAction}
               disabled={isDeleting}
             >
               {isDeleting ? 'Deleting…' : 'Delete monitor'}

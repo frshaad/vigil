@@ -12,6 +12,7 @@ env:
   NODE_ENV: production
   NEXT_PUBLIC_APP_URL: http://localhost:3000
   DATABASE_URL: postgresql://user:pass@localhost:5432/test
+  DATABASE_URL_UNPOOLED: postgresql://user:pass@localhost:5432/test
   BETTER_AUTH_SECRET: dummy-secret-123456789-dummy-secret-123456789
   BETTER_AUTH_URL: http://localhost:3000
   GOOGLE_CLIENT_ID: dummy

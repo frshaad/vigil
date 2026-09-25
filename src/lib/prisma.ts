@@ -1,10 +1,10 @@
-import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaNeon } from '@prisma/adapter-neon';
 
 import { env } from '@/env';
 
 import { PrismaClient } from '../../prisma/generated/client';
 
-const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
+const adapter = new PrismaNeon({ connectionString: env.DATABASE_URL });
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 

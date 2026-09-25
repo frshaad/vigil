@@ -46,5 +46,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Generate Next.js types
+        run: pnpm exec next typegen
+
+      - name: Verify generated types
+        run: ls -R .next/types
+
       - name: Verify project
         run: pnpm check:ci

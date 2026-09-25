@@ -14,7 +14,7 @@ Vigil is a full-stack monitoring SaaS built with Next.js, TypeScript, PostgreSQL
 
 <!-- Add your deployed URL here -->
 
-<!-- [Live Demo](https://your-demo-url.com) -->
+[Live Demo](https://vigil-eta-nine.vercel.app/)
 
 ---
 

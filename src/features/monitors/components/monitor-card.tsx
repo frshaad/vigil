@@ -1,6 +1,6 @@
 'use client';
 
-import { IconActivity, IconPlayerPause } from '@tabler/icons-react';
+import { IconPlayerPause } from '@tabler/icons-react';
 import Link from 'next/link';
 
 import type { Monitor } from '@/../prisma/generated/client';
@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { useToggleMonitor } from '../hooks/use-toggle-monitor';
 import { formatInterval, formatLastChecked, formatResponseTime } from '../utils';
 import DeleteMonitorDialog from './delete-monitor-dialog';
+import MonitorFavicon from './monitor-favicon';
 import MonitorStatusBadge from './monitor-status-badge';
 
 type MonitorCardProps = {
@@ -45,7 +46,11 @@ export default function MonitorCard({ monitor, isDeleting, onDeleteAction }: Mon
               : 'bg-muted text-muted-foreground',
         )}
       >
-        {isActive ? <IconActivity className="size-5" /> : <IconPlayerPause className="size-5" />}
+        {isActive ? (
+          <MonitorFavicon url={monitor.url} size="sm" />
+        ) : (
+          <IconPlayerPause className="size-5" />
+        )}
       </ItemMedia>
 
       <ItemContent className="min-w-0">

@@ -1,9 +1,10 @@
-import { IconActivity, IconPointFilled } from '@tabler/icons-react';
+import { IconPointFilled } from '@tabler/icons-react';
 
 import type { Monitor } from '@/../prisma/generated/client';
 import { Badge } from '@/components/ui/badge';
 import { getManualCheckCooldownRemaining } from '@/features/monitoring/checker/utils';
 
+import MonitorFavicon from './monitor-favicon';
 import MonitorHeaderActions from './monitor-header-actions';
 
 type MonitorHeaderProps = {
@@ -18,8 +19,8 @@ export default function MonitorHeader({ monitor }: MonitorHeaderProps) {
   return (
     <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
       <div className="flex min-w-0 items-start gap-4">
-        <div className="bg-primary/10 text-primary flex size-12 shrink-0 items-center justify-center rounded-xl">
-          <IconActivity className="size-6" />
+        <div className="bg-muted flex size-12 shrink-0 items-center justify-center">
+          <MonitorFavicon url={monitor.url} size="md" />
         </div>
 
         <div className="min-w-0">

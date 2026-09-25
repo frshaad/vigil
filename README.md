@@ -1,131 +1,227 @@
 # Vigil
 
-**Vigil** is a modern website monitoring SaaS that checks your endpoints and notifies you when something goes wrong.
+**Uptime monitoring for websites and APIs.**
 
-It is built with **Next.js, TypeScript, Prisma, and Better Auth**, with a focus on type safety, maintainable architecture, and a simple developer experience.
+Vigil is a full-stack monitoring SaaS built with Next.js, TypeScript, PostgreSQL, and Prisma. It checks configured endpoints, records response data, tracks incidents, and notifies users when monitors go down or recover.
 
-> **Status:** In development
+> Portfolio project focused on practical full-stack engineering with the Next.js App Router.
 
-## Features
+[![CI](https://github.com/frshaad/vigil/actions/workflows/ci.yml/badge.svg)](https://github.com/frshaad/vigil/actions/workflows/ci.yml)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql)
 
-- Monitor websites and HTTP endpoints
-- Configurable monitoring intervals
-- Track uptime and response status
-- Email notifications
-- Telegram notifications
-- User authentication
-- OAuth and email/password authentication
-- Protected dashboards and resources
-- Subscription-based plans
-- Type-safe database access and validation
+<!-- Add your deployed URL here -->
 
-## Tech Stack
+<!-- [Live Demo](https://your-demo-url.com) -->
 
-- **Framework:** Next.js
-- **Language:** TypeScript
-- **UI:** React, Tailwind CSS, shadcn/ui
-- **Authentication:** Better Auth
-- **Database:** PostgreSQL
-- **ORM:** Prisma
-- **Validation:** Zod
-- **Package Manager:** pnpm
+---
+
+## Screenshots
+
+### Dashboard
+
+![Vigil dashboard](./docs/images/dashboard.png)
+
+### Monitor details
+
+![Monitor details](./docs/images/monitor-details.png)
+
+### Demo
+
+![Vigil demo](./docs/demo.gif)
+
+---
+
+## What it does
+
+- Monitor websites and HTTP APIs on configurable intervals
+- Run manual checks with cooldown protection
+- Record HTTP status, response time, errors, and check history
+- Track open and resolved incidents
+- Create in-app, email, and Telegram notifications
+- Pause and resume monitors
+- View monitor metrics and response-time history
+- Authenticate with email/password, Google, or GitHub
+- Responsive dashboard with loading, empty, and error states
+- Automatic first check after creating a monitor
+
+---
+
+## Technical highlights
+
+### Next.js App Router
+
+Vigil uses Next.js as the full-stack application framework:
+
+- Server Components for server-side data fetching
+- Server Actions for authenticated mutations
+- Route Handlers where an HTTP endpoint is appropriate
+- `loading.tsx` and Suspense boundaries for loading states
+- Cache tags and route revalidation for fresh dashboard data
+
+### Monitoring and incident handling
+
+A monitor check follows a single server-side execution path:
+
+```text
+HTTP request
+    ↓
+Parse result
+    ↓
+Persist check + update monitor state
+    ↓
+Detect incident transition
+    ↓
+Create / resolve incident
+    ↓
+Dispatch notifications
+```
+
+Check persistence and incident transitions are handled in a serializable Prisma transaction, while manual checks use an atomic cooldown claim to prevent concurrent duplicate checks.
+
+### Authentication & authorization
+
+Better Auth provides:
+
+- Email/password authentication
+- Google OAuth
+- GitHub OAuth
+- Server-side session handling
+
+Monitor access and mutations are always scoped to the authenticated user.
+
+### Notifications
+
+Notification delivery is separated from incident detection.
+
+Current channels:
+
+- In-app
+- Email via Resend + React Email
+- Telegram
+
+---
 
 ## Architecture
 
-Vigil is built around Next.js App Router and keeps application concerns separated by responsibility.
+```mermaid
+flowchart LR
+    UI[React UI] --> APP[Next.js App Router]
+    APP --> ACTIONS[Server Actions]
+    APP --> DAL[Data Access Layer]
 
-The application uses:
+    ACTIONS --> MONITOR[Monitoring]
+    MONITOR --> CHECKER[HTTP Checker]
+    MONITOR --> DB[(PostgreSQL)]
+    MONITOR --> INCIDENTS[Incident Handling]
+    INCIDENTS --> NOTIFY[Notifications]
 
-- **Server Components** for server-rendered UI and data access
-- **Server Actions** for application mutations
-- **Route Handlers** for HTTP endpoints and external integrations
-- **Service-layer logic** for application use cases
-- **Repository patterns** where database access benefits from isolation
-- **Zod schemas** for validating data at application boundaries
-- **Prisma** for type-safe database access
+    NOTIFY --> EMAIL[Resend]
+    NOTIFY --> TELEGRAM[Telegram]
+    NOTIFY --> DB
+```
 
-The goal is to keep business logic independent from UI concerns while taking advantage of Next.js server-side capabilities.
-
-## Project Structure
+The codebase uses a feature-based structure:
 
 ```text
 src/
-├── app/          # Routes, pages and layouts
-├── components/   # Shared UI components
-├── features/     # Feature-specific functionality
-├── lib/          # Shared infrastructure and utilities
-└── ...
+├── app/
+├── components/
+├── features/
+│   ├── monitors/
+│   ├── monitoring/
+│   ├── notifications/
+│   ├── email/
+│   └── sidebar/
+└── lib/
+
+prisma/
+└── schema.prisma
 ```
 
-The project follows a feature-oriented structure where appropriate, while keeping framework-specific concerns inside the `app` layer.
+---
 
-## Getting Started
+## Tech stack
 
-### Prerequisites
+| Area            | Tools                            |
+| --------------- | -------------------------------- |
+| Framework       | Next.js 16, React 19             |
+| Language        | TypeScript                       |
+| Database        | PostgreSQL                       |
+| ORM             | Prisma                           |
+| Auth            | Better Auth                      |
+| Validation      | Zod                              |
+| Server Actions  | next-safe-action                 |
+| UI              | Tailwind CSS, shadcn/ui, Base UI |
+| Icons           | Tabler Icons                     |
+| Email           | Resend, React Email              |
+| Notifications   | Telegram, in-app notifications   |
+| Package manager | pnpm                             |
+| Quality         | Oxlint, Oxfmt, Husky             |
+| CI              | GitHub Actions                   |
 
-- Node.js
-- pnpm
+---
+
+## Local development
+
+### Requirements
+
+- Node.js 24+
+- pnpm 11+
 - PostgreSQL
 
-### Installation
+### Setup
 
 ```bash
 git clone https://github.com/frshaad/vigil.git
 cd vigil
+
 pnpm install
-```
+cp .env.example .env
 
-Create a `.env` file based on `.env.example` and configure the required environment variables.
-
-Then initialize the database:
-
-```bash
-pnpm prisma migrate dev
-```
-
-Start the development server:
-
-```bash
+pnpm db:migrate
 pnpm dev
 ```
 
-Open `http://localhost:3000` in your browser.
+The app runs at `http://localhost:3000`.
 
-## Environment Variables
+---
 
-Vigil requires configuration for its database, authentication, application URL, and notification providers.
+## Demo account
 
-See `.env.example` for the complete list of required variables.
+The seed includes a demo account with representative data covering different monitor states, incidents, notifications, and notification channels.
 
-## Development
-
-Run the available checks with:
-
-```bash
-pnpm lint
-pnpm typecheck
-pnpm build
+```text
+Email:    demo@vigil.dev
+Password: DemoPassword123!
 ```
 
-## Why I Built Vigil
+Use these credentials only with the deployed/public demo environment.
 
-Vigil is a practical project for exploring how to build a production-style SaaS application with the modern Next.js ecosystem.
+---
 
-The project focuses on areas that are easy to overlook in smaller applications, including:
+## CI
 
-- Authentication and authorization
-- Data validation and type safety
-- Database design
-- Application architecture
-- Caching
-- Error handling
-- Background monitoring
-- Notifications and external integrations
-- Subscription management
-- SEO and web performance
+GitHub Actions runs the project's main verification checks on pushes to `main` and pull requests:
 
-Rather than being a collection of isolated demos, Vigil is intended to be developed as a complete application.
+```text
+pnpm install --frozen-lockfile
+        ↓
+lint
+        ↓
+typecheck
+        ↓
+production build
+```
 
-## License
+The goal is to keep CI small while still catching the most important integration and build problems.
 
-This project is for educational and portfolio purposes.
+---
+
+## Scope
+
+Vigil currently focuses on HTTP uptime monitoring and the core workflow around it.
+
+More advanced infrastructure such as multi-region probing, distributed workers, escalation policies, and large-scale job queues is outside the current scope.

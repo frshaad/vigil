@@ -13,7 +13,7 @@ import prisma from '@/lib/prisma';
 const SESSION = {
   expiresIn: 30 * 24 * 60 * 60, // 30 days
   updateAge: 24 * 60 * 60, // 1 day
-  freshAge: 15 * 60, // 15 minutes
+  freshAge: 0, // Disable freshness check
   cookieCacheMaxAge: 5 * 60, // 5 minutes
 } as const;
 

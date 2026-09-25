@@ -7,9 +7,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export default function MonitorEmptyState() {
   return (
     <Card>
-      <CardHeader className="items-center text-center">
-        <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
-          <IconActivityHeartbeat className="size-6" stroke={1.75} />
+      <CardHeader className="items-center justify-center text-center">
+        <div className="flex w-full justify-center">
+          <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
+            <IconActivityHeartbeat className="size-6" stroke={1.75} />
+          </div>
         </div>
 
         <CardTitle className="mt-2">No monitors yet</CardTitle>

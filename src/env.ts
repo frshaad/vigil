@@ -19,9 +19,7 @@ export const env = createEnv({
   },
 
   /** Client-side variables (must start with NEXT_PUBLIC_) */
-  client: {
-    NEXT_PUBLIC_APP_URL: z.url(),
-  },
+  client: {},
 
   /** Runtime environment mapping This is where you pull from process.env */
   runtimeEnv: {
@@ -37,7 +35,6 @@ export const env = createEnv({
     EMAIL_FROM: process.env.EMAIL_FROM,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     CRON_SECRET: process.env.CRON_SECRET,
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 
   onValidationError(issues) {

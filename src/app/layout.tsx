@@ -5,7 +5,6 @@ import './globals.css';
 
 import { Suspense } from 'react';
 
-import { env } from '@/env';
 import { cn } from '@/lib/utils';
 
 import { Providers } from './providers';
@@ -13,23 +12,12 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   title: {
     default: 'Vigil',
     template: '%s',
   },
   description: 'Monitor your websites, APIs and cron jobs.',
   applicationName: 'Vigil',
-  openGraph: {
-    siteName: 'Vigil',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-  },
-  appleWebApp: {
-    title: 'Vigil',
-  },
 };
 
 export default function RootLayout({ children }: Readonly<LayoutProps<'/'>>) {

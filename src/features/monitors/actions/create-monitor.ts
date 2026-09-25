@@ -1,20 +1,24 @@
 'use server';
 
-import { updateTag } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
+import { after } from 'next/server';
 
+import { runMonitorCheck } from '@/features/monitoring/run-monitor-check';
 import prisma from '@/lib/prisma';
 import { authClient } from '@/lib/safe-action';
 
-import { monitorsTag } from '../cache';
+import { monitorsTag, monitorTag } from '../cache';
 import { createMonitorSchema } from '../schema';
 
 export const createMonitor = authClient
   .metadata({ actionName: 'createMonitor' })
   .inputSchema(createMonitorSchema)
   .action(async ({ ctx, parsedInput }) => {
+    const userId = ctx.auth.user.id;
+
     const monitor = await prisma.monitor.create({
       data: {
-        userId: ctx.auth.user.id,
+        userId,
         name: parsedInput.name,
         url: parsedInput.url,
         method: parsedInput.method,
@@ -22,7 +26,25 @@ export const createMonitor = authClient
       select: { id: true },
     });
 
-    updateTag(monitorsTag(ctx.auth.user.id));
+    updateTag(monitorsTag(userId));
+
+    after(async () => {
+      try {
+        await runMonitorCheck({ monitorId: monitor.id, userId });
+
+        updateTag(monitorTag(userId, monitor.id));
+        updateTag(monitorsTag(userId));
+
+        revalidatePath('/dashboard');
+        revalidatePath(`/dashboard/monitors/${monitor.id}`);
+        revalidatePath('/dashboard/notifications');
+      } catch (error) {
+        console.error('Initial monitor check failed:', {
+          monitorId: monitor.id,
+          error,
+        });
+      }
+    });
 
     return { id: monitor.id };
   });

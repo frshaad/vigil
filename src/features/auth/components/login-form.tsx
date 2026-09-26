@@ -3,7 +3,6 @@
 import { IconArrowRight, IconLoader2, IconPlayerPlay } from '@tabler/icons-react';
 import Link from 'next/link';
 import { Suspense, use, useRef } from 'react';
-import type { ReactNode } from 'react';
 import { browser } from 'react-dom';
 import { Controller } from 'react-hook-form';
 
@@ -28,13 +27,9 @@ import SocialLoginButtonGroup from './social-login-button-group';
 const DEMO_EMAIL = 'demo@vigil.dev';
 const DEMO_PASSWORD = 'DemoPassword123!';
 
-function BrowserOnly({ children, reason }: { children: ReactNode; reason: string }) {
-  use(browser(reason));
-
-  return children;
-}
-
 export default function LoginForm() {
+  use(browser('Last used login method is stored in the browser.'));
+
   const formRef = useRef<HTMLFormElement>(null);
 
   const {
@@ -75,7 +70,7 @@ export default function LoginForm() {
     <div className="flex flex-col gap-7">
       {error !== null && <ErrorCard message={error} />}
 
-      <div className="border-primary/20 bg-primary/[0.04] p-4">
+      <div className="border-primary/20 bg-primary/4 p-4">
         <div className="flex items-start gap-3">
           <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center">
             <IconPlayerPlay size={17} stroke={2} />
@@ -168,13 +163,7 @@ export default function LoginForm() {
               )}
             </Button>
 
-            <Suspense fallback={null}>
-              {lastMethod === 'email' && (
-                <BrowserOnly reason="Last used login method is stored in the browser.">
-                  <LastUsedMethodBadge />
-                </BrowserOnly>
-              )}
-            </Suspense>
+            <Suspense fallback={null}>{lastMethod === 'email' && <LastUsedMethodBadge />}</Suspense>
           </Field>
         </FieldGroup>
       </form>

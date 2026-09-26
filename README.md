@@ -29,9 +29,17 @@ Demo account:
 
 ![Vigil dashboard](./docs/images/dashboard.png)
 
+### Monitors
+
+![Monitors list](./docs/images/monitors.png)
+
 ### Monitor details
 
 ![Monitor details](./docs/images/monitor-details.png)
+
+### Notifications
+
+![Monitor details](./docs/images/notifications.png)
 
 ### Demo
 

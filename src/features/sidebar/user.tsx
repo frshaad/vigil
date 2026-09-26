@@ -2,7 +2,9 @@
 
 import { IconLogout, IconSelector, IconShieldLock, IconUser } from '@tabler/icons-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
+import ModeToggle from '@/components/mode-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -110,6 +112,14 @@ export default function SidebarUser({ user }: SidebarUserProps) {
           />
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          <Suspense fallback={null}>
+            <ModeToggle />
+          </Suspense>
+
+          <DropdownMenuSeparator />
+        </DropdownMenuGroup>
 
         <DropdownMenuGroup>
           <DropdownMenuItem

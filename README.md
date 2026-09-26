@@ -16,6 +16,11 @@ Vigil is a full-stack monitoring SaaS built with Next.js, TypeScript, PostgreSQL
 
 [Live Demo](https://vigil-eta-nine.vercel.app/)
 
+Demo account:
+
+- Email: demo@vigil.dev
+- Password: DemoPassword123!
+
 ---
 
 ## Screenshots
@@ -59,6 +64,7 @@ Vigil uses Next.js as the full-stack application framework:
 - Server Actions for authenticated mutations
 - Route Handlers where an HTTP endpoint is appropriate
 - `loading.tsx` and Suspense boundaries for loading states
+- React Compiler enabled across the application.
 - Cache tags and route revalidation for fresh dashboard data
 
 ### Monitoring and incident handling
@@ -80,6 +86,19 @@ Dispatch notifications
 ```
 
 Check persistence and incident transitions are handled in a serializable Prisma transaction, while manual checks use an atomic cooldown claim to prevent concurrent duplicate checks.
+
+### Performance
+
+The marketing homepage was audited with Google PageSpeed Insights.
+
+| Metric         | Mobile | Desktop |
+| -------------- | -----: | ------: |
+| Performance    |     97 |     100 |
+| Accessibility  |     96 |      96 |
+| Best Practices |    100 |     100 |
+| SEO            |    100 |     100 |
+
+[View PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-vigil-eta-nine-vercel-app/d8sx0w9rhr)
 
 ### Authentication & authorization
 

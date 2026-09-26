@@ -21,12 +21,16 @@ export function useLoginForm() {
 
   const redirectUrl = getCallbackURL(useSearchParams());
 
-  const form = useForm<LoginInput>({
+  const {
+    handleSubmit: action,
+    setValue,
+    control,
+  } = useForm<LoginInput>({
     resolver: zodResolver(loginInputSchema),
     defaultValues: { email: '', password: '', rememberMe: false },
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
+  const handleSubmit = action((data) => {
     setError(null);
     startTransition(async () => {
       try {
@@ -51,7 +55,8 @@ export function useLoginForm() {
   const togglePasswordVisibility = () => setShowPassword((c) => !c);
 
   return {
-    control: form.control,
+    control,
+    setValue,
     handleSubmit,
     isPending,
     error,

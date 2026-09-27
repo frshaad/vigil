@@ -20,6 +20,7 @@ env:
   GITHUB_CLIENT_ID: dummy
   GITHUB_CLIENT_SECRET: dummy
   EMAIL_FROM: dummy
+  RESEND_API_KEY: dummy
 
 jobs:
   verify:

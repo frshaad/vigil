@@ -6,16 +6,22 @@ export const env = createEnv({
   server: {
     BETTER_AUTH_SECRET: z.string().min(32),
     BETTER_AUTH_URL: z.url(),
+
     DATABASE_URL: z.url(),
     DATABASE_URL_UNPOOLED: z.url(),
-    GOOGLE_CLIENT_ID: z.string(),
-    GOOGLE_CLIENT_SECRET: z.string(),
-    GITHUB_CLIENT_ID: z.string(),
-    GITHUB_CLIENT_SECRET: z.string(),
-    RESEND_API_KEY: z.string().min(1),
+
+    GOOGLE_CLIENT_ID: z.string().min(1),
+    GOOGLE_CLIENT_SECRET: z.string().min(1),
+
+    GITHUB_CLIENT_ID: z.string().min(1),
+    GITHUB_CLIENT_SECRET: z.string().min(1),
+
+    RESEND_API_KEY: z.string().min(1).optional(),
     EMAIL_FROM: z.string().min(1),
-    TELEGRAM_BOT_TOKEN: z.string().min(1),
-    CRON_SECRET: z.string().min(1),
+
+    TELEGRAM_BOT_TOKEN: z.string().min(1).optional(),
+
+    CRON_SECRET: z.string().min(1).optional(),
   },
 
   /** Client-side variables (must start with NEXT_PUBLIC_) */
@@ -25,17 +31,25 @@ export const env = createEnv({
   runtimeEnv: {
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
+
     DATABASE_URL: process.env.DATABASE_URL,
     DATABASE_URL_UNPOOLED: process.env.DATABASE_URL_UNPOOLED,
+
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
+
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+
     CRON_SECRET: process.env.CRON_SECRET,
   },
+
+  emptyStringAsUndefined: true,
 
   onValidationError(issues) {
     console.error('❌ Invalid environment variables:');

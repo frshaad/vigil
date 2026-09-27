@@ -1,8 +1,6 @@
 import { auth } from '@/lib/auth';
+import { DEMO_EMAIL, DEMO_PASSWORD } from '@/lib/demo-constants';
 import prisma from '@/lib/prisma';
-
-const DEMO_EMAIL = 'demo@vigil.dev';
-const DEMO_PASSWORD = 'DemoPassword123!';
 
 const MINUTE_MS = 60 * 1000;
 const DAY_MINUTES = 24 * 60;

@@ -18,14 +18,12 @@ import {
   FieldSeparator,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { DEMO_EMAIL, DEMO_PASSWORD } from '@/lib/demo-constants';
 
 import { useLoginForm } from '../hooks/use-login-form';
 import LastUsedMethodBadge from './last-method-badge';
 import PasswordField from './password-field';
 import SocialLoginButtonGroup from './social-login-button-group';
-
-const DEMO_EMAIL = 'demo@vigil.dev';
-const DEMO_PASSWORD = 'DemoPassword123!';
 
 export default function LoginForm() {
   use(browser('Last used login method is stored in the browser.'));

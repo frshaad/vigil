@@ -34,9 +34,9 @@ Demo account:
 |         ![Dark mode](./docs/images/dark.png)          | ![Responsive](./docs/images/notifications-settings-dark.png) |
 |        ![Responsive](./docs/images/mobile.png)        |    ![Responsive dark mode](./docs/images/mobile-dark.png)    |
 
-### Demo
+<!--### Demo
 
-![Vigil demo](./docs/demo.gif)
+![Vigil demo](./docs/demo.gif)-->
 
 ---
 

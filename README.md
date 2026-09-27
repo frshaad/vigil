@@ -27,23 +27,12 @@ Demo account:
 
 ### Dashboard
 
-![Vigil dashboard](./docs/images/dashboard.png)
-
-### Monitors
-
-![Monitors list](./docs/images/monitors.png)
-
-### Monitor details
-
-![Monitor details](./docs/images/monitor-details.png)
-
-### Notifications
-
-![Notifications page](./docs/images/notifications.png)
-
-### Settings
-
-![Settings page](./docs/images/settings.png)
+|                                                       |                                                              |
+| :---------------------------------------------------: | :----------------------------------------------------------: |
+|    ![Vigil dashboard](./docs/images/dashboard.png)    |         ![Monitors list](./docs/images/monitors.png)         |
+| ![Monitor details](./docs/images/monitor-details.png) |    ![Notifications page](./docs/images/notifications.png)    |
+|         ![Dark mode](./docs/images/dark.png)          | ![Responsive](./docs/images/notifications-settings-dark.png) |
+|        ![Responsive](./docs/images/mobile.png)        |    ![Responsive dark mode](./docs/images/mobile-dark.png)    |
 
 ### Demo
 

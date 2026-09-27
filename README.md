@@ -39,7 +39,11 @@ Demo account:
 
 ### Notifications
 
-![Monitor details](./docs/images/notifications.png)
+![Notifications page](./docs/images/notifications.png)
+
+### Settings
+
+![Settings page](./docs/images/settings.png)
 
 ### Demo
 

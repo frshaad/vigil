@@ -23,13 +23,9 @@ const PASSWORD_RESET = {
 
 export const auth = betterAuth({
   baseURL: {
-    allowedHosts: [
-      'https://vigil-4rc6ctova-frshaads-projects.vercel.app',
-      'https://vigil-eta-nine.vercel.app',
-      '*.vercel.app', // all Vercel preview deployments
-      'localhost:3000', // local development
-    ],
-    protocol: process.env.NODE_ENV === 'development' ? 'http' : 'https',
+    allowedHosts: ['localhost:3000', '*.vercel.app', new URL(env.BETTER_AUTH_URL).host],
+    protocol: 'auto',
+    fallback: env.BETTER_AUTH_URL,
   },
 
   database: prismaAdapter(prisma, {

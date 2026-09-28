@@ -15,8 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-import { useLogOut } from '../auth/hooks/use-log-out';
+import { useLogOut } from '@/features/auth/hooks/use-log-out';
 
 interface SidebarUserProps {
   user: {

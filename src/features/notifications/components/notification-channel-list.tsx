@@ -18,10 +18,10 @@ export default function NotificationChannelList({ channels }: NotificationChanne
             <IconBellOff className="text-muted-foreground size-5" />
           </div>
 
-          <h3 className="mt-4 text-sm font-medium">No notification channels</h3>
+          <h3 className="mt-4 text-sm font-medium">No email notifications</h3>
 
           <p className="text-muted-foreground mt-1 max-w-sm text-sm">
-            Add an email or Telegram channel to receive monitor alerts outside Vigil.
+            Add an email address to receive monitor alerts outside Vigil.
           </p>
         </CardContent>
       </Card>

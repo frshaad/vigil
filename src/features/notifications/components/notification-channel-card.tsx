@@ -1,6 +1,6 @@
 'use client';
 
-import { IconBrandTelegram, IconDeviceDesktop, IconMail, IconTrash } from '@tabler/icons-react';
+import { IconMail, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 
@@ -14,33 +14,6 @@ import type { NotificationChannel } from '../dal';
 
 interface NotificationChannelCardProps {
   channel: NotificationChannel;
-}
-
-function getChannelDescription(type: NotificationChannel['type']) {
-  switch (type) {
-    case 'EMAIL':
-      return 'Receive monitor alerts by email.';
-
-    case 'TELEGRAM':
-      return 'Receive monitor alerts in Telegram.';
-
-    case 'IN_APP':
-      return 'Receive alerts inside Vigil.';
-  }
-}
-
-function ChannelIcon({ type }: { type: NotificationChannel['type'] }) {
-  return (
-    <div className="bg-muted flex size-9 shrink-0 items-center justify-center rounded-md">
-      {type === 'EMAIL' ? (
-        <IconMail className="size-4" />
-      ) : type === 'TELEGRAM' ? (
-        <IconBrandTelegram className="size-4" />
-      ) : (
-        <IconDeviceDesktop className="size-4" />
-      )}
-    </div>
-  );
 }
 
 export default function NotificationChannelCard({ channel }: NotificationChannelCardProps) {
@@ -88,14 +61,14 @@ export default function NotificationChannelCard({ channel }: NotificationChannel
     <Card>
       <CardHeader className="flex flex-row items-start justify-between gap-4">
         <div className="flex min-w-0 items-start gap-3">
-          <ChannelIcon type={channel.type} />
+          <div className="bg-muted flex size-9 shrink-0 items-center justify-center rounded-md">
+            <IconMail className="size-4" />
+          </div>
 
           <div className="min-w-0">
             <CardTitle className="truncate text-base">{channel.name}</CardTitle>
 
-            <p className="text-muted-foreground mt-1 text-sm">
-              {getChannelDescription(channel.type)}
-            </p>
+            <p className="text-muted-foreground mt-1 truncate text-sm">{channel.email}</p>
           </div>
         </div>
 

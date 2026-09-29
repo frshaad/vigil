@@ -9,9 +9,8 @@ export async function getNotificationChannels(userId: string) {
     },
     select: {
       id: true,
-      type: true,
       name: true,
-      config: true,
+      email: true,
       isEnabled: true,
       createdAt: true,
       updatedAt: true,

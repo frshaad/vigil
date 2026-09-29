@@ -19,8 +19,6 @@ export const env = createEnv({
     RESEND_API_KEY: z.string().min(1).optional(),
     EMAIL_FROM: z.string().min(1),
 
-    TELEGRAM_BOT_TOKEN: z.string().min(1).optional(),
-
     CRON_SECRET: z.string().min(1).optional(),
   },
 
@@ -43,8 +41,6 @@ export const env = createEnv({
 
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
-
-    TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
 
     CRON_SECRET: process.env.CRON_SECRET,
   },

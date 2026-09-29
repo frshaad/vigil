@@ -69,7 +69,7 @@ export default async function Page() {
           <h2 className="text-lg font-medium">Notification channels</h2>
 
           <p className="text-muted-foreground text-sm">
-            Email and Telegram channels can be assigned to individual monitors.
+            Email channel can be assigned to individual monitors.
           </p>
         </div>
 

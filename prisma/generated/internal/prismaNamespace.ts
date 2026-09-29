@@ -1375,9 +1375,8 @@ export type IncidentScalarFieldEnum = (typeof IncidentScalarFieldEnum)[keyof typ
 export const NotificationChannelScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  type: 'type',
   name: 'name',
-  config: 'config',
+  email: 'email',
   isEnabled: 'isEnabled',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1448,13 +1447,6 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -1469,15 +1461,6 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-export const JsonNullValueFilter = {
-  DbNull: DbNull,
-  JsonNull: JsonNull,
-  AnyNull: AnyNull
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1574,34 +1557,6 @@ export type EnumIncidentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'IncidentStatus[]'
  */
 export type ListEnumIncidentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IncidentStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'NotificationChannelType'
- */
-export type EnumNotificationChannelTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationChannelType'>
-    
-
-
-/**
- * Reference to a field of type 'NotificationChannelType[]'
- */
-export type ListEnumNotificationChannelTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationChannelType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 

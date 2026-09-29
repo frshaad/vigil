@@ -26,12 +26,6 @@ enum IncidentStatus {
   RESOLVED
 }
 
-enum NotificationChannelType {
-  EMAIL
-  TELEGRAM
-  IN_APP
-}
-
 enum InAppNotificationType {
   MONITOR_DOWN
   MONITOR_RECOVERED
@@ -169,10 +163,9 @@ model NotificationChannel {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  type      NotificationChannelType
   name      String
-  config    Json
-  isEnabled Boolean                 @default(true)
+  email     String
+  isEnabled Boolean @default(true)
 
   monitors Monitor[]
 

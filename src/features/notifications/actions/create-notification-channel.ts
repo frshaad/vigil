@@ -26,14 +26,13 @@ export const createNotificationChannel = authClient
     return prisma.notificationChannel.create({
       data: {
         userId,
-        type: parsedInput.type,
         name: parsedInput.name,
-        config: parsedInput.config,
+        email: parsedInput.config.email,
       },
       select: {
         id: true,
-        type: true,
         name: true,
+        email: true,
         isEnabled: true,
       },
     });

@@ -14,6 +14,15 @@ export async function getNotificationChannels(userId: string) {
       isEnabled: true,
       createdAt: true,
       updatedAt: true,
+
+      monitors: {
+        select: {
+          id: true,
+          name: true,
+          isActive: true,
+        },
+      },
+
       _count: {
         select: {
           monitors: true,
@@ -135,6 +144,22 @@ export async function getEmailNotificationChannelsForMonitor(userId: string, mon
     },
     orderBy: {
       createdAt: 'asc',
+    },
+  });
+}
+
+export async function getMonitorsForNotificationManagement(userId: string) {
+  return prisma.monitor.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      name: true,
+      isActive: true,
+    },
+    orderBy: {
+      name: 'asc',
     },
   });
 }

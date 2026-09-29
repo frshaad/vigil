@@ -1,5 +1,6 @@
 import { IconBellOff } from '@tabler/icons-react';
 
+import type { Monitor } from '@/../prisma/generated/client';
 import { Card, CardContent } from '@/components/ui/card';
 
 import type { NotificationChannel } from '../dal';
@@ -7,9 +8,13 @@ import NotificationChannelCard from './notification-channel-card';
 
 interface NotificationChannelListProps {
   channels: NotificationChannel[];
+  monitors: Pick<Monitor, 'id' | 'name' | 'isActive'>[];
 }
 
-export default function NotificationChannelList({ channels }: NotificationChannelListProps) {
+export default function NotificationChannelList({
+  channels,
+  monitors,
+}: NotificationChannelListProps) {
   if (channels.length === 0) {
     return (
       <Card>
@@ -31,7 +36,7 @@ export default function NotificationChannelList({ channels }: NotificationChanne
   return (
     <div className="space-y-3">
       {channels.map((channel) => (
-        <NotificationChannelCard key={channel.id} channel={channel} />
+        <NotificationChannelCard key={channel.id} channel={channel} monitors={monitors} />
       ))}
     </div>
   );

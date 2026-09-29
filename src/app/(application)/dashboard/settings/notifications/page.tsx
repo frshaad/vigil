@@ -6,7 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import CreateNotificationChannel from '@/features/notifications/components/create-notification-channel';
 import NotificationChannelList from '@/features/notifications/components/notification-channel-list';
-import { getNotificationChannels } from '@/features/notifications/dal';
+import {
+  getMonitorsForNotificationManagement,
+  getNotificationChannels,
+} from '@/features/notifications/dal';
 import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 import { createMetadata } from '@/lib/metadata/create-metadata';
 
@@ -19,7 +22,10 @@ export const metadata: Metadata = createMetadata({
 export default async function Page() {
   const user = await getCurrentUserOrRedirect();
 
-  const channels = await getNotificationChannels(user.id);
+  const [channels, monitors] = await Promise.all([
+    getNotificationChannels(user.id),
+    getMonitorsForNotificationManagement(user.id),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -73,7 +79,7 @@ export default async function Page() {
           </p>
         </div>
 
-        <NotificationChannelList channels={channels} />
+        <NotificationChannelList channels={channels} monitors={monitors} />
       </section>
     </div>
   );

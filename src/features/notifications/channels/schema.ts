@@ -9,4 +9,14 @@ export const createNotificationChannelSchema = z.object({
   config: emailChannelConfigSchema,
 });
 
+export const setMonitorNotificationChannelsSchema = z.object({
+  monitorId: z.string(),
+  channelIds: z.array(z.string()).max(10),
+});
+
+export const setNotificationChannelMonitorsSchema = z.object({
+  channelId: z.string(),
+  monitorIds: z.array(z.string()).max(100),
+});
+
 export type EmailChannelConfig = z.infer<typeof emailChannelConfigSchema>;

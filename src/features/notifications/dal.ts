@@ -113,3 +113,28 @@ export async function markAllInAppNotificationsAsRead(userId: string) {
     },
   });
 }
+
+export async function getEmailNotificationChannelsForMonitor(userId: string, monitorId: string) {
+  return prisma.notificationChannel.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      isEnabled: true,
+      monitors: {
+        where: {
+          id: monitorId,
+        },
+        select: {
+          id: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+  });
+}

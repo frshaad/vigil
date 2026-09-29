@@ -10,6 +10,8 @@ import ResetPasswordEmail from '@/features/email/templates/reset-password-email'
 import VerificationEmail from '@/features/email/templates/verification-email';
 import prisma from '@/lib/prisma';
 
+const isSeedMode = process.env.SEED_MODE === 'true';
+
 const SESSION = {
   expiresIn: 30 * 24 * 60 * 60, // 30 days
   updateAge: 24 * 60 * 60, // 1 day
@@ -96,7 +98,7 @@ export const auth = betterAuth({
   ],
 
   emailVerification: {
-    sendOnSignUp: true,
+    sendOnSignUp: !isSeedMode,
     autoSignInAfterVerification: true,
 
     async sendVerificationEmail({ user, url }) {

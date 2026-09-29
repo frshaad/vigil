@@ -16,6 +16,8 @@ import MonitorRecentChecks from '@/features/monitors/components/monitor-recent-c
 import MonitorResponseTimeChart from '@/features/monitors/components/monitor-response-time-chart';
 import UpdateMonitorForm from '@/features/monitors/components/update-monitor-form';
 import { getMonitor } from '@/features/monitors/dal';
+import MonitorNotificationForm from '@/features/notifications/components/monitor-notification-form';
+import { getEmailNotificationChannelsForMonitor } from '@/features/notifications/dal';
 import { getCurrentUserOrRedirect } from '@/lib/auth/session';
 
 export default async function MonitorPage({
@@ -33,15 +35,24 @@ export default async function MonitorPage({
     notFound();
   }
 
-  const [metrics, history, recentChecks] = await Promise.all([
+  const [metrics, history, recentChecks, notificationChannels] = await Promise.all([
     getMonitorMetrics(monitor.id),
     getMonitorCheckHistory(monitor.id),
     getRecentMonitorChecks(monitor.id),
+    getEmailNotificationChannelsForMonitor(user.id, monitor.id),
   ]);
 
   const chartData = history.map((check) => ({
     checkedAt: check.checkedAt.toISOString(),
     responseTimeMs: check.responseTimeMs,
+  }));
+
+  const notificationFormChannels = notificationChannels.map((channel) => ({
+    id: channel.id,
+    name: channel.name,
+    email: channel.email,
+    isEnabled: channel.isEnabled,
+    isConnected: channel.monitors.length > 0,
   }));
 
   return (
@@ -84,8 +95,10 @@ export default async function MonitorPage({
           <MonitorDetailsCard monitor={monitor} />
         </main>
 
-        <aside className="lg:sticky lg:top-6 lg:self-start">
+        <aside className="space-y-6 lg:sticky lg:top-6 lg:self-start">
           <UpdateMonitorForm monitor={monitor} />
+
+          <MonitorNotificationForm monitorId={monitor.id} channels={notificationFormChannels} />
         </aside>
       </div>
     </>

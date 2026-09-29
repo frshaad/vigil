@@ -4,10 +4,9 @@ import { resolveNotificationChannels } from './channels/resolve-notification-cha
 import { createInAppNotification } from './dal';
 import { sendEmailNotification } from './email/send-email-notification';
 import type { NotificationEvent } from './events';
-import { sendTelegramNotification } from './telegram/send-telegram-notification';
 
 export async function dispatchNotification(event: NotificationEvent): Promise<void> {
-  const [monitor, incident, channels] = await Promise.all([
+  const [monitor, incident, deliveryChannels] = await Promise.all([
     prisma.monitor.findUnique({
       where: {
         id: event.monitorId,
@@ -61,10 +60,6 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
             : 'The monitor is responding again.',
         };
 
-  const deliveryChannels = channels.filter(
-    (channel) => channel.type === 'EMAIL' || channel.type === 'TELEGRAM',
-  );
-
   const results = await Promise.allSettled([
     createInAppNotification({
       userId: monitor.userId,
@@ -74,31 +69,18 @@ export async function dispatchNotification(event: NotificationEvent): Promise<vo
       message: inAppContent.message,
     }),
 
-    ...deliveryChannels.map((channel) => {
-      if (channel.type === 'EMAIL') {
-        return sendEmailNotification({
-          event,
-          email: channel.email,
-          monitorName: monitor.name,
-          monitorUrl: monitor.url,
-          statusCode: incident.statusCode,
-          error: incident.error,
-          startedAt: incident.startedAt,
-          resolvedAt: incident.resolvedAt,
-        });
-      }
-
-      return sendTelegramNotification({
+    ...deliveryChannels.map((channel) =>
+      sendEmailNotification({
         event,
-        chatId: channel.chatId,
+        email: channel.email,
         monitorName: monitor.name,
         monitorUrl: monitor.url,
         statusCode: incident.statusCode,
         error: incident.error,
         startedAt: incident.startedAt,
         resolvedAt: incident.resolvedAt,
-      });
-    }),
+      }),
+    ),
   ]);
 
   if (results[0]?.status === 'rejected') {

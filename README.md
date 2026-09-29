@@ -46,7 +46,7 @@ Demo account:
 - Run manual checks with cooldown protection
 - Record HTTP status, response time, errors, and check history
 - Track open and resolved incidents
-- Create in-app, email, and Telegram notifications
+- Create in-app, email notifications
 - Pause and resume monitors
 - View monitor metrics and response-time history
 - Authenticate with email/password, Google, or GitHub
@@ -120,7 +120,6 @@ Current channels:
 
 - In-app
 - Email via Resend + React Email
-- Telegram
 
 ---
 
@@ -139,7 +138,6 @@ flowchart LR
     INCIDENTS --> NOTIFY[Notifications]
 
     NOTIFY --> EMAIL[Resend]
-    NOTIFY --> TELEGRAM[Telegram]
     NOTIFY --> DB
 ```
 
@@ -177,7 +175,7 @@ prisma/
 | UI              | Tailwind CSS, shadcn/ui, Base UI |
 | Icons           | Tabler Icons                     |
 | Email           | Resend, React Email              |
-| Notifications   | Telegram, in-app notifications   |
+| Notifications   | in-app notifications             |
 | Package manager | pnpm                             |
 | Quality         | Oxlint, Oxfmt, Husky             |
 | CI              | GitHub Actions                   |

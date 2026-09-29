@@ -17,8 +17,6 @@ const MONITOR_IDS = {
 
 const CHANNEL_IDS = {
   email: 'demo-email-channel',
-  telegram: 'demo-telegram-channel',
-  inApp: 'demo-in-app-channel',
   backupEmail: 'demo-backup-email-channel',
 } as const;
 
@@ -181,42 +179,15 @@ async function main() {
       });
 
       // ---------------------------------------------------------------------------
-      // Notification channels
+      // Email notification channels
       // ---------------------------------------------------------------------------
 
       await tx.notificationChannel.create({
         data: {
           id: CHANNEL_IDS.email,
           userId: user.id,
-          type: 'EMAIL',
           name: 'Primary Email',
-          config: {
-            email: DEMO_EMAIL,
-          },
-          isEnabled: true,
-        },
-      });
-
-      await tx.notificationChannel.create({
-        data: {
-          id: CHANNEL_IDS.telegram,
-          userId: user.id,
-          type: 'TELEGRAM',
-          name: 'Telegram Alerts',
-          config: {
-            chatId: '123456789',
-          },
-          isEnabled: true,
-        },
-      });
-
-      await tx.notificationChannel.create({
-        data: {
-          id: CHANNEL_IDS.inApp,
-          userId: user.id,
-          type: 'IN_APP',
-          name: 'In-app Alerts',
-          config: {},
+          email: DEMO_EMAIL,
           isEnabled: true,
         },
       });
@@ -225,11 +196,8 @@ async function main() {
         data: {
           id: CHANNEL_IDS.backupEmail,
           userId: user.id,
-          type: 'EMAIL',
           name: 'Backup Email',
-          config: {
-            email: 'backup@vigil.dev',
-          },
+          email: 'backup@vigil.dev',
           isEnabled: false,
         },
       });
@@ -250,7 +218,7 @@ async function main() {
           lastStatus: 'UP',
           lastStatusCode: 200,
           lastResponseTimeMs: 142,
-          channelIds: [CHANNEL_IDS.email, CHANNEL_IDS.telegram, CHANNEL_IDS.inApp],
+          channelIds: [CHANNEL_IDS.email],
         },
 
         {
@@ -264,7 +232,7 @@ async function main() {
           lastStatus: 'UP',
           lastStatusCode: 200,
           lastResponseTimeMs: 87,
-          channelIds: [CHANNEL_IDS.email, CHANNEL_IDS.inApp],
+          channelIds: [CHANNEL_IDS.email],
         },
 
         {
@@ -278,7 +246,7 @@ async function main() {
           lastStatus: 'UP',
           lastStatusCode: 201,
           lastResponseTimeMs: 218,
-          channelIds: [CHANNEL_IDS.email, CHANNEL_IDS.inApp],
+          channelIds: [CHANNEL_IDS.email],
         },
 
         {
@@ -292,7 +260,7 @@ async function main() {
           lastStatus: 'UP',
           lastStatusCode: 200,
           lastResponseTimeMs: 164,
-          channelIds: [CHANNEL_IDS.email, CHANNEL_IDS.telegram, CHANNEL_IDS.inApp],
+          channelIds: [CHANNEL_IDS.email],
         },
 
         {
@@ -306,12 +274,7 @@ async function main() {
           lastStatus: 'DOWN',
           lastStatusCode: 503,
           lastResponseTimeMs: 5000,
-          channelIds: [
-            CHANNEL_IDS.email,
-            CHANNEL_IDS.telegram,
-            CHANNEL_IDS.inApp,
-            CHANNEL_IDS.backupEmail,
-          ],
+          channelIds: [CHANNEL_IDS.email, CHANNEL_IDS.backupEmail],
         },
 
         {
@@ -325,7 +288,7 @@ async function main() {
           lastStatus: 'UP',
           lastStatusCode: 204,
           lastResponseTimeMs: 196,
-          channelIds: [CHANNEL_IDS.inApp],
+          channelIds: [],
         },
 
         {
@@ -695,7 +658,7 @@ async function main() {
   console.log('Monitors: 7');
   console.log('Monitor checks: 582');
   console.log('Incidents: 6');
-  console.log('Notification channels: 4');
+  console.log('Notification channels: 2');
   console.log('In-app notifications: 10');
   console.log('Monitor preferences: 7');
 }

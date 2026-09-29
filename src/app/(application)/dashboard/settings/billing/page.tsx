@@ -21,12 +21,7 @@ const planDetails = {
   PRO: {
     name: 'Pro',
     description: 'For more monitoring and notification capabilities.',
-    features: [
-      'Advanced monitoring',
-      'Email notifications',
-      'Telegram notifications',
-      'In-app notifications',
-    ],
+    features: ['Advanced monitoring', 'Email notifications', 'In-app notifications'],
   },
 } as const;
 

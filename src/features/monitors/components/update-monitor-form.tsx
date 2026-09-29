@@ -29,107 +29,123 @@ export default function UpdateMonitorForm({ monitor }: UpdateMonitorFormProps) {
   const isDisabled = isPending || !form.formState.isDirty;
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        void handleSubmit(e);
-      }}
-    >
-      {serverError !== undefined && <ErrorCard message={serverError} />}
+    <section className="border p-5">
+      <div className="mb-5">
+        <h2 className="text-base font-semibold">Monitor settings</h2>
 
-      <FieldGroup>
-        <Controller
-          name="name"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="update-monitor-name">Monitor name</FieldLabel>
+        <p className="text-muted-foreground mt-1 text-sm">Update the settings for this monitor.</p>
+      </div>
 
-              <Input
-                {...field}
-                id="update-monitor-name"
-                aria-invalid={fieldState.invalid}
-                placeholder="Production API"
-                autoComplete="off"
-                disabled={isPending}
-              />
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          void handleSubmit(event);
+        }}
+      >
+        {serverError !== undefined && (
+          <div className="mb-4">
+            <ErrorCard message={serverError} />
+          </div>
+        )}
 
-              {fieldState.error && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
+        <FieldGroup>
+          <Controller
+            name="name"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="update-monitor-name">Monitor name</FieldLabel>
 
-        <Controller
-          name="url"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="update-monitor-url">URL</FieldLabel>
-
-              <Input
-                {...field}
-                id="update-monitor-url"
-                type="text"
-                inputMode="url"
-                aria-invalid={fieldState.invalid}
-                placeholder="https://api.example.com/health"
-                autoComplete="url"
-                spellCheck={false}
-                disabled={isPending}
-                onBlur={() => {
-                  const normalizedUrl = normalizeMonitorUrl(field.value);
-
-                  if (normalizedUrl !== field.value) {
-                    field.onChange(normalizedUrl);
-                  }
-
-                  field.onBlur();
-                }}
-              />
-
-              {fieldState.error && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="method"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field orientation="responsive" data-invalid={fieldState.invalid}>
-              <FieldContent>
-                <FieldLabel htmlFor="update-monitor-method">HTTP method</FieldLabel>
+                <Input
+                  {...field}
+                  id="update-monitor-name"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Production API"
+                  autoComplete="off"
+                  disabled={isPending}
+                />
 
                 {fieldState.error && <FieldError errors={[fieldState.error]} />}
-              </FieldContent>
+              </Field>
+            )}
+          />
 
-              <Select value={field.value} onValueChange={field.onChange} disabled={isPending}>
-                <SelectTrigger
-                  id="update-monitor-method"
+          <Controller
+            name="url"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="update-monitor-url">URL</FieldLabel>
+
+                <Input
+                  {...field}
+                  id="update-monitor-url"
+                  type="text"
+                  inputMode="url"
                   aria-invalid={fieldState.invalid}
-                  className="min-w-30"
-                >
-                  <SelectValue placeholder="Select method" />
-                </SelectTrigger>
+                  placeholder="https://api.example.com/health"
+                  autoComplete="url"
+                  spellCheck={false}
+                  disabled={isPending}
+                  onBlur={() => {
+                    const normalizedUrl = normalizeMonitorUrl(field.value);
 
-                <SelectContent>
-                  {methods.map((method) => (
-                    <SelectItem key={method.value} value={method.value} disabled={method.disabled}>
-                      {method.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
-          )}
-        />
-      </FieldGroup>
+                    if (normalizedUrl !== field.value) {
+                      field.onChange(normalizedUrl);
+                    }
 
-      <div className="mt-6 flex justify-end">
-        <Button type="submit" disabled={isDisabled}>
-          {isPending ? 'Saving…' : 'Save changes'}
-        </Button>
-      </div>
-    </form>
+                    field.onBlur();
+                  }}
+                />
+
+                {fieldState.error && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+
+          <Controller
+            name="method"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field orientation="responsive" data-invalid={fieldState.invalid}>
+                <FieldContent>
+                  <FieldLabel htmlFor="update-monitor-method">HTTP method</FieldLabel>
+
+                  {fieldState.error && <FieldError errors={[fieldState.error]} />}
+                </FieldContent>
+
+                <Select value={field.value} onValueChange={field.onChange} disabled={isPending}>
+                  <SelectTrigger
+                    id="update-monitor-method"
+                    aria-invalid={fieldState.invalid}
+                    className="min-w-30"
+                  >
+                    <SelectValue placeholder="Select method" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {methods.map((method) => (
+                      <SelectItem
+                        key={method.value}
+                        value={method.value}
+                        disabled={method.disabled}
+                      >
+                        {method.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+            )}
+          />
+        </FieldGroup>
+
+        <div className="mt-6 flex justify-end">
+          <Button type="submit" disabled={isDisabled}>
+            {isPending ? 'Saving…' : 'Save changes'}
+          </Button>
+        </div>
+      </form>
+    </section>
   );
 }

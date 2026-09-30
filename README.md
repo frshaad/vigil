@@ -25,29 +25,27 @@ Password: DemoPassword123!
 
 ## Tech stack
 
-| Area            | Tools                                    |
-| --------------- | ---------------------------------------- |
-| Framework       | Next.js 16, React 19                     |
-| Language        | TypeScript                               |
-| Database        | PostgreSQL (Neon)                        |
-| ORM             | Prisma 7                                 |
-| Authentication  | Better Auth                              |
-| Validation      | Zod                                      |
-| Mutations       | Next.js Server Actions, next-safe-action |
-| API             | Next.js Route Handlers                   |
-| UI              | Tailwind CSS, shadcn/ui, Base UI         |
-| Icons           | Tabler Icons                             |
-| Email           | Resend, React Email                      |
-| Package manager | pnpm                                     |
-| Code quality    | Oxlint, Oxfmt, Husky                     |
-| CI              | GitHub Actions                           |
-| Deployment      | Vercel                                   |
+| Area            | Tools                            |
+| --------------- | -------------------------------- |
+| Framework       | Next.js 16, React 19             |
+| Language        | TypeScript                       |
+| Database        | PostgreSQL, Neon                 |
+| ORM             | Prisma 7                         |
+| Authentication  | Better Auth                      |
+| Validation      | Zod                              |
+| Mutations       | Server Actions, next-safe-action |
+| API             | Next.js Route Handlers           |
+| UI              | Tailwind CSS, shadcn/ui, Base UI |
+| Email           | Resend, React Email              |
+| Icons           | Tabler Icons                     |
+| Package manager | pnpm                             |
+| Code quality    | Oxlint, Oxfmt, Husky             |
+| CI              | GitHub Actions                   |
+| Deployment      | Vercel                           |
 
 ---
 
 ## Screenshots
-
-### Dashboard
 
 |                                                       |                                                                         |
 | :---------------------------------------------------: | :---------------------------------------------------------------------: |
@@ -61,16 +59,15 @@ Password: DemoPassword123!
 ## What it does
 
 - Create and manage website and API monitors
-- Check endpoints at configurable intervals
+- Check HTTP endpoints with configurable monitor intervals
 - Run manual checks with cooldown protection
-- Store HTTP status, response time, errors, and check history
+- Store status, response time, errors, and check history
 - Track open and resolved incidents
 - Send in-app and email notifications
 - Pause and resume monitors
 - View monitor metrics and response-time history
 - Authenticate with email/password, Google, or GitHub
-- Use the dashboard on desktop and mobile
-- Run the first monitor check automatically after creation
+- Run the first check automatically after creating a monitor
 
 ---
 
@@ -78,11 +75,11 @@ Password: DemoPassword123!
 
 ### Next.js App Router
 
-Vigil uses the Next.js App Router as the main full-stack architecture.
+Vigil uses the Next.js App Router as its full-stack application architecture.
 
 - **Server Components** for server-side data fetching
 - **Server Actions** for authenticated mutations
-- **Route Handlers** for HTTP endpoints such as the monitoring cron endpoint
+- **Route Handlers** for HTTP endpoints such as the monitoring endpoint
 - `loading.tsx` and Suspense for loading states
 - Cache tags and route revalidation for fresh dashboard data
 - React Compiler enabled
@@ -103,9 +100,9 @@ All monitor data and mutations are scoped to the authenticated user.
 
 TypeScript is used across the application with strict type checking.
 
-Zod is used to validate action input and configuration data before it reaches the database or external services.
+Zod validates Server Action input and external configuration data before it reaches the database or external services.
 
-The project also uses Next.js typed routes to catch invalid application routes at build time.
+Next.js typed routes are also enabled to catch invalid application routes at build time.
 
 ### Database and Prisma
 
@@ -122,11 +119,11 @@ The database includes relational models for:
 - Subscriptions
 - Monitor preferences
 
-Database writes that update monitor state and incident state are handled in a serializable Prisma transaction.
+Monitor state, check history, and incident transitions are written in a serializable Prisma transaction.
 
 ### Monitoring and incident handling
 
-Monitor checks follow one server-side flow:
+A monitor check follows one server-side flow:
 
 ```text
 Run check
@@ -135,31 +132,33 @@ Store check result
    ↓
 Update monitor status
    ↓
-Detect status change
+Detect status transition
    ↓
 Create / resolve incident
    ↓
-Send notifications
+Dispatch notifications
 ```
 
 Manual checks use an atomic cooldown claim to prevent concurrent duplicate checks.
 
-Incident creation and recovery are based on monitor status transitions instead of treating every failed request as a new incident.
+A protected monitoring Route Handler is available for scheduled execution. The public demo does not run a scheduled worker because the current Vercel Hobby plan only supports daily Cron runs.
 
 ### Notifications
 
-Notification delivery is separated from monitoring logic.
+Notification delivery is separated from incident detection.
 
 Current notification methods:
 
 - In-app notifications
 - Email via Resend and React Email
 
-In-app notifications are available by default. Email notifications can be connected to individual monitors.
+In-app notifications are available by default. Email channels can be connected to individual monitors.
+
+Email delivery is implemented with Resend, but it is not enabled in the public demo because a verified sending domain is required for production email delivery.
 
 ### Feature-based project structure
 
-The codebase is organized around features instead of putting all files into global type-based folders.
+The codebase is organized around features instead of global type-based folders.
 
 ```text
 src/
@@ -169,14 +168,15 @@ src/
 │   ├── monitors/
 │   ├── monitoring/
 │   ├── notifications/
-│   └── email/
+│   ├── email/
+│   └── sidebar/
 └── lib/
 
 prisma/
 └── schema.prisma
 ```
 
-This keeps monitor logic, notification logic, data access, actions, and UI components close to the feature they belong to.
+This keeps feature-specific UI, actions, data access, and business logic close together.
 
 ### Code quality and CI
 
@@ -188,7 +188,7 @@ The project uses:
 - Husky for Git hooks
 - GitHub Actions for CI
 
-The main CI checks are:
+The main CI flow is:
 
 ```text
 Install dependencies
@@ -202,51 +202,46 @@ Production build
 
 ---
 
-## Architecture
+## How the application is structured
 
-The main application flow is intentionally simple:
+The main request flow is intentionally simple:
 
 ```text
-                    ┌──────────────────┐
-                    │   Next.js App    │
-                    │    Router        │
-                    └────────┬─────────┘
-                             │
-          ┌──────────────────┼──────────────────┐
-          │                  │                  │
-          ▼                  ▼                  ▼
-   Server Components   Server Actions     Route Handlers
-          │                  │                  │
-          │               Zod + Auth           │
-          └──────────────────┼──────────────────┘
-                             ▼
-                    Data / Monitoring
-                             │
-                         Prisma ORM
-                             │
-                             ▼
-                    PostgreSQL (Neon)
-                             │
-                             ▼
-                       Notifications
-                       ┌─────┴─────┐
-                       ▼           ▼
-                    In-app       Resend
-                                  Email
+Next.js App Router
+        ↓
+Server Components
+Server Actions
+Route Handlers
+        ↓
+Feature logic / Data Access
+        ↓
+Prisma
+        ↓
+PostgreSQL
+```
+
+Monitoring adds a separate server-side flow:
+
+```text
+HTTP check
+    ↓
+Prisma transaction
+    ↓
+Monitor status
+    ↓
+Incident
+    ↓
+Notification
 ```
 
 ---
 
 ## Performance
 
-The marketing homepage was audited with Google PageSpeed Insights.
+The marketing homepage was tested with Google PageSpeed Insights and scored:
 
-| Metric         | Mobile | Desktop |
-| -------------- | -----: | ------: |
-| Performance    |     97 |     100 |
-| Accessibility  |     96 |      96 |
-| Best Practices |    100 |     100 |
-| SEO            |    100 |     100 |
+- **97** Performance on mobile
+- **100** Performance on desktop
 
 [View PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-vigil-eta-nine-vercel-app/d8sx0w9rhr)
 
@@ -270,6 +265,7 @@ pnpm install
 cp .env.example .env
 
 pnpm db:migrate
+pnpm db:seed
 pnpm dev
 ```
 
@@ -279,7 +275,7 @@ The app runs at `http://localhost:3000`.
 
 ## Demo data
 
-The seed includes a demo account with representative data for:
+The seed includes representative data for:
 
 - Active and paused monitors
 - Different HTTP methods
@@ -301,6 +297,6 @@ Use these credentials only with the deployed demo environment.
 
 ## Scope
 
-Vigil currently focuses on HTTP uptime monitoring and the core workflow around it.
+Vigil focuses on HTTP uptime monitoring and the core workflow around it.
 
 More advanced infrastructure such as multi-region probing, distributed workers, escalation policies, and large-scale job queues is outside the current scope.

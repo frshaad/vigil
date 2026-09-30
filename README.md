@@ -2,9 +2,9 @@
 
 **Uptime monitoring for websites and APIs.**
 
-Vigil is a full-stack monitoring SaaS built with Next.js, TypeScript, PostgreSQL, and Prisma. It checks configured endpoints, records response data, tracks incidents, and notifies users when monitors go down or recover.
+Vigil is a full-stack monitoring SaaS built with Next.js, TypeScript, PostgreSQL, and Prisma. It checks HTTP endpoints, stores check history, tracks incidents, and sends notifications when a monitor goes down or recovers.
 
-> Portfolio project focused on practical full-stack engineering with the Next.js App Router.
+> A portfolio project focused on practical full-stack engineering with the Next.js App Router.
 
 [![CI](https://github.com/frshaad/vigil/actions/workflows/ci.yml/badge.svg)](https://github.com/frshaad/vigil/actions/workflows/ci.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
@@ -12,14 +12,36 @@ Vigil is a full-stack monitoring SaaS built with Next.js, TypeScript, PostgreSQL
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql)
 
-<!-- Add your deployed URL here -->
-
 [Live Demo](https://vigil-eta-nine.vercel.app/)
 
-Demo account:
+**Demo account**
 
-- Email: demo@vigil.dev
-- Password: DemoPassword123!
+```text
+Email:    demo@vigil.dev
+Password: DemoPassword123!
+```
+
+---
+
+## Tech stack
+
+| Area            | Tools                                    |
+| --------------- | ---------------------------------------- |
+| Framework       | Next.js 16, React 19                     |
+| Language        | TypeScript                               |
+| Database        | PostgreSQL (Neon)                        |
+| ORM             | Prisma 7                                 |
+| Authentication  | Better Auth                              |
+| Validation      | Zod                                      |
+| Mutations       | Next.js Server Actions, next-safe-action |
+| API             | Next.js Route Handlers                   |
+| UI              | Tailwind CSS, shadcn/ui, Base UI         |
+| Icons           | Tabler Icons                             |
+| Email           | Resend, React Email                      |
+| Package manager | pnpm                                     |
+| Code quality    | Oxlint, Oxfmt, Husky                     |
+| CI              | GitHub Actions                           |
+| Deployment      | Vercel                                   |
 
 ---
 
@@ -27,68 +49,195 @@ Demo account:
 
 ### Dashboard
 
-|                                                       |                                                              |
-| :---------------------------------------------------: | :----------------------------------------------------------: |
-|    ![Vigil dashboard](./docs/images/dashboard.png)    |         ![Monitors list](./docs/images/monitors.png)         |
-| ![Monitor details](./docs/images/monitor-details.png) |    ![Notifications page](./docs/images/notifications.png)    |
-|         ![Dark mode](./docs/images/dark.png)          | ![Responsive](./docs/images/notifications-settings-dark.png) |
-|        ![Responsive](./docs/images/mobile.png)        |    ![Responsive dark mode](./docs/images/mobile-dark.png)    |
-
-<!--### Demo
-
-![Vigil demo](./docs/demo.gif)-->
+|                                                       |                                                                         |
+| :---------------------------------------------------: | :---------------------------------------------------------------------: |
+|    ![Vigil dashboard](./docs/images/dashboard.png)    |              ![Monitors list](./docs/images/monitors.png)               |
+| ![Monitor details](./docs/images/monitor-details.png) |            ![Notifications](./docs/images/notifications.png)            |
+|         ![Dark mode](./docs/images/dark.png)          | ![Notification settings](./docs/images/notifications-settings-dark.png) |
+|          ![Mobile](./docs/images/mobile.png)          |           ![Mobile dark mode](./docs/images/mobile-dark.png)            |
 
 ---
 
 ## What it does
 
-- Monitor websites and HTTP APIs on configurable intervals
+- Create and manage website and API monitors
+- Check endpoints at configurable intervals
 - Run manual checks with cooldown protection
-- Record HTTP status, response time, errors, and check history
+- Store HTTP status, response time, errors, and check history
 - Track open and resolved incidents
-- Create in-app, email notifications
+- Send in-app and email notifications
 - Pause and resume monitors
 - View monitor metrics and response-time history
 - Authenticate with email/password, Google, or GitHub
-- Responsive dashboard with loading, empty, and error states
-- Automatic first check after creating a monitor
+- Use the dashboard on desktop and mobile
+- Run the first monitor check automatically after creation
 
 ---
 
-## Technical highlights
+## Engineering highlights
 
 ### Next.js App Router
 
-Vigil uses Next.js as the full-stack application framework:
+Vigil uses the Next.js App Router as the main full-stack architecture.
 
-- Server Components for server-side data fetching
-- Server Actions for authenticated mutations
-- Route Handlers where an HTTP endpoint is appropriate
-- `loading.tsx` and Suspense boundaries for loading states
-- React Compiler enabled across the application.
+- **Server Components** for server-side data fetching
+- **Server Actions** for authenticated mutations
+- **Route Handlers** for HTTP endpoints such as the monitoring cron endpoint
+- `loading.tsx` and Suspense for loading states
 - Cache tags and route revalidation for fresh dashboard data
+- React Compiler enabled
+
+### Authentication and authorization
+
+Better Auth handles authentication and sessions.
+
+- Email/password authentication
+- Google OAuth
+- GitHub OAuth
+- Server-side session handling
+- User ownership checks for monitors and notification settings
+
+All monitor data and mutations are scoped to the authenticated user.
+
+### TypeScript and validation
+
+TypeScript is used across the application with strict type checking.
+
+Zod is used to validate action input and configuration data before it reaches the database or external services.
+
+The project also uses Next.js typed routes to catch invalid application routes at build time.
+
+### Database and Prisma
+
+Vigil uses PostgreSQL with Prisma as the ORM.
+
+The database includes relational models for:
+
+- Users and sessions
+- Monitors
+- Monitor check history
+- Incidents
+- Notification channels
+- In-app notifications
+- Subscriptions
+- Monitor preferences
+
+Database writes that update monitor state and incident state are handled in a serializable Prisma transaction.
 
 ### Monitoring and incident handling
 
-A monitor check follows a single server-side execution path:
+Monitor checks follow one server-side flow:
 
 ```text
-HTTP request
-    ↓
-Parse result
-    ↓
-Persist check + update monitor state
-    ↓
-Detect incident transition
-    ↓
+Run check
+   ↓
+Store check result
+   ↓
+Update monitor status
+   ↓
+Detect status change
+   ↓
 Create / resolve incident
-    ↓
-Dispatch notifications
+   ↓
+Send notifications
 ```
 
-Check persistence and incident transitions are handled in a serializable Prisma transaction, while manual checks use an atomic cooldown claim to prevent concurrent duplicate checks.
+Manual checks use an atomic cooldown claim to prevent concurrent duplicate checks.
 
-### Performance
+Incident creation and recovery are based on monitor status transitions instead of treating every failed request as a new incident.
+
+### Notifications
+
+Notification delivery is separated from monitoring logic.
+
+Current notification methods:
+
+- In-app notifications
+- Email via Resend and React Email
+
+In-app notifications are available by default. Email notifications can be connected to individual monitors.
+
+### Feature-based project structure
+
+The codebase is organized around features instead of putting all files into global type-based folders.
+
+```text
+src/
+├── app/
+├── components/
+├── features/
+│   ├── monitors/
+│   ├── monitoring/
+│   ├── notifications/
+│   └── email/
+└── lib/
+
+prisma/
+└── schema.prisma
+```
+
+This keeps monitor logic, notification logic, data access, actions, and UI components close to the feature they belong to.
+
+### Code quality and CI
+
+The project uses:
+
+- Oxlint for linting
+- Oxfmt for formatting
+- TypeScript type checking
+- Husky for Git hooks
+- GitHub Actions for CI
+
+The main CI checks are:
+
+```text
+Install dependencies
+        ↓
+Lint
+        ↓
+Typecheck
+        ↓
+Production build
+```
+
+---
+
+## Architecture
+
+The main application flow is intentionally simple:
+
+```text
+                    ┌──────────────────┐
+                    │   Next.js App    │
+                    │    Router        │
+                    └────────┬─────────┘
+                             │
+          ┌──────────────────┼──────────────────┐
+          │                  │                  │
+          ▼                  ▼                  ▼
+   Server Components   Server Actions     Route Handlers
+          │                  │                  │
+          │               Zod + Auth           │
+          └──────────────────┼──────────────────┘
+                             ▼
+                    Data / Monitoring
+                             │
+                         Prisma ORM
+                             │
+                             ▼
+                    PostgreSQL (Neon)
+                             │
+                             ▼
+                       Notifications
+                       ┌─────┴─────┐
+                       ▼           ▼
+                    In-app       Resend
+                                  Email
+```
+
+---
+
+## Performance
 
 The marketing homepage was audited with Google PageSpeed Insights.
 
@@ -100,85 +249,6 @@ The marketing homepage was audited with Google PageSpeed Insights.
 | SEO            |    100 |     100 |
 
 [View PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-vigil-eta-nine-vercel-app/d8sx0w9rhr)
-
-### Authentication & authorization
-
-Better Auth provides:
-
-- Email/password authentication
-- Google OAuth
-- GitHub OAuth
-- Server-side session handling
-
-Monitor access and mutations are always scoped to the authenticated user.
-
-### Notifications
-
-Notification delivery is separated from incident detection.
-
-Current channels:
-
-- In-app
-- Email via Resend + React Email
-
----
-
-## Architecture
-
-```mermaid
-flowchart LR
-    UI[React UI] --> APP[Next.js App Router]
-    APP --> ACTIONS[Server Actions]
-    APP --> DAL[Data Access Layer]
-
-    ACTIONS --> MONITOR[Monitoring]
-    MONITOR --> CHECKER[HTTP Checker]
-    MONITOR --> DB[(PostgreSQL)]
-    MONITOR --> INCIDENTS[Incident Handling]
-    INCIDENTS --> NOTIFY[Notifications]
-
-    NOTIFY --> EMAIL[Resend]
-    NOTIFY --> DB
-```
-
-The codebase uses a feature-based structure:
-
-```text
-src/
-├── app/
-├── components/
-├── features/
-│   ├── monitors/
-│   ├── monitoring/
-│   ├── notifications/
-│   ├── email/
-│   └── sidebar/
-└── lib/
-
-prisma/
-└── schema.prisma
-```
-
----
-
-## Tech stack
-
-| Area            | Tools                            |
-| --------------- | -------------------------------- |
-| Framework       | Next.js 16, React 19             |
-| Language        | TypeScript                       |
-| Database        | PostgreSQL                       |
-| ORM             | Prisma                           |
-| Auth            | Better Auth                      |
-| Validation      | Zod                              |
-| Server Actions  | next-safe-action                 |
-| UI              | Tailwind CSS, shadcn/ui, Base UI |
-| Icons           | Tabler Icons                     |
-| Email           | Resend, React Email              |
-| Notifications   | in-app notifications             |
-| Package manager | pnpm                             |
-| Quality         | Oxlint, Oxfmt, Husky             |
-| CI              | GitHub Actions                   |
 
 ---
 
@@ -207,34 +277,25 @@ The app runs at `http://localhost:3000`.
 
 ---
 
-## Demo account
+## Demo data
 
-The seed includes a demo account with representative data covering different monitor states, incidents, notifications, and notification channels.
+The seed includes a demo account with representative data for:
+
+- Active and paused monitors
+- Different HTTP methods
+- Healthy and failing monitors
+- Open and resolved incidents
+- Monitor check history
+- In-app notifications
+- Email notification channels
+- Monitor preferences
 
 ```text
 Email:    demo@vigil.dev
 Password: DemoPassword123!
 ```
 
-Use these credentials only with the deployed/public demo environment.
-
----
-
-## CI
-
-GitHub Actions runs the project's main verification checks on pushes to `main` and pull requests:
-
-```text
-pnpm install --frozen-lockfile
-        ↓
-lint
-        ↓
-typecheck
-        ↓
-production build
-```
-
-The goal is to keep CI small while still catching the most important integration and build problems.
+Use these credentials only with the deployed demo environment.
 
 ---
 

@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import { useWatch, Controller } from 'react-hook-form';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -32,25 +31,28 @@ function getInitials(name: string) {
 }
 
 export default function ProfileForm({ initialName, email, image }: ProfileFormProps) {
-  const [name, setName] = useState(initialName);
+  const { form, error, handleSubmit, isPending } = useChangeName(initialName);
 
-  const { control, error, handleSubmit, isPending } = useChangeName();
+  const currentName = useWatch({
+    control: form.control,
+    name: 'newName',
+  });
 
-  const hasChanges = name.trim() !== initialName;
-  const isValid = name.trim().length >= 2;
+  const { isDirty, isValid } = form.formState;
 
   return (
     <div className="border-border border">
-      <form onSubmit={(e) => void handleSubmit(e)}>
+      <form onSubmit={(event) => void handleSubmit(event)}>
         <div className="space-y-6 p-6">
           <div className="flex items-center gap-4">
             <Avatar className="size-14">
               <AvatarImage src={image ?? undefined} alt="" />
-              <AvatarFallback className="text-sm">{getInitials(initialName)}</AvatarFallback>
+
+              <AvatarFallback className="text-sm">{getInitials(currentName)}</AvatarFallback>
             </Avatar>
 
             <div>
-              <p className="text-sm font-medium">{initialName || 'Your name'}</p>
+              <p className="text-sm font-medium">{currentName.trim() || 'Your name'}</p>
 
               <p className="text-muted-foreground text-sm">
                 Your profile information is used throughout Vigil.
@@ -61,17 +63,13 @@ export default function ProfileForm({ initialName, email, image }: ProfileFormPr
           <FieldGroup>
             <Controller
               name="newName"
-              control={control}
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="update-name-input" className="justify-between">
-                    Name
-                  </FieldLabel>
+                  <FieldLabel htmlFor="update-name-input">Name</FieldLabel>
 
                   <Input
                     {...field}
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
                     id="update-name-input"
                     aria-invalid={fieldState.invalid}
                     aria-describedby={fieldState.invalid ? 'update-name-input-error' : undefined}
@@ -100,7 +98,7 @@ export default function ProfileForm({ initialName, email, image }: ProfileFormPr
         </div>
 
         <div className="bg-muted/30 border-t px-6 py-4">
-          <Button type="submit" disabled={!hasChanges || !isValid || isPending}>
+          <Button type="submit" disabled={!isDirty || !isValid || isPending}>
             {isPending ? 'Saving…' : 'Save changes'}
           </Button>
         </div>

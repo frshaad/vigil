@@ -9,13 +9,16 @@ import { DEFAULT_ERROR_MESSAGE } from '../constants';
 import { changeNameInputSchema } from '../schemas/credentials';
 import type { ChangeNameInput } from '../types';
 
-export function useChangeName() {
+export function useChangeName(initialName: string) {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<ChangeNameInput>({
     resolver: zodResolver(changeNameInputSchema),
-    defaultValues: { newName: '' },
+    defaultValues: {
+      newName: initialName,
+    },
+    mode: 'onChange',
   });
 
   const handleSubmit = form.handleSubmit(async ({ newName }) => {
@@ -31,7 +34,10 @@ export function useChangeName() {
             setIsPending(true);
           },
           onSuccess() {
-            form.reset();
+            form.reset({
+              newName,
+            });
+
             toast.success('Name was successfully updated.');
           },
           onError(ctx) {
@@ -48,7 +54,7 @@ export function useChangeName() {
   });
 
   return {
-    control: form.control,
+    form,
     handleSubmit,
     isPending,
     error,
